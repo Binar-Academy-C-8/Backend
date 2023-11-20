@@ -1,5 +1,5 @@
 const {
-  DB_USER = "",
+  DB_USERNAME = "",
   DB_PASSWORD = "",
   DB_NAME = "bcr",
   DB_HOST = "127.0.0.1",
@@ -12,7 +12,7 @@ module.exports = {
     password: DB_PASSWORD,
     database: `${DB_NAME}_development`,
     host: DB_HOST,
-    host: DB_PORT,
+    port: DB_PORT,
     dialect: "postgres",
   },
   test: {
@@ -20,7 +20,7 @@ module.exports = {
     password: DB_PASSWORD,
     database: `${DB_NAME}_test`,
     host: DB_HOST,
-    host: DB_PORT,
+    port: DB_PORT,
     dialect: "postgres",
   },
   production: {
@@ -28,7 +28,7 @@ module.exports = {
     password: DB_PASSWORD,
     database: `${DB_NAME}_production`,
     host: DB_HOST,
-    host: DB_PORT,
+    port: DB_PORT,
     dialect: "postgres",
   },
 };
