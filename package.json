@@ -6,7 +6,8 @@
   "scripts": {
     "start": "node -r dotenv/config bin/www",
     "dev": "nodemon -r dotenv/config bin/www",
-    "lint": "eslint ./app",
+    "lint": "eslint .",
+    "fixlint": "eslint . --fix",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Nur Ali Rajab",
