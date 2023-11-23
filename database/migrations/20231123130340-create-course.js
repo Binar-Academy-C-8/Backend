@@ -7,49 +7,49 @@ module.exports = {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
-        type: Sequelize.INTEGER
+        type: Sequelize.INTEGER,
       },
       codeCourse: {
-        type: Sequelize.STRING
+        type: Sequelize.STRING,
       },
       courseName: {
-        type: Sequelize.STRING
+        type: Sequelize.STRING,
       },
       image: {
-        type: Sequelize.STRING
+        type: Sequelize.STRING,
       },
       courseType: {
-        type: Sequelize.ENUM
+        type: Sequelize.ENUM(['Free', 'Premium']),
       },
       courseLevel: {
-        type: Sequelize.ENUM
+        type: Sequelize.ENUM(['Beginner', 'Intermediate', 'Advenced']),
       },
-      abaouCourse: {
-        type: Sequelize.STRING
+      aboutCourse: {
+        type: Sequelize.STRING,
       },
       perpouseCourse: {
-        type: Sequelize.STRING
+        type: Sequelize.STRING,
       },
       statusCourse: {
-        type: Sequelize.ENUM
+        type: Sequelize.ENUM(['InProgress', 'Complete']),
       },
       progressBar: {
-        type: Sequelize.FLOAT
+        type: Sequelize.FLOAT,
       },
       categoryId: {
-        type: Sequelize.INTEGER
+        type: Sequelize.INTEGER,
       },
       createdAt: {
         allowNull: false,
-        type: Sequelize.DATE
+        type: Sequelize.DATE,
       },
       updatedAt: {
         allowNull: false,
-        type: Sequelize.DATE
-      }
+        type: Sequelize.DATE,
+      },
     });
   },
   async down(queryInterface, Sequelize) {
     await queryInterface.dropTable('Courses');
-  }
+  },
 };

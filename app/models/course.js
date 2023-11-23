@@ -1,7 +1,5 @@
 'use strict';
-const {
-  Model
-} = require('sequelize');
+const { Model } = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
   class Course extends Model {
     /**
@@ -13,20 +11,23 @@ module.exports = (sequelize, DataTypes) => {
       // define association here
     }
   }
-  Course.init({
-    codeCourse: DataTypes.STRING,
-    courseName: DataTypes.STRING,
-    image: DataTypes.STRING,
-    courseType: DataTypes.ENUM,
-    courseLevel: DataTypes.ENUM,
-    abaouCourse: DataTypes.STRING,
-    perpouseCourse: DataTypes.STRING,
-    statusCourse: DataTypes.ENUM,
-    progressBar: DataTypes.FLOAT,
-    categoryId: DataTypes.INTEGER
-  }, {
-    sequelize,
-    modelName: 'Course',
-  });
+  Course.init(
+    {
+      codeCourse: DataTypes.STRING,
+      courseName: DataTypes.STRING,
+      image: DataTypes.STRING,
+      courseType: DataTypes.ENUM(['Free', 'Premium']),
+      courseLevel: DataTypes.ENUM(['Beginner', 'Intermediate', 'Advenced']),
+      abaouCourse: DataTypes.STRING,
+      perpouseCourse: DataTypes.STRING,
+      statusCourse: DataTypes.ENUM(['InProgress', 'Complete']),
+      progressBar: DataTypes.FLOAT,
+      categoryId: DataTypes.INTEGER,
+    },
+    {
+      sequelize,
+      modelName: 'Course',
+    }
+  );
   return Course;
 };
