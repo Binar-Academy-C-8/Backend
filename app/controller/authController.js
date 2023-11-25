@@ -1,8 +1,12 @@
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
-const { Auth, User } = require("../models");
+const { Auth, User, OTP } = require("../models");
+const generatedOTP = require("../../utils/generatedOTP");
+const { AUTH_EMAIL } = process.env;
+const sendEmail = require("../../utils/sendEmail");
 
 const ApiError = require("../../utils/apiError");
+const scheduleOtpDeletion = require("../../utils/scheduleDeletion");
 
 const register = async (req, res, next) => {
     try {
@@ -34,6 +38,7 @@ const register = async (req, res, next) => {
             return next(new ApiError("User email already taken", 400));
         }
 
+
         const passwordLength = password <= 8;
         if (passwordLength) {
             next(new ApiError("Minimum password must be 8 character", 400));
@@ -58,7 +63,41 @@ const register = async (req, res, next) => {
             userId: newUser.id,
         });
 
-        console.log(test);
+        const newCode = await generatedOTP();
+        const expirationTime = new Date();
+        const expirationInMinutes = 3;
+        expirationTime.setMinutes(expirationTime.getMinutes() + expirationInMinutes);
+        const expirationInMinutesSinceNow = Math.floor((expirationTime - new Date()) / (1000 * 60));
+
+        const hasheOtpCode = bcrypt.hashSync(
+            newCode,
+            saltRounds
+        );
+
+        const newOTP = await OTP.create({
+            email,
+            code: hasheOtpCode,
+            userId: newUser.id,
+            expiredAt: expirationInMinutesSinceNow,
+        });
+
+        const deletionDelay = expirationInMinutesSinceNow * 60 * 1000;
+        scheduleOtpDeletion(newOTP.id, deletionDelay);
+
+        const mailOptions = {
+            from: AUTH_EMAIL,
+            to: email,
+            subject: `OTP from ${AUTH_EMAIL}`,
+            html: `
+                <p>Hello,</p>
+                <p>Your OTP is:</p>
+                <p style="color:black;font-size:25px;letter-spacing:2px;"><strong>${newCode}</strong></p>
+                <p>It will expire in ${newOTP.expiredAt} minutes.</p>
+                <p>Best regards,</p>
+                <p>Team c8</p>
+            `,
+        };
+        await sendEmail(mailOptions);
 
         res.status(201).json({
             status: "Success",
@@ -66,6 +105,7 @@ const register = async (req, res, next) => {
                 ...newUser,
                 email,
                 password: hashedPassword,
+                newOTP
             },
         });
     } catch (err) {

@@ -14,6 +14,12 @@ module.exports = (sequelize, DataTypes) => {
           name: "userId",
         }
       });
+
+      User.hasOne(models.OTP, {
+        foreignKey: {
+          name: "userId"
+        }
+      });
     }
   }
   User.init(
