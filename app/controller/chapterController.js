@@ -40,11 +40,6 @@ const findAllChapter = async (req, res, next) => {
   try {
     const chapters = await Chapter.findAll();
 
-    // jika data chapter belum ada sama sekali
-    if (!chapters || chapters.length === 0) {
-      return next(new ApiError('Data not found', 404));
-    }
-
     res.status(200).json({
       status: 'success',
       data: {
