@@ -1,9 +1,10 @@
 #!/usr/bin/env node
+require('dotenv').config();
 
 const app = require('../app/index');
 
-const port = process.env.PORT || 3000;
+const { PORT = 3000, HOST } = process.env;
 
-app.listen(port, () => {
-  console.log(`App running on port ${port}...`);
+app.listen(PORT, () => {
+  console.log(`Local is running : http://${HOST}:${PORT}`);
 });
