@@ -9,19 +9,24 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
+      this.belongsTo(models.Category, {
+        foreignKey: {
+          name: 'categoryId',
+          allowNull: false,
+        },
+      });
     }
   }
   Course.init(
     {
-      codeCourse: DataTypes.STRING,
+      courseCode: DataTypes.STRING,
       courseName: DataTypes.STRING,
       image: DataTypes.STRING,
-      courseType: DataTypes.ENUM(['Free', 'Premium']),
-      courseLevel: DataTypes.ENUM(['Beginner', 'Intermediate', 'Advenced']),
-      abaouCourse: DataTypes.STRING,
-      perpouseCourse: DataTypes.STRING,
-      statusCourse: DataTypes.ENUM(['InProgress', 'Complete']),
-      progressBar: DataTypes.FLOAT,
+      courseType: DataTypes.ENUM(['free', 'premium']),
+      courseLevel: DataTypes.ENUM(['beginner', 'intermediate', 'advance']),
+      aboutCourse: DataTypes.STRING,
+      intendedFor: DataTypes.STRING,
+      courseStatus: DataTypes.ENUM(['inProgress', 'completed']),
       categoryId: DataTypes.INTEGER,
     },
     {
