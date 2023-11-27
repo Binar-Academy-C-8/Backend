@@ -1,5 +1,7 @@
 const { Content } = require('../models');
 const ApiError = require('../../utils/apiError');
+const compressVideo = require('../../helper/compressVideo');
+const imagekit = require('../../lib/imagekit');
 
 // Menampilkan semua data konten course
 const getContent = async (req, res, next) => {
@@ -90,19 +92,28 @@ const insertContentByFile = async (req, res, next) => {
 
     const split = video.originalname.split('.');
     const videoTitle = split[0];
+    const extension = split[split.length - 1];
+
+    const resizeVideo = compressVideo(video, 14155776);
+
+    const uploadVideo = await imagekit.upload({
+      file: resizeVideo.buffer,
+      fileName: `${Date.now()}-${videoTitle}.${extension}`,
+    });
 
     const dataContent = await Content.create({
       status: status,
       chapterId: id,
       contentTitle: videoTitle,
+      contentUrl: uploadVideo.url,
       duration: videoDuration,
     });
 
     res.status(200).json({
       status: 'Success',
-      // data: {
-      //   dataContent,
-      // },
+      data: {
+        dataContent,
+      },
     });
   } catch (err) {
     next(new ApiError(err.message, 400));

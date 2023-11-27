@@ -9,8 +9,19 @@ const videoFileFiltering = (res, file, cb) => {
   }
 };
 
+// const VideoStorage = multer.diskStorage({
+//   destination: (req, file, cb) => {
+//     cb(null, './public/video/');
+//   },
+
+//   filename: (req, file, cb) => {
+//     cb(null, file.originalname);
+//   },
+// });
+
 const upload = multer({
   fileFilter: videoFileFiltering,
+  // storage: VideoStorage,
 });
 
 module.exports = upload;
