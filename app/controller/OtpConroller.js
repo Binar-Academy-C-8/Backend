@@ -9,20 +9,36 @@ const bcrypt = require("bcrypt");
 
 const verifyOTP = async (req, res, next) => {
     try {
-        const { email, code } = req.body;
+        const { userId } = req.params;
+        const { code } = req.body;
 
-        // Cari data pengguna berdasarkan alamat email
+        // Cari data pengguna berdasarkan ID
         const userOtp = await OTP.findOne({
             where: {
-                email,
+                userId,
             },
-            include: ["User"],
+            include: ["User"]
         });
 
         // Cek apakah pengguna ditemukan dan OTP sesuai
-        if (!userOtp || !bcrypt.compareSync(String(code), String(userOtp.code))) {
-            return next(new ApiError("Invalid OTP", 400));
+        if (!userOtp) {
+            return next(new ApiError('expired OTP', 401));
         }
+
+        if (!bcrypt.compareSync(String(code), String(userOtp.code))) {
+            return next(new ApiError('Invalid OTP', 403));
+        }
+
+        await Auth.update(
+            {
+                verified: true,
+            },
+            {
+                where: {
+                    userId,
+                },
+            }
+        );
 
         // Verifikasi berhasil, hapus data OTP dari database
         await OTP.destroy({
@@ -34,9 +50,6 @@ const verifyOTP = async (req, res, next) => {
         res.status(200).json({
             status: "Success",
             message: "OTP verification successful",
-            data: {
-                email,
-            },
         });
     } catch (err) {
         next(new ApiError(err.message, 500));
@@ -60,7 +73,7 @@ const sendOtp = async (req, res, next) => {
 
         await OTP.destroy({
             where: {
-                userId: user.id,
+                userId: user.User.id,
             },
         });
 
@@ -104,7 +117,8 @@ const sendOtp = async (req, res, next) => {
         res.status(200).json({
             status: "Success",
             data: {
-                newOtpRequest
+                newOtpRequest,
+                message: "OTP sent successfully" 
             },
         });
     } catch (err) {

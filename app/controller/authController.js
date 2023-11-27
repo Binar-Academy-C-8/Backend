@@ -52,7 +52,6 @@ const register = async (req, res, next) => {
 
         const newUser = await User.create({
             name,
-            email,
             phoneNumber,
             country,
             city,
@@ -75,7 +74,6 @@ const register = async (req, res, next) => {
         );
 
         const newOTP = await OTP.create({
-            email,
             code: hasheOtpCode,
             userId: newUser.id,
             expiredAt: expirationInMinutesSinceNow,
@@ -99,13 +97,11 @@ const register = async (req, res, next) => {
         };
         await sendEmail(mailOptions);
 
-        res.status(201).json({
+        res.status(200).json({
             status: "Success",
             data: {
-                ...newUser,
                 email,
-                password: hashedPassword,
-                newOTP
+                ...newUser,
             },
         });
     } catch (err) {
@@ -141,7 +137,7 @@ const login = async (req, res, next) => {
 
             res.status(200).json({
                 status: "Success",
-                message: "Login Successfully",
+                message: "Berhasil login",
                 data: token,
             });
         } else {
@@ -158,7 +154,11 @@ const authenticate = async (req, res) => {
         res.status(200).json({
             status: "Success",
             data: {
-                user: req.user,
+                name: req.user.name,
+                image: req.user.image,
+                phoneNumber: req.user.phoneNumber,
+                country: req.user.country,
+                city: req.user.city,
             },
         });
     } catch (err) {
@@ -166,4 +166,48 @@ const authenticate = async (req, res) => {
     }
 };
 
-module.exports = { register, login, authenticate };
+const updateNewPassword = async (req, res, next) => {
+    try {
+        const { userId } = req.params;
+        const { password } = req.body;
+
+
+        // Cari data pengguna berdasarkan ID
+        const users = await Auth.findOne({
+            where: {
+                userId,
+            },
+            include: ["User"]
+        });
+
+        if (users.verified !== true) {
+            return next(new ApiError("User not verified", 401));
+        }
+
+        // Hash password baru
+        const saltRounds = 10;
+        const hashedPassword = await bcrypt.hash(password, saltRounds);
+
+        // Update password di database Auth
+        await Auth.update(
+            {
+                password: hashedPassword,
+            },
+            {
+                where: {
+                    userId,
+                },
+            }
+        );
+
+        res.status(200).json({
+            status: "Success",
+            message: "Update Password successful",
+        });
+    } catch (err) {
+        next(new ApiError(err.message, 500));
+    }
+};
+
+
+module.exports = { register, login, authenticate, updateNewPassword };

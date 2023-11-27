@@ -20,6 +20,9 @@ module.exports = {
         type: Sequelize.INTEGER,
         allowNull: false,
       },
+      verified: {
+        type: Sequelize.BOOLEAN
+      },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE,

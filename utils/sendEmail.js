@@ -19,15 +19,6 @@ let transporter = nodemailer.createTransport({
     },
 });
 
-// transporter.verify((error, success) => {
-//     if (error) {
-//         console.log(error);
-//     } else {
-//         console.log("Ready");
-//         console.log(success);
-//     }
-// });
-
 const sendEmail = async (mailOptions) => {
     try {
         await transporter.sendMail(mailOptions);

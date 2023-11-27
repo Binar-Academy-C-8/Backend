@@ -21,6 +21,7 @@ module.exports = (sequelize, DataTypes) => {
       email: { type: DataTypes.STRING, unique: true },
       password: DataTypes.STRING,
       userId: DataTypes.INTEGER,
+      verified: { type: DataTypes.BOOLEAN, defaultValue: false },
     },
     {
       sequelize,
