@@ -21,7 +21,11 @@ const verifyOTP = async (req, res, next) => {
     });
 
     // Cek apakah pengguna ditemukan dan OTP sesuai
-    if (!userOtp || !bcrypt.compareSync(String(code), String(userOtp.code))) {
+    if (!userOtp) {
+      return next(new ApiError('expired OTP', 400));
+    }
+
+    if (!bcrypt.compareSync(String(code), String(userOtp.code))) {
       return next(new ApiError('Invalid OTP', 400));
     }
 
