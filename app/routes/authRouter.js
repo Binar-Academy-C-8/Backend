@@ -4,6 +4,8 @@ const Auth = require("../controller/authController");
 const Otp = require("../controller/OtpConroller");
 const authMe = require("../middlewares/authMe");
 
+router.post("/admin/login", Auth.login);
+
 router.post("/member/register", Auth.register);
 router.post("/member/login", Auth.login);
 router.get("/me", authMe, Auth.authenticate);
