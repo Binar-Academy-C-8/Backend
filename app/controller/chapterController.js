@@ -5,24 +5,15 @@ require('dotenv').config();
 const createChapter = async (req, res, next) => {
   const { chapterTitle } = req.body;
   try {
-    if (!chapterTitle) return next(new ApiError('Field must be required', 400));
+    const course = await Course.findByPk(req.params.id);
 
-    // jika sudah ada id course nya
-    // let course;
-    // if (course.id) {
-    //   course = await Course.findOne({
-    //     where: { id: course.id },
-    //   });
-    // } else {
-    //   const chapter = await Chapter.findOne({
-    //     where: { id: chapter.id },
-    //   });
-    //   course = await Course.create();
-    // }
+    if (!course) return next(new ApiError('Id course not found', 404));
+
+    if (!chapterTitle) return next(new ApiError('Field must be required', 400));
 
     const chapter = await Chapter.create({
       chapterTitle,
-      //   courseId: course.id,
+      courseId: course.id,
     });
 
     res.status(201).json({
@@ -38,7 +29,9 @@ const createChapter = async (req, res, next) => {
 
 const findAllChapter = async (req, res, next) => {
   try {
-    const chapters = await Chapter.findAll();
+    const chapters = await Chapter.findAll({
+      include: ['Course'],
+    });
 
     res.status(200).json({
       status: 'success',
@@ -57,6 +50,7 @@ const findChapter = async (req, res, next) => {
       where: {
         id: req.params.id,
       },
+      include: ['Course'],
     });
 
     if (!chapter) return next(new ApiError('Data not found'), 404);

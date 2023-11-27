@@ -2,7 +2,7 @@ const router = require('express').Router();
 
 const Chapter = require('../controller/chapterController');
 
-router.post('/', Chapter.createChapter);
+router.post('/:id', Chapter.createChapter);
 router.get('/', Chapter.findAllChapter);
 router.get('/:id', Chapter.findChapter);
 router.put('/:id', Chapter.updateChapter);
