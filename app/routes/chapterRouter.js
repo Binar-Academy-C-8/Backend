@@ -1,11 +1,11 @@
-const router = require('express').Router();
+const router = require('express').Router()
 
-const Chapter = require('../controller/chapterController');
+const Chapter = require('../controller/chapterController')
 
-router.post('/:id', Chapter.createChapter);
-router.get('/', Chapter.findAllChapter);
-router.get('/:id', Chapter.findChapter);
-router.put('/:id', Chapter.updateChapter);
-router.delete('/:id', Chapter.deleteChapter);
+router.get('/', Chapter.findAllChapter)
+router.post('/create/:id', Chapter.createChapter) //create course dengan mengambil id course
+router.get('/:id', Chapter.findChapter)
+router.put('/update/:id', Chapter.updateChapter)
+router.delete('/delete/:id', Chapter.deleteChapter)
 
-module.exports = router;
+module.exports = router
