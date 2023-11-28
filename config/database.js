@@ -1,7 +1,7 @@
 const {
   DB_USERNAME = '',
   DB_PASSWORD = '',
-  DB_NAME = 'bcr',
+  DB_NAME = '',
   DB_HOST = '127.0.0.1',
   DB_PORT = '5432',
 } = process.env;
