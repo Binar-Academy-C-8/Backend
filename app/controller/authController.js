@@ -39,9 +39,9 @@ const register = async (req, res, next) => {
         }
 
 
-        const passwordLength = password <= 8;
+        const passwordLength = password.length <= 8;
         if (passwordLength) {
-            next(new ApiError("Minimum password must be 8 character", 400));
+           return next(new ApiError("Minimum password must be 8 character", 400));
         }
 
         const saltRounds = 10;
