@@ -149,7 +149,51 @@ const login = async (req, res, next) => {
     }
 };
 
-const authenticate = async (req, res) => {
+const authenticateAdmin = async (req, res, next) => {
+    try {
+        const { email, password } = req.body;
+
+        const user = await Auth.findOne({
+            where: {
+                email,
+            },
+            include: ["User"]
+        });
+
+        if (!user) {
+            return next(new ApiError("Email not found", 404));
+        }
+
+        if (user.User.role !== "admin") {
+            return next(new ApiError("Unauthorized. Only admin can login", 401));
+        }
+
+        if (user && bcrypt.compareSync(password, user.password)) {
+            const token = jwt.sign(
+                {
+                    id: user.userId,
+                    username: user.User.name,
+                    role: user.User.role,
+                    email: user.email,
+                },
+                process.env.JWT_SECRET
+            );
+
+            res.status(200).json({
+                status: "Success",
+                message: "Berhasil login",
+                data: token,
+            });
+        } else {
+            return next(new ApiError("Incorrect password", 401));
+        }
+
+    } catch (err) {
+        next(new ApiError(err.message, 500));
+    }
+};
+
+const authenticate = async (req, res, next) => {
     try {
         res.status(200).json({
             status: "Success",
@@ -210,4 +254,4 @@ const updateNewPassword = async (req, res, next) => {
 };
 
 
-module.exports = { register, login, authenticate, updateNewPassword };
+module.exports = { register, login, authenticate, updateNewPassword, authenticateAdmin };

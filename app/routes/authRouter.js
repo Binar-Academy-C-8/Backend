@@ -3,8 +3,9 @@ const router = require("express").Router();
 const Auth = require("../controller/authController");
 const Otp = require("../controller/OtpConroller");
 const authMe = require("../middlewares/authMe");
+const checkRole = require("../middlewares/checkRole");
 
-router.post("/admin/login", Auth.login);
+router.post("/admin/login", Auth.authenticateAdmin);
 
 router.post("/member/register", Auth.register);
 router.post("/member/login", Auth.login);

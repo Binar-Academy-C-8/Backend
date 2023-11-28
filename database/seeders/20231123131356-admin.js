@@ -2,6 +2,7 @@
 
 const { User } = require('../../app/models');
 const dotenv = require('dotenv');
+const bcrypt = require("bcrypt");
 dotenv.config();
 
 /** @type {import('sequelize-cli').Migration} */
@@ -20,12 +21,19 @@ module.exports = {
       },
     ]);
 
+    const adminPassword = process.env.PASSWORD_HASH;
+    const saltRounds = 10;
+    const hashedPassword = bcrypt.hashSync(
+      adminPassword,
+      saltRounds
+    );
+
     const users = await User.findAll();
 
     await queryInterface.bulkInsert('Auths', [
       {
         email: 'adminc8@mail.com',
-        password: process.env.PASSWORD_HASH,
+        password: hashedPassword,
         userId: users[0].id,
         createdAt: new Date(),
         updatedAt: new Date(),
