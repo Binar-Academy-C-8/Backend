@@ -5,7 +5,7 @@ const { User } = require('../../app/models');
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.bulkInsert('Categories', [
+    await queryInterface.bulkInsert('Category', [
       {
         categoryName: 'UI/UX Design',
         createdAt: new Date(),
@@ -35,6 +35,6 @@ module.exports = {
   },
 
   async down(queryInterface, Sequelize) {
-    await queryInterface.bulkDelete('Categories', null, {});
+    await queryInterface.bulkDelete('Category', null, {});
   },
 };
