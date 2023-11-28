@@ -33,96 +33,17 @@
   ],
   "servers": [
     {
-      "url": "http://localhost:9000/api/v1"
+      "url": "backend-production-f9e7.up.railway.app/api/v1"
     }
   ],
   "paths": {
-    "/auth/login": {
+    "/auth/member/register": {
       "post": {
         "tags": ["Auths"],
-        "summary": "Return hasil hit api login untuk superadmin",
-        "description": "ini API untuk login superadmin",
+        "summary": "Return hasil hit api register untuk member",
+        "description": "ini API untuk register member",
         "requestBody": {
-          "description": "ini request body untuk sukses login superadmin",
-          "content": {
-            "application/json": {
-              "schema": {
-                "type": "object",
-                "properties": {
-                  "email": {
-                    "type": "string",
-                    "example": "nur@gmail.com"
-                  },
-                  "password": {
-                    "type": "string",
-                    "example": "nur123"
-                  }
-                }
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "Sukses login superadmin",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "status": {
-                      "type": "string",
-                      "example": "Success"
-                    },
-                    "data": {
-                      "type": "object",
-                      "properties": {
-                        "token": {
-                          "type": "string",
-                          "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwidXNlcm5hbWUiOiJOdXIiLCJyb2xlIjoic3VwZXJhZG1pbiIsImVtYWlsIjoibnVyQGdtYWlsLmNvbSIsImlhdCI6MTY5Nzk0MzE2MX0.Iu5rRqx5lmRodxbdd__YKrevByFPMTcPXBOOd3laZrc"
-                        }
-                      }
-                    }
-                  }
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Gagal login superadmin",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "status": {
-                      "type": "string",
-                      "example": "Failed"
-                    },
-                    "message": {
-                      "type": "object",
-                      "example": "Email or password does not match"
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/auth/admin/register": {
-      "post": {
-        "tags": ["Auths"],
-        "security": [
-          {
-            "bearerToken": []
-          }
-        ],
-        "summary": "Return hasil hit api register buat admin oleh superadmin",
-        "description": "ini API untuk register admin",
-        "requestBody": {
-          "description": "ini request body untuk sukses register admin",
+          "description": "ini request body untuk sukses register member",
           "content": {
             "application/json": {
               "schema": {
@@ -130,23 +51,27 @@
                 "properties": {
                   "name": {
                     "type": "string",
-                    "example": "Saman"
-                  },
-                  "age": {
-                    "type": "integer",
-                    "example": 20
-                  },
-                  "address": {
-                    "type": "string",
-                    "example": "Tanah Grogot"
+                    "example": "User"
                   },
                   "email": {
                     "type": "string",
-                    "example": "saman@mail.com"
+                    "example": "user@example.com"
                   },
                   "password": {
                     "type": "string",
-                    "example": "saman123"
+                    "example": "user123"
+                  },
+                  "phoneNumber": {
+                    "type": "string",
+                    "example": "03285729859"
+                  },
+                  "country": {
+                    "type": "string",
+                    "example": "Indonesia"
+                  },
+                  "city": {
+                    "type": "string",
+                    "example": "Jakarta"
                   }
                 }
               }
@@ -163,41 +88,53 @@
                   "properties": {
                     "status": {
                       "type": "string",
-                      "example": "Success"
+                      "example": "Register successful"
                     },
                     "data": {
                       "type": "object",
                       "properties": {
+                        "email": {
+                          "type": "string",
+                          "example": "user@example.com"
+                        },
                         "dataValues": {
                           "type": "object",
                           "properties": {
+                            "role": {
+                              "type": "string",
+                              "example": "member"
+                            },
                             "id": {
                               "type": "integer",
-                              "example": 8
+                              "example": 4
                             },
                             "name": {
                               "type": "string",
-                              "example": "Saman"
+                              "example": "User"
                             },
-                            "age": {
-                              "type": "integer",
-                              "example": 20
-                            },
-                            "address": {
+                            "phoneNumber": {
                               "type": "string",
-                              "example": "Tanah Grogot Paser"
+                              "example": "03285729859"
                             },
-                            "role": {
+                            "country": {
                               "type": "string",
-                              "example": "admin"
+                              "example": "Indonesia"
+                            },
+                            "city": {
+                              "type": "string",
+                              "example": "Jakarta"
                             },
                             "updatedAt": {
                               "type": "string",
-                              "example": "2023-10-21T07:23:19.154Z"
+                              "example": "2023-11-28T06:25:24.446Z"
                             },
                             "createdAt": {
                               "type": "string",
-                              "example": "2023-10-21T07:23:19.154Z"
+                              "example": "2023-11-28T06:25:24.446Z"
+                            },
+                            "image": {
+                              "type": "string",
+                              "example": "https://tse2.mm.bing.net/th?id=OIP.U2iQ7wNK6ZzTW_traW_-PQHaHa&pid=Api&P=0&h=180"
                             }
                           }
                         },
@@ -206,36 +143,45 @@
                           "properties": {
                             "name": {
                               "type": "string",
-                              "example": "Saman"
+                              "example": "User"
                             },
-                            "age": {
-                              "type": "integer",
-                              "example": 20
-                            },
-                            "address": {
+                            "phoneNumber": {
                               "type": "string",
-                              "example": "Tanah Grogot Paser"
+                              "example": "03285729859"
                             },
-                            "role": {
+                            "country": {
                               "type": "string",
-                              "example": "admin"
+                              "example": "Indonesia"
+                            },
+                            "city": {
+                              "type": "string",
+                              "example": "Jakarta"
                             },
                             "id": {
                               "type": "integer",
-                              "example": 8
+                              "example": 4
+                            },
+                            "role": {
+                              "type": "string",
+                              "example": "member"
+                            },
+                            "image": {
+                              "type": "string",
+                              "example": "https://tse2.mm.bing.net/th?id=OIP.U2iQ7wNK6ZzTW_traW_-PQHaHa&pid=Api&P=0&h=180"
                             },
                             "createdAt": {
                               "type": "string",
-                              "example": "2023-10-21T07:23:19.154Z"
+                              "example": "2023-11-28T06:25:24.446Z"
                             },
                             "updatedAt": {
                               "type": "string",
-                              "example": "2023-10-21T07:23:19.154Z"
+                              "example": "2023-11-28T06:25:24.446Z"
                             }
                           }
                         },
                         "uniqno": {
-                          "type": "integer"
+                          "type": "integer",
+                          "example": 1
                         },
                         "_changed": {
                           "type": "object"
@@ -244,15 +190,8 @@
                           "type": "object"
                         },
                         "isNewRecord": {
-                          "type": "boolean"
-                        },
-                        "email": {
-                          "type": "string",
-                          "example": "sama@fulan"
-                        },
-                        "password": {
-                          "type": "string",
-                          "example": "$2b$10$pmNoWdDEsG/E5QowEZI.M.6YOvR5YFNWvdaleN1LyimAFQIr95FOa"
+                          "type": "boolean",
+                          "example": false
                         }
                       }
                     }
@@ -262,7 +201,7 @@
             }
           },
           "400": {
-            "description": "Gagal admin register",
+            "description": "Gagal register",
             "content": {
               "application/json": {
                 "schema": {
@@ -273,8 +212,76 @@
                       "example": "Failed"
                     },
                     "message": {
-                      "type": "object",
-                      "example": "Email already taken"
+                      "oneOf": [
+                        {
+                          "type": "object",
+                          "example": "Username already taken"
+                        },
+                        {
+                          "type": "object",
+                          "example": "User email already taken"
+                        },
+                        {
+                          "type": "object",
+                          "example": "Minimum password must be 8 characters"
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/auth/verify-otp/{userId}": {
+      "post": {
+        "tags": ["Auths"],
+        "summary": "Return hasil hit api verify otp untuk register",
+        "description": "ini API untuk verify otp register",
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            },
+            "description": "User ID"
+          }
+        ],
+        "requestBody": {
+          "description": "ini request body untuk sukses verify otp register",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "code": {
+                    "type": "string",
+                    "example": "2322"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Sukses verify otp register",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "Success"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "OTP verification successful"
                     }
                   }
                 }
@@ -282,7 +289,7 @@
             }
           },
           "401": {
-            "description": "Tidak ada token",
+            "description": "Gagal verify otp register",
             "content": {
               "application/json": {
                 "schema": {
@@ -294,15 +301,15 @@
                     },
                     "message": {
                       "type": "object",
-                      "example": "Token doesn't exist"
+                      "example": "OTP code has expired"
                     }
                   }
                 }
               }
             }
           },
-          "500": {
-            "description": "Token invalid",
+          "403": {
+            "description": "Gagal verify otp register",
             "content": {
               "application/json": {
                 "schema": {
@@ -310,11 +317,117 @@
                   "properties": {
                     "status": {
                       "type": "string",
-                      "example": "error"
+                      "example": "Failed"
                     },
                     "message": {
                       "type": "object",
-                      "example": "Invalid signature"
+                      "example": "Invalid OTP"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/auth/member/login": {
+      "post": {
+        "tags": ["Auths"],
+        "summary": "Return hasil hit api login untuk member",
+        "description": "ini API untuk login member",
+        "requestBody": {
+          "description": "ini request body untuk sukses login member",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "email": {
+                    "type": "string",
+                    "example": "example@gmail.com"
+                  },
+                  "password": {
+                    "type": "string",
+                    "example": "example123"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Sukses login",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "Success"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Login successful"
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "token": {
+                          "type": "string",
+                          "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwidXNlcm5hbWUiOiJOdXIiLCJyb2xlIjoic3VwZXJhZG1pbiIsImVtYWlsIjoibnVyQGdtYWlsLmNvbSIsImlhdCI6MTY5Nzk0MzE2MX0.Iu5rRqx5lmRodxbdd__YKrevByFPMTcPXBOOd3laZrc"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Gagal login",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "Failed"
+                    },
+                    "message": {
+                      "oneOf": [
+                        {
+                          "type": "object",
+                          "example": "Incorrect password"
+                        },
+                        {
+                          "type": "object",
+                          "example": "User not verified"
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Gagal login",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "Failed"
+                    },
+                    "message": {
+                      "type": "object",
+                      "example": "Email not found"
                     }
                   }
                 }
@@ -338,11 +451,11 @@
                 "properties": {
                   "email": {
                     "type": "string",
-                    "example": "saman@gmail.com"
+                    "example": "adminc8@mail.com"
                   },
                   "password": {
                     "type": "string",
-                    "example": "saman123"
+                    "example": "admin123"
                   }
                 }
               }
@@ -388,165 +501,15 @@
                     },
                     "message": {
                       "type": "object",
-                      "example": "Email or password does not match"
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/auth/member/register": {
-      "post": {
-        "tags": ["Auths"],
-        "summary": "Return hasil hit api register untuk member",
-        "description": "ini API untuk register member",
-        "requestBody": {
-          "description": "ini request body untuk sukses register member",
-          "content": {
-            "application/json": {
-              "schema": {
-                "type": "object",
-                "properties": {
-                  "name": {
-                    "type": "string",
-                    "example": "Rajab"
-                  },
-                  "age": {
-                    "type": "integer",
-                    "example": 20
-                  },
-                  "address": {
-                    "type": "string",
-                    "example": "Balikpapan Utara"
-                  },
-                  "email": {
-                    "type": "string",
-                    "example": "rajab@fulan.com"
-                  },
-                  "password": {
-                    "type": "string",
-                    "example": "rajab123"
-                  }
-                }
-              }
-            }
-          }
-        },
-        "responses": {
-          "201": {
-            "description": "Sukses register",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "status": {
-                      "type": "string",
-                      "example": "Success"
-                    },
-                    "data": {
-                      "type": "object",
-                      "properties": {
-                        "dataValues": {
-                          "type": "object",
-                          "properties": {
-                            "id": {
-                              "type": "integer",
-                              "example": 9
-                            },
-                            "name": {
-                              "type": "string",
-                              "example": "Rajab"
-                            },
-                            "age": {
-                              "type": "integer",
-                              "example": 20
-                            },
-                            "address": {
-                              "type": "string",
-                              "example": "Balikpapan Barat"
-                            },
-                            "role": {
-                              "type": "string",
-                              "example": "member"
-                            },
-                            "updatedAt": {
-                              "type": "string",
-                              "example": "2023-10-21T07:32:00.530Z"
-                            },
-                            "createdAt": {
-                              "type": "string",
-                              "example": "2023-10-21T07:32:00.530Z"
-                            }
-                          }
-                        },
-                        "_previousDataValues": {
-                          "type": "object",
-                          "properties": {
-                            "name": {
-                              "type": "string",
-                              "example": "Rajab"
-                            },
-                            "age": {
-                              "type": "integer",
-                              "example": 20
-                            },
-                            "address": {
-                              "type": "string",
-                              "example": "Balikpapan Barat"
-                            },
-                            "role": {
-                              "type": "string",
-                              "example": "member"
-                            },
-                            "id": {
-                              "type": "integer",
-                              "example": 9
-                            },
-                            "createdAt": {
-                              "type": "string",
-                              "example": "2023-10-21T07:32:00.530Z"
-                            },
-                            "updatedAt": {
-                              "type": "string",
-                              "example": "2023-10-21T07:32:00.530Z"
-                            }
-                          }
-                        },
-                        "uniqno": {
-                          "type": "integer",
-                          "example": 1
-                        },
-                        "_changed": {
-                          "type": "object"
-                        },
-                        "_options": {
-                          "type": "object"
-                        },
-                        "isNewRecord": {
-                          "type": "boolean",
-                          "example": false
-                        },
-                        "email": {
-                          "type": "string",
-                          "example": "rajaba@fulan1232"
-                        },
-                        "password": {
-                          "type": "string",
-                          "example": "$2b$10$iZng5qBHb4UWuJ.ra5hTfeJeVk/zjH0zJOxaT/D8uI6t/jmUkovSa"
-                        }
-                      }
+                      "example": "Unauthorized. Only admin can login"
                     }
                   }
                 }
               }
             }
           },
-          "400": {
-            "description": "Gagal Member login",
+          "404": {
+            "description": "Gagal login admin",
             "content": {
               "application/json": {
                 "schema": {
@@ -558,7 +521,7 @@
                     },
                     "message": {
                       "type": "object",
-                      "example": "Email already taken"
+                      "example": "Email not found"
                     }
                   }
                 }
@@ -568,13 +531,13 @@
         }
       }
     },
-    "/auth/member/login": {
+    "/auth/new-otp": {
       "post": {
         "tags": ["Auths"],
-        "summary": "Return hasil hit api login untuk member",
-        "description": "ini API untuk login member",
+        "summary": "Return hasil hit api untuk send otp ke email",
+        "description": "ini API untuk send otp ke email",
         "requestBody": {
-          "description": "ini request body untuk sukses login member",
+          "description": "ini request body untuk sukses send otp ke email",
           "content": {
             "application/json": {
               "schema": {
@@ -582,11 +545,7 @@
                 "properties": {
                   "email": {
                     "type": "string",
-                    "example": "rajab@fulan.com"
-                  },
-                  "password": {
-                    "type": "string",
-                    "example": "rajab123"
+                    "example": "example@fulan.com"
                   }
                 }
               }
@@ -595,7 +554,7 @@
         },
         "responses": {
           "200": {
-            "description": "Sukses login memeber",
+            "description": "Sukses send otp",
             "content": {
               "application/json": {
                 "schema": {
@@ -608,9 +567,38 @@
                     "data": {
                       "type": "object",
                       "properties": {
-                        "token": {
+                        "newOtpRequest": {
+                          "type": "object",
+                          "properties": {
+                            "id": {
+                              "type": "integer",
+                              "example": 18
+                            },
+                            "code": {
+                              "type": "string",
+                              "example": "$2b$10$KUB5UHvNzjdYDYh3mCH8c.yLZGHxirRYdOk2e5AJzxnYLWBvjy492"
+                            },
+                            "userId": {
+                              "type": "integer",
+                              "example": 16
+                            },
+                            "expiredAt": {
+                              "type": "integer",
+                              "example": 3
+                            },
+                            "updatedAt": {
+                              "type": "string",
+                              "example": "2023-11-28T13:55:53.802Z"
+                            },
+                            "createdAt": {
+                              "type": "string",
+                              "example": "2023-11-28T13:55:53.802Z"
+                            }
+                          }
+                        },
+                        "message": {
                           "type": "string",
-                          "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwidXNlcm5hbWUiOiJOdXIiLCJyb2xlIjoic3VwZXJhZG1pbiIsImVtYWlsIjoibnVyQGdtYWlsLmNvbSIsImlhdCI6MTY5Nzk0MzE2MX0.Iu5rRqx5lmRodxbdd__YKrevByFPMTcPXBOOd3laZrc"
+                          "example": "OTP sent successfully"
                         }
                       }
                     }
@@ -619,8 +607,8 @@
               }
             }
           },
-          "401": {
-            "description": "Gagal login member",
+          "404": {
+            "description": "Gagal send otp",
             "content": {
               "application/json": {
                 "schema": {
@@ -632,7 +620,7 @@
                     },
                     "message": {
                       "type": "object",
-                      "example": "Email or password does not match"
+                      "example": "User not found"
                     }
                   }
                 }
@@ -642,11 +630,282 @@
         }
       }
     },
-    "/auth": {
+    "/auth/forgot-password": {
+      "post": {
+        "tags": ["Auths"],
+        "summary": "Return hasil hit api untuk forgot password and send otp ke email",
+        "description": "ini API untuk untuk forgot password and send otp ke email",
+        "requestBody": {
+          "description": "ini request body untuk sukses forgot password and send otp ke email",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "email": {
+                    "type": "string",
+                    "example": "example@fulan.com"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Sukses send otp",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "Success"
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "newOtpRequest": {
+                          "type": "object",
+                          "properties": {
+                            "id": {
+                              "type": "integer",
+                              "example": 18
+                            },
+                            "code": {
+                              "type": "string",
+                              "example": "$2b$10$KUB5UHvNzjdYDYh3mCH8c.yLZGHxirRYdOk2e5AJzxnYLWBvjy492"
+                            },
+                            "userId": {
+                              "type": "integer",
+                              "example": 16
+                            },
+                            "expiredAt": {
+                              "type": "integer",
+                              "example": 3
+                            },
+                            "updatedAt": {
+                              "type": "string",
+                              "example": "2023-11-28T13:55:53.802Z"
+                            },
+                            "createdAt": {
+                              "type": "string",
+                              "example": "2023-11-28T13:55:53.802Z"
+                            }
+                          }
+                        },
+                        "message": {
+                          "type": "string",
+                          "example": "OTP sent successfully"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Gagal send otp",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "Failed"
+                    },
+                    "message": {
+                      "type": "object",
+                      "example": "User not found"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/auth/forgot-password/{userId}": {
+      "post": {
+        "tags": ["Auths"],
+        "summary": "Return hasil hit api verify otp untuk forgot password",
+        "description": "ini API untuk verify otp forgot password",
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            },
+            "description": "User ID"
+          }
+        ],
+        "requestBody": {
+          "description": "ini request body untuk sukses verify otp forgot password",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "code": {
+                    "type": "string",
+                    "example": "2322"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Sukses verify otp forgot password",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "Success"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "OTP verification successful"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Gagal verify otp register",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "Failed"
+                    },
+                    "message": {
+                      "type": "object",
+                      "example": "OTP code has expired"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Gagal verify otp register",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "Failed"
+                    },
+                    "message": {
+                      "type": "object",
+                      "example": "Invalid OTP"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/auth/reset-password/{userId}": {
+      "patch": {
+        "tags": ["Auths"],
+        "summary": "Return hasil hit api reset password",
+        "description": "ini API untuk verify reset password untuk ganti password",
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            },
+            "description": "User ID"
+          }
+        ],
+        "requestBody": {
+          "description": "ini request body untuk sukses reset password",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "password": {
+                    "type": "string",
+                    "example": "user123"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Sukses reset password",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "Success"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Update Password successful"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Gagal verify otp register",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "Failed"
+                    },
+                    "message": {
+                      "type": "object",
+                      "example": "User not verified"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/auth/me": {
       "get": {
         "tags": ["Auths"],
-        "summary": "Return hasil hit api Check Token",
-        "description": "Ini API untuk check token",
+        "summary": "Return hasil hit api auth me",
+        "description": "Ini API untuk auth me",
         "security": [
           {
             "bearerToken": []
@@ -670,86 +929,29 @@
                         "user": {
                           "type": "object",
                           "properties": {
-                            "id": {
-                              "type": "integer",
-                              "example": 5
-                            },
                             "name": {
                               "type": "string",
-                              "example": "Saman"
+                              "example": "User"
                             },
-                            "age": {
-                              "type": "integer",
-                              "example": 20
-                            },
-                            "role": {
+                            "iamge": {
                               "type": "string",
-                              "example": "admin"
+                              "example": "https://tse2.mm.bing.net/th?id=OIP.U2iQ7wNK6ZzTW_traW_-PQHaHa&pid=Api&P=0&h=180"
                             },
-                            "address": {
+                            "phoneNumber": {
                               "type": "string",
-                              "example": "Tanah Grogot"
+                              "example": "021848104804"
                             },
-                            "createdAt": {
+                            "country": {
                               "type": "string",
-                              "example": "2023-10-22T03:07:09.718Z"
+                              "example": "Indonesia"
                             },
-                            "updatedAt": {
+                            "city": {
                               "type": "string",
-                              "example": "2023-10-22T03:07:09.718Z"
-                            },
-                            "Auth": {
-                              "type": "object",
-                              "properties": {
-                                "id": {
-                                  "type": "integer",
-                                  "example": 5
-                                },
-                                "email": {
-                                  "type": "string",
-                                  "example": "saman@mail.com"
-                                },
-                                "password": {
-                                  "type": "string",
-                                  "example": "$2b$10$vCk0nhoiWCQ78w1vn5pUP.hGttvQ1ZXPWTpmKQYvejERxv.KeYkFa"
-                                },
-                                "userId": {
-                                  "type": "integer",
-                                  "example": 5
-                                },
-                                "createdAt": {
-                                  "type": "string",
-                                  "example": "2023-10-22T03:07:09.727Z"
-                                },
-                                "updatedAt": {
-                                  "type": "string",
-                                  "example": "2023-10-22T03:07:09.727Z"
-                                }
-                              }
+                              "example": "Jakarta"
                             }
                           }
                         }
                       }
-                    }
-                  }
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Tidak ada token",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "status": {
-                      "type": "string",
-                      "example": "Failed"
-                    },
-                    "message": {
-                      "type": "object",
-                      "example": "Token doesn't exist"
                     }
                   }
                 }

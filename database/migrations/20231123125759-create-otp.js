@@ -10,9 +10,13 @@ module.exports = {
         type: Sequelize.INTEGER
       },
       userId: {
-        type: Sequelize.INTEGER
+        type: Sequelize.INTEGER,
       },
-      courseId: {
+      code: {
+        allowNull: false,
+        type: Sequelize.STRING
+      },
+      expiredAt: {
         type: Sequelize.INTEGER
       },
       createdAt: {

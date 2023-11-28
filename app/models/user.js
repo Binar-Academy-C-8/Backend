@@ -9,6 +9,17 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
+      User.hasOne(models.Auth, {
+        foreignKey: {
+          name: 'userId',
+        },
+      });
+
+      User.hasOne(models.OTP, {
+        foreignKey: {
+          name: 'userId',
+        },
+      });
     }
   }
   User.init(
@@ -21,7 +32,11 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.ENUM(['admin', 'member']),
         defaultValue: 'member',
       },
-      image: DataTypes.STRING,
+      image: {
+        type: DataTypes.STRING,
+        defaultValue:
+          'https://tse2.mm.bing.net/th?id=OIP.U2iQ7wNK6ZzTW_traW_-PQHaHa&pid=Api&P=0&h=180',
+      },
     },
     {
       sequelize,
