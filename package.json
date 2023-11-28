@@ -6,6 +6,10 @@
   "scripts": {
     "start": "node -r dotenv/config bin/www",
     "dev": "nodemon -r dotenv/config bin/www",
+    "db:create": "sequelize db:create",
+    "db:migrate": "sequelize db:migrate",
+    "db:seed": "sequelize db:seed:undo:all && sequelize db:seed:all",
+    "db:drop": "sequelize db:drop",
     "lint": "eslint .",
     "fixlint": "eslint . --fix",
     "test": "echo \"Error: no test specified\" && exit 1"
