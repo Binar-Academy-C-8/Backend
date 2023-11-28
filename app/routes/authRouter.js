@@ -3,11 +3,11 @@ const router = require("express").Router();
 const Auth = require("../controller/authController");
 const Otp = require("../controller/OtpConroller");
 const authMe = require("../middlewares/authMe");
-const checkRole = require("../middlewares/checkRole");
+const validateEmail = require('../middlewares/emailValidatorMiddleware');
 
 router.post("/admin/login", Auth.authenticateAdmin);
 
-router.post("/member/register", Auth.register);
+router.post("/member/register", validateEmail, Auth.register);
 router.post("/member/login", Auth.login);
 router.get("/me", authMe, Auth.authenticate);
 
