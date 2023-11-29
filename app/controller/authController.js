@@ -33,22 +33,22 @@ const register = async (req, res, next) => {
 
     const passwordLength = password.length <= 8;
     if (passwordLength) {
-      next(new ApiError('Minimum password must be 8 characters', 400));
+      return next(new ApiError('Minimum password must be 8 characters', 400));
     }
 
     const saltRounds = 10;
     const hashedPassword = bcrypt.hashSync(password, saltRounds);
 
+    const test = await Auth.create({
+      email,
+      password: hashedPassword,
+      userId: newUser.id,
+    });
     const newUser = await User.create({
       name,
       phoneNumber,
       country,
       city,
-    });
-    const test = await Auth.create({
-      email,
-      password: hashedPassword,
-      userId: newUser.id,
     });
 
     const newCode = await generatedOTP();
