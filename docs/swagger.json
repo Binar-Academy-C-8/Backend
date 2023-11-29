@@ -981,7 +981,7 @@
         }
       }
     },
-    "/users/update/{id}": {
+    "/user/update/{id}": {
       "patch": {
         "tags": ["Users"],
         "summary": "Return hasil hit api untuk find user by id",
@@ -1011,15 +1011,19 @@
                 "properties": {
                   "name": {
                     "type": "string",
-                    "example": "Ali Rajab"
+                    "example": "UserUpdate"
                   },
-                  "age": {
-                    "type": "integer",
-                    "example": 20
-                  },
-                  "address": {
+                  "phoneNumber": {
                     "type": "string",
-                    "example": "Penajam"
+                    "example": "03285237854237"
+                  },
+                  "country": {
+                    "type": "string",
+                    "example": "Malaysia"
+                  },
+                  "city": {
+                    "type": "string",
+                    "example": "Kuala Lumpur"
                   }
                 }
               }
