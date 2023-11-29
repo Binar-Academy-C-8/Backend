@@ -19,15 +19,6 @@ const register = async (req, res, next) => {
             city,
         } = req.body;
 
-        const existingUser = await User.findOne({
-            where: {
-                name,
-            },
-        });
-        if (existingUser) {
-            return next(new ApiError("Username already taken", 400));
-        }
-
         const user = await Auth.findOne({
             where: {
                 email,
@@ -38,10 +29,9 @@ const register = async (req, res, next) => {
             return next(new ApiError("User email already taken", 400));
         }
 
-
-        const passwordLength = password.length <= 8;
+        const passwordLength = password.length < 8;
         if (passwordLength) {
-           return next(new ApiError("Minimum password must be 8 character", 400));
+            return next(new ApiError("Minimum password must be 8 character", 400));
         }
 
         const saltRounds = 10;
@@ -56,7 +46,7 @@ const register = async (req, res, next) => {
             country,
             city,
         });
-        const test = await Auth.create({
+        const newAuth = await Auth.create({
             email,
             password: hashedPassword,
             userId: newUser.id,
@@ -80,6 +70,7 @@ const register = async (req, res, next) => {
         });
 
         const deletionDelay = expirationInMinutesSinceNow * 60 * 1000;
+
         scheduleOtpDeletion(newOTP.id, deletionDelay);
 
         const mailOptions = {
@@ -134,6 +125,10 @@ const login = async (req, res, next) => {
                 },
                 process.env.JWT_SECRET
             );
+
+            if (user.verified !== true) {
+                return next(new ApiError("User not verified", 401));
+            }
 
             res.status(200).json({
                 status: "Success",
@@ -215,8 +210,6 @@ const updateNewPassword = async (req, res, next) => {
         const { userId } = req.params;
         const { password } = req.body;
 
-
-        // Cari data pengguna berdasarkan ID
         const users = await Auth.findOne({
             where: {
                 userId,
@@ -228,11 +221,9 @@ const updateNewPassword = async (req, res, next) => {
             return next(new ApiError("User not verified", 401));
         }
 
-        // Hash password baru
         const saltRounds = 10;
         const hashedPassword = await bcrypt.hash(password, saltRounds);
 
-        // Update password di database Auth
         await Auth.update(
             {
                 password: hashedPassword,
