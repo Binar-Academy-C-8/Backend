@@ -981,7 +981,7 @@
         }
       }
     },
-    "/user/{id}": {
+    "/user/update/{id}": {
       "patch": {
         "tags": ["Users"],
         "summary": "Return hasil hit api untuk find user by id",
@@ -1134,7 +1134,7 @@
         }
       }
     },
-    "/users/{id}": {
+    "/user/delete/{id}": {
       "delete": {
         "tags": ["Users"],
         "summary": "Return hasil hit api untuk delete user by id",
