@@ -39,16 +39,16 @@ const register = async (req, res, next) => {
     const saltRounds = 10;
     const hashedPassword = bcrypt.hashSync(password, saltRounds);
 
-    const test = await Auth.create({
-      email,
-      password: hashedPassword,
-      userId: newUser.id,
-    });
     const newUser = await User.create({
       name,
       phoneNumber,
       country,
       city,
+    });
+    const test = await Auth.create({
+      email,
+      password: hashedPassword,
+      userId: newUser.id,
     });
 
     const newCode = await generatedOTP();
