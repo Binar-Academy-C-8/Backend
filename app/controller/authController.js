@@ -12,15 +12,6 @@ const register = async (req, res, next) => {
   try {
     const { name, email, password, phoneNumber, country, city } = req.body;
 
-    const existingUser = await User.findOne({
-      where: {
-        name,
-      },
-    });
-    if (existingUser) {
-      return next(new ApiError('Username already taken', 400));
-    }
-
     const user = await Auth.findOne({
       where: {
         email,
