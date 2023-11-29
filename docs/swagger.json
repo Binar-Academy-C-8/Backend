@@ -1,7 +1,7 @@
 {
   "openapi": "3.0.0",
   "info": {
-    "title": "Final Project",
+    "title": "Documentasi API Belajar",
     "description": "Ini adalah API untuk aplikasi Belajar",
     "version": "1.0.0"
   },
