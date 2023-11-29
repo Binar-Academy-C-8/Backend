@@ -9,6 +9,7 @@
     "db:create": "sequelize db:create",
     "db:migrate": "sequelize db:migrate",
     "db:seed": "sequelize db:seed:undo:all && sequelize db:seed:all",
+    "db:migrate:undo": "sequelize db:migrate:undo:all",
     "db:drop": "sequelize db:drop",
     "lint": "eslint .",
     "fixlint": "eslint . --fix",
