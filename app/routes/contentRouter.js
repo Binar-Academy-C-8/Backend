@@ -6,7 +6,10 @@ const upload = require('../middlewares/uploadVideoFile');
 const checkContentBody = require('../middlewares/checkContentBody');
 
 router.get('/', Content.getContent);
+
 router.get('/:contentId', Content.getContentByid);
+
+router.delete('/deleted/:contentId', Content.deleteContentByid);
 
 router.post(
   '/insert-bylink/:chapterId',
@@ -15,14 +18,14 @@ router.post(
 );
 router.post(
   '/insert-byfile/:chapterId',
-  upload.single('video'),
+  upload.single('fileVideo'),
   checkContentBody,
   Content.insertContentByFile
 );
 
 router.patch(
   '/update-byfile/:chapterId/:contentId',
-  upload.single('video'),
+  upload.single('fileVideo'),
   Content.updateContentByFile
 );
 

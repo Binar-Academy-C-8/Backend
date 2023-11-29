@@ -7,7 +7,6 @@ const imagekit = require('../../lib/imagekit');
 const getContent = async (req, res, next) => {
   try {
     const dataContent = await Content.findAll();
-    console.log(dataContent);
 
     if (dataContent.length < 1) {
       return next(new ApiError('Data content is empty', 404));
@@ -20,7 +19,7 @@ const getContent = async (req, res, next) => {
       },
     });
   } catch (err) {
-    next(new ApiError(err.message, 400));
+    next(new ApiError(err.message, 500));
   }
 };
 
@@ -40,12 +39,13 @@ const getContentByid = async (req, res, next) => {
 
     res.status(200).json({
       status: 'Success',
+      message: 'get all data content succesfull',
       data: {
         dataContent,
       },
     });
   } catch (err) {
-    next(new ApiError(err.message, 400));
+    next(new ApiError(err.message, 500));
   }
 };
 
@@ -64,12 +64,13 @@ const insertContentByLink = async (req, res, next) => {
 
     res.status(200).json({
       status: 'Success',
+      message: 'successfully uploaded content data',
       data: {
         dataContent,
       },
     });
   } catch (err) {
-    next(new ApiError(err.message, 400));
+    next(new ApiError(err.message, 500));
   }
 };
 
@@ -124,7 +125,7 @@ const insertContentByFile = async (req, res, next) => {
       },
     });
   } catch (err) {
-    next(new ApiError(err.message, 400));
+    next(new ApiError(err.message, 500));
   }
 };
 
@@ -150,7 +151,7 @@ const updateContentByFile = async (req, res, next) => {
     //   return next(new ApiError('Chapter data is not found!', 400));
     // }
     if (contentData === null) {
-      return next(new ApiError('content data is not found!', 400));
+      return next(new ApiError('content data is not found!', 404));
     }
 
     if (contentData.dataValues.contentUrl.split('/')[2] === 'ik.imagekit.io') {
@@ -254,11 +255,11 @@ const updateContentByFile = async (req, res, next) => {
       });
     } else {
       return next(
-        new ApiError(`Video with id: ${contentId} not a Imagekit link`, 400)
+        new ApiError(`Video with id: ${contentId} not a Imagekit link`, 403)
       );
     }
   } catch (err) {
-    next(new ApiError(err.message, 400));
+    next(new ApiError(err.message, 500));
   }
 };
 
@@ -283,7 +284,7 @@ const updateContentByLink = async (req, res, next) => {
     //   return next(new ApiError('Chapter data is not found!', 400));
     // }
     if (contentData === null) {
-      return next(new ApiError('content data is not found!', 400));
+      return next(new ApiError('content data is not found!', 404));
     }
 
     if (contentData.dataValues.contentUrl.split('/')[2] === 'youtu.be') {
@@ -312,14 +313,47 @@ const updateContentByLink = async (req, res, next) => {
       });
     } else {
       return next(
-        new ApiError(`Video with id: ${contentId} not a YouTube link`, 400)
+        new ApiError(`Video with id: ${contentId} not a YouTube link`, 403)
       );
     }
   } catch (err) {
-    next(new ApiError(err.message, 400));
+    next(new ApiError(err.message, 500));
   }
 };
 
+const deleteContentByid = async (req, res, next) => {
+  try {
+    const { contentId } = req.params;
+    const contentData = await Content.findOne({
+      where: {
+        id: contentId,
+      },
+    });
+
+    if (contentData === null) {
+      return next(new ApiError('data is not found!', 400));
+    }
+
+    const deletedContent = await Content.destroy({
+      where: {
+        id: contentId,
+      },
+      returning: true,
+    });
+
+    res.status(200).json({
+      status: 'success',
+      message: `Success delete data content with id: ${contentId}`,
+      data: {
+        deleted_content: {
+          deletedContent,
+        },
+      },
+    });
+  } catch (err) {
+    next(new ApiError(err.message, 500));
+  }
+};
 module.exports = {
   getContent,
   getContentByid,
@@ -327,4 +361,5 @@ module.exports = {
   insertContentByFile,
   updateContentByFile,
   updateContentByLink,
+  deleteContentByid,
 };
