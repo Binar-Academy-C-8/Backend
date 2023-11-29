@@ -116,66 +116,6 @@
                 }
               }
             }
-          },
-          "400": {
-            "description": "Jika tidak ada token",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "status": {
-                      "type": "string",
-                      "example": "Failed"
-                    },
-                    "message": {
-                      "type": "string",
-                      "example": "Token not found"
-                    }
-                  }
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Jika token nya tidak valid",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "status": {
-                      "type": "string",
-                      "example": "Failed"
-                    },
-                    "message": {
-                      "type": "string",
-                      "example": "Invalid token"
-                    }
-                  }
-                }
-              }
-            }
-          },
-          "403": {
-            "description": "Jika tidak user tidak memiliki akses (Member)",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "status": {
-                      "type": "string",
-                      "example": "Failed"
-                    },
-                    "message": {
-                      "type": "string",
-                      "example": "Your are not SuperAdmin/Admin. You cant access"
-                    }
-                  }
-                }
-              }
-            }
           }
         }
       }
@@ -240,6 +180,26 @@
                           }
                         }
                       }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Jika id chapter tidak ada",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "Failed"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Id chapter not found"
                     }
                   }
                 }
@@ -439,7 +399,7 @@
             }
           },
           "404": {
-            "description": "Jika id course tidak ada",
+            "description": "Jika id chapter tidak ada",
             "content": {
               "application/json": {
                 "schema": {
@@ -451,7 +411,7 @@
                     },
                     "message": {
                       "type": "string",
-                      "example": "Id course not found"
+                      "example": "Id chapter not found"
                     }
                   }
                 }
@@ -505,7 +465,7 @@
             }
           },
           "404": {
-            "description": "Jika id course tidak ada",
+            "description": "Jika id chapter tidak ada",
             "content": {
               "application/json": {
                 "schema": {
@@ -517,7 +477,7 @@
                     },
                     "message": {
                       "type": "string",
-                      "example": "Id course not found"
+                      "example": "Id chapter not found"
                     }
                   }
                 }
