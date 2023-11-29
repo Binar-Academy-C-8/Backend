@@ -33,7 +33,7 @@
   ],
   "servers": [
     {
-      "url": "http://localhost:9000/api/v1"
+      "url": "backend-production-f9e7.up.railway.app/api/v1"
     }
   ],
   "paths": {
@@ -398,8 +398,16 @@
                       "example": "Failed"
                     },
                     "message": {
-                      "type": "object",
-                      "example": "Incorrect password"
+                      "oneOf": [
+                        {
+                          "type": "object",
+                          "example": "Incorrect password"
+                        },
+                        {
+                          "type": "object",
+                          "example": "User not verified"
+                        }
+                      ]
                     }
                   }
                 }
@@ -443,11 +451,11 @@
                 "properties": {
                   "email": {
                     "type": "string",
-                    "example": "saman@gmail.com"
+                    "example": "adminc8@mail.com"
                   },
                   "password": {
                     "type": "string",
-                    "example": "saman123"
+                    "example": "admin123"
                   }
                 }
               }
@@ -493,7 +501,27 @@
                     },
                     "message": {
                       "type": "object",
-                      "example": "Email or password does not match"
+                      "example": "Unauthorized. Only admin can login"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Gagal login admin",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "Failed"
+                    },
+                    "message": {
+                      "type": "object",
+                      "example": "Email not found"
                     }
                   }
                 }
@@ -503,14 +531,13 @@
         }
       }
     },
-
-    "/auth/login": {
+    "/auth/new-otp": {
       "post": {
         "tags": ["Auths"],
-        "summary": "Return hasil hit api login untuk member",
-        "description": "ini API untuk login member",
+        "summary": "Return hasil hit api untuk send otp ke email",
+        "description": "ini API untuk send otp ke email",
         "requestBody": {
-          "description": "ini request body untuk sukses login member",
+          "description": "ini request body untuk sukses send otp ke email",
           "content": {
             "application/json": {
               "schema": {
@@ -518,11 +545,7 @@
                 "properties": {
                   "email": {
                     "type": "string",
-                    "example": "rajab@fulan.com"
-                  },
-                  "password": {
-                    "type": "string",
-                    "example": "rajab123"
+                    "example": "example@fulan.com"
                   }
                 }
               }
@@ -531,7 +554,7 @@
         },
         "responses": {
           "200": {
-            "description": "Sukses login memeber",
+            "description": "Sukses send otp",
             "content": {
               "application/json": {
                 "schema": {
@@ -544,9 +567,38 @@
                     "data": {
                       "type": "object",
                       "properties": {
-                        "token": {
+                        "newOtpRequest": {
+                          "type": "object",
+                          "properties": {
+                            "id": {
+                              "type": "integer",
+                              "example": 18
+                            },
+                            "code": {
+                              "type": "string",
+                              "example": "$2b$10$KUB5UHvNzjdYDYh3mCH8c.yLZGHxirRYdOk2e5AJzxnYLWBvjy492"
+                            },
+                            "userId": {
+                              "type": "integer",
+                              "example": 16
+                            },
+                            "expiredAt": {
+                              "type": "integer",
+                              "example": 3
+                            },
+                            "updatedAt": {
+                              "type": "string",
+                              "example": "2023-11-28T13:55:53.802Z"
+                            },
+                            "createdAt": {
+                              "type": "string",
+                              "example": "2023-11-28T13:55:53.802Z"
+                            }
+                          }
+                        },
+                        "message": {
                           "type": "string",
-                          "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwidXNlcm5hbWUiOiJOdXIiLCJyb2xlIjoic3VwZXJhZG1pbiIsImVtYWlsIjoibnVyQGdtYWlsLmNvbSIsImlhdCI6MTY5Nzk0MzE2MX0.Iu5rRqx5lmRodxbdd__YKrevByFPMTcPXBOOd3laZrc"
+                          "example": "OTP sent successfully"
                         }
                       }
                     }
@@ -555,8 +607,8 @@
               }
             }
           },
-          "401": {
-            "description": "Gagal login member",
+          "404": {
+            "description": "Gagal send otp",
             "content": {
               "application/json": {
                 "schema": {
@@ -568,7 +620,7 @@
                     },
                     "message": {
                       "type": "object",
-                      "example": "Email or password does not match"
+                      "example": "User not found"
                     }
                   }
                 }
@@ -578,11 +630,282 @@
         }
       }
     },
-    "/auth": {
+    "/auth/forgot-password": {
+      "post": {
+        "tags": ["Auths"],
+        "summary": "Return hasil hit api untuk forgot password and send otp ke email",
+        "description": "ini API untuk untuk forgot password and send otp ke email",
+        "requestBody": {
+          "description": "ini request body untuk sukses forgot password and send otp ke email",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "email": {
+                    "type": "string",
+                    "example": "example@fulan.com"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Sukses send otp",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "Success"
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "newOtpRequest": {
+                          "type": "object",
+                          "properties": {
+                            "id": {
+                              "type": "integer",
+                              "example": 18
+                            },
+                            "code": {
+                              "type": "string",
+                              "example": "$2b$10$KUB5UHvNzjdYDYh3mCH8c.yLZGHxirRYdOk2e5AJzxnYLWBvjy492"
+                            },
+                            "userId": {
+                              "type": "integer",
+                              "example": 16
+                            },
+                            "expiredAt": {
+                              "type": "integer",
+                              "example": 3
+                            },
+                            "updatedAt": {
+                              "type": "string",
+                              "example": "2023-11-28T13:55:53.802Z"
+                            },
+                            "createdAt": {
+                              "type": "string",
+                              "example": "2023-11-28T13:55:53.802Z"
+                            }
+                          }
+                        },
+                        "message": {
+                          "type": "string",
+                          "example": "OTP sent successfully"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Gagal send otp",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "Failed"
+                    },
+                    "message": {
+                      "type": "object",
+                      "example": "User not found"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/auth/forgot-password/{userId}": {
+      "post": {
+        "tags": ["Auths"],
+        "summary": "Return hasil hit api verify otp untuk forgot password",
+        "description": "ini API untuk verify otp forgot password",
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            },
+            "description": "User ID"
+          }
+        ],
+        "requestBody": {
+          "description": "ini request body untuk sukses verify otp forgot password",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "code": {
+                    "type": "string",
+                    "example": "2322"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Sukses verify otp forgot password",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "Success"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "OTP verification successful"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Gagal verify otp register",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "Failed"
+                    },
+                    "message": {
+                      "type": "object",
+                      "example": "OTP code has expired"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Gagal verify otp register",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "Failed"
+                    },
+                    "message": {
+                      "type": "object",
+                      "example": "Invalid OTP"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/auth/reset-password/{userId}": {
+      "patch": {
+        "tags": ["Auths"],
+        "summary": "Return hasil hit api reset password",
+        "description": "ini API untuk verify reset password untuk ganti password",
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            },
+            "description": "User ID"
+          }
+        ],
+        "requestBody": {
+          "description": "ini request body untuk sukses reset password",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "password": {
+                    "type": "string",
+                    "example": "user123"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Sukses reset password",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "Success"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Update Password successful"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Gagal verify otp register",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "Failed"
+                    },
+                    "message": {
+                      "type": "object",
+                      "example": "User not verified"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/auth/me": {
       "get": {
         "tags": ["Auths"],
-        "summary": "Return hasil hit api Check Token",
-        "description": "Ini API untuk check token",
+        "summary": "Return hasil hit api auth me",
+        "description": "Ini API untuk auth me",
         "security": [
           {
             "bearerToken": []
@@ -606,86 +929,29 @@
                         "user": {
                           "type": "object",
                           "properties": {
-                            "id": {
-                              "type": "integer",
-                              "example": 5
-                            },
                             "name": {
                               "type": "string",
-                              "example": "Saman"
+                              "example": "User"
                             },
-                            "age": {
-                              "type": "integer",
-                              "example": 20
-                            },
-                            "role": {
+                            "iamge": {
                               "type": "string",
-                              "example": "admin"
+                              "example": "https://tse2.mm.bing.net/th?id=OIP.U2iQ7wNK6ZzTW_traW_-PQHaHa&pid=Api&P=0&h=180"
                             },
-                            "address": {
+                            "phoneNumber": {
                               "type": "string",
-                              "example": "Tanah Grogot"
+                              "example": "021848104804"
                             },
-                            "createdAt": {
+                            "country": {
                               "type": "string",
-                              "example": "2023-10-22T03:07:09.718Z"
+                              "example": "Indonesia"
                             },
-                            "updatedAt": {
+                            "city": {
                               "type": "string",
-                              "example": "2023-10-22T03:07:09.718Z"
-                            },
-                            "Auth": {
-                              "type": "object",
-                              "properties": {
-                                "id": {
-                                  "type": "integer",
-                                  "example": 5
-                                },
-                                "email": {
-                                  "type": "string",
-                                  "example": "saman@mail.com"
-                                },
-                                "password": {
-                                  "type": "string",
-                                  "example": "$2b$10$vCk0nhoiWCQ78w1vn5pUP.hGttvQ1ZXPWTpmKQYvejERxv.KeYkFa"
-                                },
-                                "userId": {
-                                  "type": "integer",
-                                  "example": 5
-                                },
-                                "createdAt": {
-                                  "type": "string",
-                                  "example": "2023-10-22T03:07:09.727Z"
-                                },
-                                "updatedAt": {
-                                  "type": "string",
-                                  "example": "2023-10-22T03:07:09.727Z"
-                                }
-                              }
+                              "example": "Jakarta"
                             }
                           }
                         }
                       }
-                    }
-                  }
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Tidak ada token",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "status": {
-                      "type": "string",
-                      "example": "Failed"
-                    },
-                    "message": {
-                      "type": "object",
-                      "example": "Token doesn't exist"
                     }
                   }
                 }
