@@ -2170,30 +2170,16 @@
       "post": {
         "tags": ["Category"],
         "summary": "Return hasil hit api category untuk admin",
-        "description": "ini API untuk membuat course",
+        "description": "ini API untuk membuat category",
         "security": [
           {
             "bearerToken": []
           }
         ],
         "requestBody": {
-          "description": "ini request body untuk sukses membuat course",
+          "description": "ini request body untuk sukses membuat category",
+          "required": true,
           "content": {
-            "application/json": {
-              "schema": {
-                "type": "object",
-                "properties": {
-                  "categoryName": {
-                    "type": "string",
-                    "example": "Web Development"
-                  },
-                  "image": {
-                    "type": "string",
-                    "example": "https://ik.imagekit.io/xphqqd3ms/IMG-1701252283386._e2FCryU2W.png?updatedAt=1701252300430"
-                  }
-                }
-              }
-            },
             "multipart/form-data": {
               "schema": {
                 "type": "object",
@@ -2266,7 +2252,7 @@
                     },
                     "message": {
                       "type": "object",
-                      "example": "Token doesn't exist"
+                      "example": "You must log in"
                     }
                   }
                 }
@@ -2314,7 +2300,7 @@
         ],
         "responses": {
           "200": {
-            "description": "Sukses menampilkan course",
+            "description": "Sukses menampilkan category by id",
             "content": {
               "application/json": {
                 "schema": {
@@ -2466,21 +2452,6 @@
         "requestBody": {
           "description": "ini request body untuk sukses update data category",
           "content": {
-            "application/json": {
-              "schema": {
-                "type": "object",
-                "properties": {
-                  "categoryName": {
-                    "type": "string",
-                    "example": "Web Development"
-                  },
-                  "image": {
-                    "type": "string",
-                    "example": "https://ik.imagekit.io/xphqqd3ms/IMG-1701252283386._e2FCryU2W.png?updatedAt=1701252300430"
-                  }
-                }
-              }
-            },
             "multipart/form-data": {
               "schema": {
                 "type": "object",
@@ -2500,7 +2471,7 @@
         },
         "responses": {
           "200": {
-            "description": "Sukses menampilkan course",
+            "description": "Sukses update category",
             "content": {
               "application/json": {
                 "schema": {
