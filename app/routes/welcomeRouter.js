@@ -1,7 +1,7 @@
-const router = require('express').Router();
+// const router = require('express').Router();
 
-const Welcome = require('../controller/welcomController');
+// const Welcome = require('../controller/welcomController');
 
-router.use('/', Welcome.welcome);
+// router.use('/', Welcome.welcome);
 
-module.exports = router;
+// module.exports = router;
