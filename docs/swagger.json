@@ -19,16 +19,20 @@
       "description": "ini API untuk Courses resources"
     },
     {
+      "name": "Category",
+      "description": "ini API untuk Category resources"
+    },
+    {
       "name": "Chapter",
-      "description": "ini API untuk Courses resources"
+      "description": "ini API untuk Chapter resources"
     },
     {
       "name": "Content",
-      "description": "ini API untuk Courses resources"
+      "description": "ini API untuk Content resources"
     },
     {
       "name": "Payment",
-      "description": "ini API untuk Courses resources"
+      "description": "ini API untuk Payment resources"
     }
   ],
   "servers": [
@@ -1966,6 +1970,663 @@
         "responses": {
           "200": {
             "description": "Sukses mengahapus course",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "Success"
+                    },
+                    "message": {
+                      "type": "object",
+                      "example": "Deleted successfully"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "id tidak ditemukan",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "Failed"
+                    },
+                    "message": {
+                      "type": "object",
+                      "example": "Id does not exist"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Tidak ada token",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "Failed"
+                    },
+                    "message": {
+                      "type": "object",
+                      "example": "Token doesn't exist"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Token invalid",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "error"
+                    },
+                    "message": {
+                      "type": "object",
+                      "example": "Invalid signature"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/category": {
+      "get": {
+        "tags": ["Category"],
+        "summary": "Return hasil hit api category untuk user",
+        "description": "ini API untuk melihat semua category",
+        "responses": {
+          "200": {
+            "description": "Sukses category",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "Success"
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "id": {
+                          "type": "integer",
+                          "example": 1
+                        },
+                        "categoryName": {
+                          "type": "string",
+                          "example": "Web Development"
+                        },
+                        "image": {
+                          "type": "string",
+                          "example": "https://ik.imagekit.io/xphqqd3ms/IMG-1701001286390.__S0maB0Ji.png"
+                        },
+                        "updatedAt": {
+                          "type": "string",
+                          "example": "2023-11-28T06:25:24.446Z"
+                        },
+                        "createdAt": {
+                          "type": "string",
+                          "example": "2023-11-28T06:25:24.446Z"
+                        },
+                        "Courses": {
+                          "type": "object",
+                          "properties": {
+                            "id": {
+                              "type": "integer",
+                              "example": 1
+                            },
+                            "courseCode": {
+                              "type": "string",
+                              "example": "uiux123"
+                            },
+                            "courseName": {
+                              "type": "string",
+                              "example": "Binar Beginner UI/UX "
+                            },
+                            "courseType": {
+                              "type": "string",
+                              "example": "free"
+                            },
+                            "courseLevel": {
+                              "type": "string",
+                              "example": "beginner"
+                            },
+                            "aboutCourse": {
+                              "type": "string",
+                              "example": "UI/UX course for beginner"
+                            },
+                            "intendedFor": {
+                              "type": "string",
+                              "example": "For beginner who want to be Profesional"
+                            },
+                            "courseStatus": {
+                              "type": "string",
+                              "example": "inProgress"
+                            },
+                            "categoryId": {
+                              "type": "integer",
+                              "example": "1"
+                            },
+                            "image": {
+                              "type": "string",
+                              "example": "https://ik.imagekit.io/xphqqd3ms/IMG-1701252283386._e2FCryU2W.png?updatedAt=1701252300430"
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Error dari server",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "Failed"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Internal server error"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/category/create": {
+      "post": {
+        "tags": ["Category"],
+        "summary": "Return hasil hit api category untuk admin",
+        "description": "ini API untuk membuat course",
+        "security": [
+          {
+            "bearerToken": []
+          }
+        ],
+        "requestBody": {
+          "description": "ini request body untuk sukses membuat course",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "categoryName": {
+                    "type": "string",
+                    "example": "Web Development"
+                  },
+                  "image": {
+                    "type": "string",
+                    "example": "https://ik.imagekit.io/xphqqd3ms/IMG-1701252283386._e2FCryU2W.png?updatedAt=1701252300430"
+                  }
+                }
+              }
+            },
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "categoryName": {
+                    "type": "string",
+                    "example": "Web Development"
+                  },
+                  "image": {
+                    "type": "string",
+                    "format": "binary"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Sukses membuat category",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "Success"
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "id": {
+                          "type": "integer",
+                          "example": 1
+                        },
+                        "categoryName": {
+                          "type": "string",
+                          "example": "Web Development"
+                        },
+                        "image": {
+                          "type": "string",
+                          "example": "https://ik.imagekit.io/xphqqd3ms/IMG-1701001286390.__S0maB0Ji.png"
+                        },
+                        "updatedAt": {
+                          "type": "string",
+                          "example": "2023-11-28T06:25:24.446Z"
+                        },
+                        "createdAt": {
+                          "type": "string",
+                          "example": "2023-11-28T06:25:24.446Z"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Tidak ada token",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "Failed"
+                    },
+                    "message": {
+                      "type": "object",
+                      "example": "Token doesn't exist"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Error from server",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "Failed"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Internal server error"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/category/{id}": {
+      "get": {
+        "tags": ["Category"],
+        "summary": "Return hasil hit api category untuk mendapatkan data satu category by id",
+        "description": "ini API untuk melihat semua category",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            },
+            "description": "category id"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Sukses menampilkan course",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "Success"
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "id": {
+                          "type": "integer",
+                          "example": 1
+                        },
+                        "categoryName": {
+                          "type": "string",
+                          "example": "Web Development"
+                        },
+                        "image": {
+                          "type": "string",
+                          "example": "https://ik.imagekit.io/xphqqd3ms/IMG-1701001286390.__S0maB0Ji.png"
+                        },
+                        "updatedAt": {
+                          "type": "string",
+                          "example": "2023-11-28T06:25:24.446Z"
+                        },
+                        "createdAt": {
+                          "type": "string",
+                          "example": "2023-11-28T06:25:24.446Z"
+                        },
+                        "Courses": {
+                          "type": "object",
+                          "properties": {
+                            "id": {
+                              "type": "integer",
+                              "example": 1
+                            },
+                            "courseCode": {
+                              "type": "string",
+                              "example": "uiux123"
+                            },
+                            "courseName": {
+                              "type": "string",
+                              "example": "Binar Beginner UI/UX "
+                            },
+                            "courseType": {
+                              "type": "string",
+                              "example": "free"
+                            },
+                            "courseLevel": {
+                              "type": "string",
+                              "example": "beginner"
+                            },
+                            "aboutCourse": {
+                              "type": "string",
+                              "example": "UI/UX course for beginner"
+                            },
+                            "intendedFor": {
+                              "type": "string",
+                              "example": "For beginner who want to be Profesional"
+                            },
+                            "courseStatus": {
+                              "type": "string",
+                              "example": "inProgress"
+                            },
+                            "categoryId": {
+                              "type": "integer",
+                              "example": "1"
+                            },
+                            "image": {
+                              "type": "string",
+                              "example": "https://ik.imagekit.io/xphqqd3ms/IMG-1701252283386._e2FCryU2W.png?updatedAt=1701252300430"
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Category tidak ada",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "Failed"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Category not found"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Category tidak ada",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "Failed"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Internal server error"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/category/update/{id}": {
+      "patch": {
+        "tags": ["Category"],
+        "summary": "Return hasil hit api untuk mengupdate data category by id",
+        "description": "ini API untuk mengupdate category berdasarkan id",
+        "security": [
+          {
+            "bearerToken": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            },
+            "description": "id for category"
+          }
+        ],
+        "requestBody": {
+          "description": "ini request body untuk sukses update data category",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "categoryName": {
+                    "type": "string",
+                    "example": "Web Development"
+                  },
+                  "image": {
+                    "type": "string",
+                    "example": "https://ik.imagekit.io/xphqqd3ms/IMG-1701252283386._e2FCryU2W.png?updatedAt=1701252300430"
+                  }
+                }
+              }
+            },
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "categoryName": {
+                    "type": "string",
+                    "example": "Web Development"
+                  },
+                  "image": {
+                    "type": "string",
+                    "format": "binary"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Sukses menampilkan course",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "Success"
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "id": {
+                          "type": "integer",
+                          "example": 1
+                        },
+                        "categoryName": {
+                          "type": "string",
+                          "example": "Web Development"
+                        },
+                        "image": {
+                          "type": "string",
+                          "example": "https://ik.imagekit.io/xphqqd3ms/IMG-1701252283386._e2FCryU2W.png?updatedAt=1701252300430"
+                        },
+                        "updatedAt": {
+                          "type": "string",
+                          "example": "2023-11-28T06:25:24.446Z"
+                        },
+                        "createdAt": {
+                          "type": "string",
+                          "example": "2023-11-28T06:25:24.446Z"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Tidak ada token",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "Failed"
+                    },
+                    "message": {
+                      "type": "object",
+                      "example": "Token doesn't exist"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Category tidak ada",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "Failed"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "category not found"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Error dari server",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "Failed"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Internal server error"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/category/delete/{id}": {
+      "delete": {
+        "tags": ["Category"],
+        "summary": "Return hasil hit api untuk delete category by id",
+        "description": "ini API untuk menghapus category berdasarkan id",
+        "security": [
+          {
+            "bearerToken": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            },
+            "description": "id for category"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Sukses mengahapus category",
             "content": {
               "application/json": {
                 "schema": {

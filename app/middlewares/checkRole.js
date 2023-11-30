@@ -5,7 +5,7 @@ const checkRole = (roles) => {
         if (!roles.includes(req.user.role)) {
             return next(
                 new ApiError(
-                    `kamu bukan ${roles.toString()} jadi tidak bisa akses`,
+                    `You are not ${roles.toString()}, so you do not have access.`,
                     401
                 )
             );

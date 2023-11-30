@@ -22,9 +22,9 @@ const register = async (req, res, next) => {
             return next(new ApiError("User email already taken", 400));
         }
 
-        const passwordLength = password.length <= 8;
+        const passwordLength = password.length < 8;
         if (passwordLength) {
-            next(new ApiError('Minimum password must be 8 characters', 400));
+            return next(new ApiError('Minimum password must be 8 characters', 400));
         }
 
         const saltRounds = 10;
