@@ -2528,6 +2528,565 @@
           }
         }
       }
+    },
+    "/content": {
+      "get": {
+        "tags": ["Content"],
+        "summary": "Return hasil hit api untuk semua data content",
+        "description": "ini API untuk mengambil semua data content",
+        "security": [
+          {
+            "bearerToken": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Sukses menampilkan data content",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "Success"
+                    },
+                    "message": {
+                      "type": "object",
+                      "example": "get all data content succesfull"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Data content kosong di database",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "Failed"
+                    },
+                    "message": {
+                      "type": "object",
+                      "example": "Data content is empty"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/content/{contentId}": {
+      "get": {
+        "tags": ["Content"],
+        "summary": "Return hasil hit api data content dengan id",
+        "description": "ini API untuk mengambil data content dengan id",
+        "parameters": [
+          {
+            "name": "contentId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            },
+            "description": "Content ID"
+          }
+        ],
+        "security": [
+          {
+            "bearerToken": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Sukses menampilkan data content dengan id",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "Success"
+                    },
+                    "message": {
+                      "type": "object",
+                      "example": "Get data content by id succesfull "
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Data content dengan id tidak ditemukan",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "Failed"
+                    },
+                    "message": {
+                      "type": "object",
+                      "example": "Data content with id is empty"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/content/insert-bylink/{chapterId}": {
+      "post": {
+        "tags": ["Content"],
+        "summary": "Return  upload content dengan link",
+        "description": "ini API untuk upload content dengan link",
+        "parameters": [
+          {
+            "name": "chapterId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            },
+            "description": "Chapter ID"
+          }
+        ],
+        "security": [
+          {
+            "bearerToken": []
+          }
+        ],
+        "requestBody": {
+          "description": "ini request body untuk sukses upload content dengan link",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "contentTitle": {
+                    "type": "string",
+                    "example": "Belajar1"
+                  },
+                  "contentUrl": {
+                    "type": "string",
+                    "example": "https://youtu.be/ixOd42SEUF0"
+                  },
+                  "videoDuration": {
+                    "type": "string",
+                    "example": "02.36"
+                  },
+                  "status": {
+                    "type": "boolean",
+                    "example": true
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Sukses menambahkan data content dengan link video",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "Success"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "successfully uploaded content data"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/content/insert-byfile/{chapterId}": {
+      "post": {
+        "tags": ["Content"],
+        "summary": "Return  upload content dengan file",
+        "description": "ini API untuk upload content dengan file",
+        "parameters": [
+          {
+            "name": "chapterId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            },
+            "description": "Chapter ID"
+          }
+        ],
+        "security": [
+          {
+            "bearerToken": []
+          }
+        ],
+        "requestBody": {
+          "description": "ini request body untuk sukses upload content dengan file",
+          "required": true,
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "fileVideo": {
+                    "type": "string",
+                    "format": "binary"
+                  },
+                  "contentTitle": {
+                    "type": "string"
+                  },
+                  "status": {
+                    "type": "boolean",
+                    "example": true
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Sukses menambahkan data content dengan file video",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "Success"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "successfully uploaded content data"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/content/update-bylink/{chapterId}/{contentId}": {
+      "patch": {
+        "tags": ["Content"],
+        "summary": "Return  update content dengan link",
+        "description": "ini API untuk update content dengan link",
+        "parameters": [
+          {
+            "name": "chapterId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            },
+            "description": "Chapter ID"
+          },
+          {
+            "name": "contentId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            },
+            "description": "Content ID"
+          }
+        ],
+        "security": [
+          {
+            "bearerToken": []
+          }
+        ],
+        "requestBody": {
+          "description": "ini request body untuk sukses update content dengan link",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "contentTitle": {
+                    "type": "string",
+                    "example": "Belajar2"
+                  },
+                  "contentUrl": {
+                    "type": "string",
+                    "example": "https://youtu.be/DwTkyMJi890"
+                  },
+                  "status": {
+                    "type": "boolean",
+                    "example": true
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Sukses update data content dengan link video",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "Success"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "successfully uploaded content data"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Data content dengan id tidak ditemukan",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "Failed"
+                    },
+                    "message": {
+                      "type": "object",
+                      "example": "Data content with id is empty"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Tipe konten harus link ",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "Failed"
+                    },
+                    "message": {
+                      "type": "object",
+                      "example": "Video  not a YouTube link"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/content/update-byfile/{chapterId}/{contentId}": {
+      "patch": {
+        "tags": ["Content"],
+        "summary": "Return  update content dengan file",
+        "description": "ini API untuk update content dengan file",
+        "parameters": [
+          {
+            "name": "chapterId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            },
+            "description": "Chapter ID"
+          },
+          {
+            "name": "contentId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            },
+            "description": "Content ID"
+          }
+        ],
+        "security": [
+          {
+            "bearerToken": []
+          }
+        ],
+        "requestBody": {
+          "description": "ini request body untuk sukses update content dengan file",
+          "required": true,
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "fileVideo": {
+                    "type": "string",
+                    "format": "binary"
+                  },
+                  "contentTitle": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Sukses update data content dengan file video",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "Success"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "successfully updated content data"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Data content dengan id tidak ditemukan",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "Failed"
+                    },
+                    "message": {
+                      "type": "object",
+                      "example": "Data content with id is empty"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Tipe konten harus file ",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "Failed"
+                    },
+                    "message": {
+                      "type": "object",
+                      "example": "Video not a Imagekit link"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/content/deleted/{contentId}": {
+      "delete": {
+        "tags": ["Content"],
+        "summary": "Return  delete content ",
+        "description": "ini API untuk delete content",
+        "parameters": [
+          {
+            "name": "contentId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            },
+            "description": "Content ID"
+          }
+        ],
+        "security": [
+          {
+            "bearerToken": []
+          }
+        ],
+
+        "responses": {
+          "200": {
+            "description": "Pesan jika sukses delete data content",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "Success"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "successfully delete content data"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Pesan ditampilkan jika data content dengan id tidak ditemukan",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "Failed"
+                    },
+                    "message": {
+                      "type": "object",
+                      "example": "Data content with id is empty"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
     }
   },
   "components": {
