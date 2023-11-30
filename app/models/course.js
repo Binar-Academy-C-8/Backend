@@ -9,9 +9,15 @@ This method is not a part of Sequelize lifecycle.
 The models/index file will call this method automatically.*/
     static associate(models) {
       // define association here
-      this.belongsTo(models.Category, {
+      Course.belongsTo(models.Category, {
         foreignKey: {
           name: 'categoryId',
+          allowNull: false,
+        },
+      })
+      Course.hasMany(models.Chapter, {
+        foreignKey: {
+          name: 'courseId',
           allowNull: false,
         },
       })
