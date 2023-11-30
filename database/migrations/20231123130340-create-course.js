@@ -1,4 +1,4 @@
-'use strict';
+'use strict'
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
@@ -9,7 +9,7 @@ module.exports = {
         primaryKey: true,
         type: Sequelize.INTEGER,
       },
-      codeCourse: {
+      courseCode: {
         type: Sequelize.STRING,
       },
       courseName: {
@@ -19,22 +19,19 @@ module.exports = {
         type: Sequelize.STRING,
       },
       courseType: {
-        type: Sequelize.ENUM(['Free', 'Premium']),
+        type: Sequelize.ENUM(['free', 'premium']),
       },
       courseLevel: {
-        type: Sequelize.ENUM(['Beginner', 'Intermediate', 'Advenced']),
+        type: Sequelize.ENUM(['beginner', 'intermediate', 'advance']),
       },
       aboutCourse: {
         type: Sequelize.STRING,
       },
-      perpouseCourse: {
+      intendedFor: {
         type: Sequelize.STRING,
       },
-      statusCourse: {
-        type: Sequelize.ENUM(['InProgress', 'Complete']),
-      },
-      progressBar: {
-        type: Sequelize.FLOAT,
+      courseStatus: {
+        type: Sequelize.ENUM(['inProgress', 'completed']),
       },
       categoryId: {
         type: Sequelize.INTEGER,
@@ -47,9 +44,9 @@ module.exports = {
         allowNull: false,
         type: Sequelize.DATE,
       },
-    });
+    })
   },
   async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable('Courses');
+    await queryInterface.dropTable('Courses')
   },
-};
+}

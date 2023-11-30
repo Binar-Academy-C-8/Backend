@@ -1,11 +1,11 @@
-'use strict';
+'use strict'
 
-const { User } = require('../../app/models');
+const { User } = require('../../app/models')
 
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.bulkInsert('Category', [
+    await queryInterface.bulkInsert('Categories', [
       {
         categoryName: 'UI/UX Design',
         createdAt: new Date(),
@@ -31,10 +31,10 @@ module.exports = {
         createdAt: new Date(),
         updatedAt: new Date(),
       },
-    ]);
+    ])
   },
 
   async down(queryInterface, Sequelize) {
-    await queryInterface.bulkDelete('Category', null, {});
+    await queryInterface.bulkDelete('Categories', null, {})
   },
-};
+}
