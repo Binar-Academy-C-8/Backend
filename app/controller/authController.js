@@ -9,15 +9,8 @@ const ApiError = require('../../utils/apiError');
 const scheduleOtpDeletion = require('../../utils/scheduleDeletion');
 
 const register = async (req, res, next) => {
-    try {
-        const {
-            name,
-            email,
-            password,
-            phoneNumber,
-            country,
-            city,
-        } = req.body;
+  try {
+    const { name, email, password, phoneNumber, country, city } = req.body;
 
         const user = await Auth.findOne({
             where: {
@@ -30,10 +23,10 @@ const register = async (req, res, next) => {
         }
 
 
-        const passwordLength = password.length <= 8;
-        if (passwordLength) {
-            return next(new ApiError("Minimum password must be 8 character", 400));
-        }
+    const passwordLength = password.length <= 8;
+    if (passwordLength) {
+      next(new ApiError('Minimum password must be 8 characters', 400));
+    }
 
         const saltRounds = 10;
         const hashedPassword = bcrypt.hashSync(password, saltRounds);

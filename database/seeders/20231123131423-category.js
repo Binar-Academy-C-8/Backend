@@ -1,6 +1,6 @@
-'use strict';
+'use strict'
 
-const { User } = require('../../app/models');
+const { User } = require('../../app/models')
 
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
@@ -31,10 +31,10 @@ module.exports = {
         createdAt: new Date(),
         updatedAt: new Date(),
       },
-    ]);
+    ])
   },
 
   async down(queryInterface, Sequelize) {
-    await queryInterface.bulkDelete('Categories', null, {});
+    await queryInterface.bulkDelete('Categories', null, {})
   },
-};
+}
