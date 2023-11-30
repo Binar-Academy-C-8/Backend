@@ -4,16 +4,19 @@ const swaggerDocument = require('../../docs/swagger.json')
 
 router.use('/api-docs', swaggerUI.serve)
 router.use('/api-docs', swaggerUI.setup(swaggerDocument))
+
 const Welcome = require('./welcomeRouter')
 const Auth = require('./authRouter')
 const User = require('./userRouter')
 const Courses = require('./courseRouter')
 const Chapter = require('./chapterRouter')
+const Content = require('./contentRouter')
 
 router.use('/welcome', Welcome)
 router.use('/api/v1/auth', Auth)
 router.use('/api/v1/user', User)
 router.use('/api/v1/course', Courses)
 router.use('/api/v1/chapter', Chapter)
+router.use('/api/v1/content', Content)
 
 module.exports = router
