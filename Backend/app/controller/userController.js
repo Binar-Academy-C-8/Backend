@@ -3,6 +3,7 @@ const ApiError = require('../../utils/apiError')
 const Sequelize = require('sequelize')
 const Op = Sequelize.Op
 
+// update User
 const updateUser = async (req, res, next) => {
   const { name, phoneNumber, country, city, image } = req.body
 
