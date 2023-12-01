@@ -507,8 +507,16 @@
                       "example": "Failed"
                     },
                     "message": {
-                      "type": "object",
-                      "example": "Unauthorized. Only admin can login"
+                      "oneOf": [
+                        {
+                          "type": "object",
+                          "example": "Unauthorized. Only admin can login"
+                        },
+                        {
+                          "type": "object",
+                          "example": "Incorrect password"
+                        }
+                      ]
                     }
                   }
                 }
