@@ -507,8 +507,16 @@
                       "example": "Failed"
                     },
                     "message": {
-                      "type": "object",
-                      "example": "Unauthorized. Only admin can login"
+                      "oneOf": [
+                        {
+                          "type": "object",
+                          "example": "Unauthorized. Only admin can login"
+                        },
+                        {
+                          "type": "object",
+                          "example": "Incorrect password"
+                        }
+                      ]
                     }
                   }
                 }
@@ -3384,7 +3392,8 @@
                 "properties": {
                   "fileVideo": {
                     "type": "string",
-                    "format": "binary"
+                    "format": "binary",
+                    "description": "Insert video file"
                   },
                   "contentTitle": {
                     "type": "string"
@@ -3580,7 +3589,8 @@
                 "properties": {
                   "fileVideo": {
                     "type": "string",
-                    "format": "binary"
+                    "format": "binary",
+                    "description": "Update video file"
                   },
                   "contentTitle": {
                     "type": "string"
