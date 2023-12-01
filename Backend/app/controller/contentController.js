@@ -82,7 +82,16 @@ const insertContentByFile = async (req, res, next) => {
     const { chapterId } = req.params
     const videoBuffer = req.file.buffer
     const video = req.file
-    console.log(contentTitle)
+
+    const chapterData = await Chapter.findOne({
+      where: {
+        id: chapterId,
+      },
+    })
+
+    if (chapterData === null) {
+      return next(new ApiError('Chapter data is not found!', 404))
+    }
 
     const timeScale = videoBuffer.readUInt32BE(
       videoBuffer.indexOf(Buffer.from('mvhd')) + 16

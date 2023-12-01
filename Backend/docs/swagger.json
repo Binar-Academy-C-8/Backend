@@ -3384,7 +3384,8 @@
                 "properties": {
                   "fileVideo": {
                     "type": "string",
-                    "format": "binary"
+                    "format": "binary",
+                    "description": "Insert video file"
                   },
                   "contentTitle": {
                     "type": "string"
@@ -3580,7 +3581,8 @@
                 "properties": {
                   "fileVideo": {
                     "type": "string",
-                    "format": "binary"
+                    "format": "binary",
+                    "description": "Update video file"
                   },
                   "contentTitle": {
                     "type": "string"
