@@ -15,6 +15,12 @@ The models/index file will call this method automatically.*/
           allowNull: false,
         },
       })
+      this.hasMany(models.Transaction, {
+        foreignKey: {
+          name: 'courseId',
+          allowNull: false,
+        },
+      })
     }
   }
   Course.init(

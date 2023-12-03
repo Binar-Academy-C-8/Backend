@@ -12,6 +12,7 @@ const Courses = require('./courseRouter')
 const Chapter = require('./chapterRouter')
 const Content = require('./contentRouter')
 const category = require('./categoryRouter')
+const transaction = require('./transactionRouter')
 
 router.use('/api/v1/auth', Auth)
 router.use('/api/v1/user', User)
@@ -19,6 +20,7 @@ router.use('/api/v1/course', Courses)
 router.use('/api/v1/chapter', Chapter)
 router.use('/api/v1/content', Content)
 router.use('/api/v1/category', category)
+router.use('/api/v1/transaction', transaction)
 router.use('/', Welcome.welcome)
 
 module.exports = router

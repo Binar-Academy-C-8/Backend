@@ -9,6 +9,9 @@ module.exports = {
         primaryKey: true,
         type: Sequelize.INTEGER,
       },
+      courseName: {
+        type: Sequelize.STRING
+      },
       ppn: {
         type: Sequelize.FLOAT,
       },
