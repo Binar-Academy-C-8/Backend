@@ -1344,9 +1344,47 @@
         "tags": ["Course"],
         "summary": "Return hasil hit api course untuk user",
         "description": "ini API untuk melihat semua course",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "search",
+            "schema": { "type": "string", "example": "binar" },
+            "description": "query ini digunakan untuk mencari course berdasarkan nama course"
+          },
+          {
+            "in": "query",
+            "name": "category",
+            "schema": { "type": "integer", "example": 1 },
+            "description": "query ini digunakan untuk mencari course berdasarkan kode kategori course, untuk keterangan nama kategori bedasarkan id bisa dilihat pada endpoint category"
+          },
+          {
+            "in": "query",
+            "name": "level",
+            "schema": { "type": "string", "example": "beginner" },
+            "description": "query ini digunakan untuk mencari course berdasarkan level kesulitan course"
+          },
+          {
+            "in": "query",
+            "name": "type",
+            "schema": { "type": "string", "example": "free" },
+            "description": "query ini digunakan untuk mencari course berdasarkan tipe course"
+          },
+          {
+            "in": "query",
+            "name": "sort_by",
+            "schema": { "type": "string", "example": "createdAt" },
+            "description": "query ini digunakan untuk pengurutan course berdasarkan kolom data course yang dipilih, query order_by juga dibutuhkan agar operasi pengurutan berjalan lancar"
+          },
+          {
+            "in": "query",
+            "name": "order_by",
+            "schema": { "type": "string", "example": "asc" },
+            "description": "query ini digunakan untuk mencari course berdasarkan urutan keatas atau kebawah dan hanya menerima parameter asc dan desc, query sort_by juga dibutuhkan agar operasi pengurutan berjalan lancar, query ini bersifat case insensitive"
+          }
+        ],
         "responses": {
           "200": {
-            "description": "Sukses course",
+            "description": "success find all course",
             "content": {
               "application/json": {
                 "schema": {
@@ -1367,13 +1405,21 @@
                           "type": "string",
                           "example": "uiux123"
                         },
+                        "categoryId": {
+                          "type": "integer",
+                          "example": "1"
+                        },
+                        "userId": {
+                          "type": "integer",
+                          "example": 1
+                        },
                         "courseName": {
                           "type": "string",
-                          "example": "Build REST API with Java Spring"
+                          "example": "UI/UX is easy"
                         },
                         "image": {
                           "type": "string",
-                          "example": "https://ik.imagekit.io/xphqqd3ms/IMG-1701001286390.__S0maB0Ji.png"
+                          "example": "https://ik.imagekit.io/xphqqd3ms/UIUX.png?updatedAt=1701519810278"
                         },
                         "courseType": {
                           "type": "string",
@@ -1387,9 +1433,13 @@
                           "type": "string",
                           "example": "free"
                         },
-                        "categoryId": {
-                          "type": "integer",
-                          "example": "1"
+                        "intendedFor": {
+                          "type": "string",
+                          "example": "For beginner who want to be Profesional"
+                        },
+                        "coursePrice": {
+                          "type": "float",
+                          "example": 0
                         },
                         "updatedAt": {
                           "type": "string",
@@ -1400,25 +1450,20 @@
                           "example": "2023-11-28T06:25:24.446Z"
                         },
                         "Category": {
-                          "type": "object",
-                          "properties": {
-                            "id": {
-                              "type": "integer",
-                              "example": "1"
-                            },
-                            "categoryName": {
-                              "type": "string",
-                              "example": "UI/UX Design"
-                            },
-                            "updatedAt": {
-                              "type": "string",
-                              "example": "2023-11-28T06:25:24.446Z"
-                            },
-                            "createdAt": {
-                              "type": "string",
-                              "example": "2023-11-28T06:25:24.446Z"
-                            }
-                          }
+                          "type": "string",
+                          "example": "UI/UX Design"
+                        },
+                        "courseBy": {
+                          "type": "string",
+                          "example": "adminc8"
+                        },
+                        "durationPerCourseInMinutes": {
+                          "type": "integer",
+                          "example": 5
+                        },
+                        "modulePerCourse": {
+                          "type": "integer",
+                          "example": 3
                         }
                       }
                     }
@@ -1427,8 +1472,28 @@
               }
             }
           },
+          "400": {
+            "description": "bad request from user",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "Failed"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "please fill order_by query parameter with asc or desc"
+                    }
+                  }
+                }
+              }
+            }
+          },
           "500": {
-            "description": "Error dari server",
+            "description": "error from server",
             "content": {
               "application/json": {
                 "schema": {
@@ -1479,6 +1544,10 @@
                     "type": "string",
                     "example": "free"
                   },
+                  "coursePrice": {
+                    "type": "float",
+                    "example": 0
+                  },
                   "courseLevel": {
                     "type": "string",
                     "example": "beginner"
@@ -1521,6 +1590,10 @@
                   "courseType": {
                     "type": "string",
                     "example": "free"
+                  },
+                  "coursePrice": {
+                    "type": "float",
+                    "example": "0"
                   },
                   "courseLevel": {
                     "type": "string",
@@ -1613,6 +1686,26 @@
               }
             }
           },
+          "400": {
+            "description": "Ada field yang wajib diisi",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "Failed"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "fieldName cannot be null"
+                    }
+                  }
+                }
+              }
+            }
+          },
           "401": {
             "description": "Tidak ada token",
             "content": {
@@ -1695,13 +1788,21 @@
                           "type": "string",
                           "example": "uiux123"
                         },
+                        "categoryId": {
+                          "type": "integer",
+                          "example": "1"
+                        },
+                        "userId": {
+                          "type": "integer",
+                          "example": 1
+                        },
                         "courseName": {
                           "type": "string",
-                          "example": "Build REST API with Java Spring"
+                          "example": "UI/UX is easy"
                         },
                         "image": {
                           "type": "string",
-                          "example": "https://ik.imagekit.io/xphqqd3ms/IMG-1701001286390.__S0maB0Ji.png"
+                          "example": "https://ik.imagekit.io/xphqqd3ms/UIUX.png?updatedAt=1701519810278"
                         },
                         "courseType": {
                           "type": "string",
@@ -1715,9 +1816,13 @@
                           "type": "string",
                           "example": "free"
                         },
-                        "categoryId": {
-                          "type": "integer",
-                          "example": "1"
+                        "intendedFor": {
+                          "type": "string",
+                          "example": "For beginner who want to be Profesional"
+                        },
+                        "coursePrice": {
+                          "type": "float",
+                          "example": 0
                         },
                         "updatedAt": {
                           "type": "string",
@@ -1728,25 +1833,89 @@
                           "example": "2023-11-28T06:25:24.446Z"
                         },
                         "Category": {
-                          "type": "object",
-                          "properties": {
-                            "id": {
-                              "type": "integer",
-                              "example": "1"
-                            },
-                            "categoryName": {
-                              "type": "string",
-                              "example": "UI/UX Design"
-                            },
-                            "updatedAt": {
-                              "type": "string",
-                              "example": "2023-11-28T06:25:24.446Z"
-                            },
-                            "createdAt": {
-                              "type": "string",
-                              "example": "2023-11-28T06:25:24.446Z"
+                          "type": "string",
+                          "example": "UI/UX Design"
+                        },
+                        "courseBy": {
+                          "type": "string",
+                          "example": "adminc8"
+                        },
+                        "Chapters": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "id": {
+                                "type": "integer",
+                                "example": 1
+                              },
+                              "chapterTitle": {
+                                "type": "string",
+                                "example": "Pendahuluan"
+                              },
+                              "courseId": {
+                                "type": "integer",
+                                "example": 1
+                              },
+                              "updatedAt": {
+                                "type": "string",
+                                "example": "2023-11-28T06:25:24.446Z"
+                              },
+                              "createdAt": {
+                                "type": "string",
+                                "example": "2023-11-28T06:25:24.446Z"
+                              },
+                              "Contents": {
+                                "type": "array",
+                                "items": {
+                                  "type": "object",
+                                  "properties": {
+                                    "id": {
+                                      "type": "integer",
+                                      "example": 1
+                                    },
+                                    "contentTitle": {
+                                      "type": "string",
+                                      "example": "Tujuan Mengikuti Kelas Design System"
+                                    },
+                                    "contentUrl": {
+                                      "type": "string",
+                                      "example": "https://youtu.be/ixOd42SEUF0"
+                                    },
+                                    "duration": {
+                                      "type": "string",
+                                      "example": "1:00"
+                                    },
+                                    "status": {
+                                      "type": "boolean",
+                                      "example": true
+                                    },
+                                    "chapterId": {
+                                      "type": "integer",
+                                      "example": 1
+                                    },
+                                    "updatedAt": {
+                                      "type": "string",
+                                      "example": "2023-11-28T06:25:24.446Z"
+                                    },
+                                    "createdAt": {
+                                      "type": "string",
+                                      "example": "2023-11-28T06:25:24.446Z"
+                                    }
+                                  }
+                                }
+                              }
                             }
                           }
+                        },
+                        "durationPerCourseInMinutes": {
+                          "type": "integer",
+                          "example": 5
+                        },
+
+                        "modulePerCourse": {
+                          "type": "integer",
+                          "example": 3
                         }
                       }
                     }
@@ -1776,7 +1945,7 @@
             }
           },
           "500": {
-            "description": "Course tidak ada",
+            "description": "Kesalahan dari server",
             "content": {
               "application/json": {
                 "schema": {
@@ -1788,7 +1957,7 @@
                     },
                     "message": {
                       "type": "string",
-                      "example": "Internal server error"
+                      "example": "internal server error"
                     }
                   }
                 }
@@ -1838,6 +2007,10 @@
                     "type": "string",
                     "example": "free"
                   },
+                  "coursePrice": {
+                    "type": "float",
+                    "example": "0"
+                  },
                   "courseLevel": {
                     "type": "string",
                     "example": "beginner"
@@ -1880,6 +2053,10 @@
                   "courseType": {
                     "type": "string",
                     "example": "free"
+                  },
+                  "coursePrice": {
+                    "type": "float",
+                    "example": "0"
                   },
                   "courseLevel": {
                     "type": "string",
@@ -1970,6 +2147,26 @@
                           "example": "2023-11-28T06:25:24.446Z"
                         }
                       }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Ada field yang wajib diisi",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "Failed"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "fieldName cannot be null"
                     }
                   }
                 }
