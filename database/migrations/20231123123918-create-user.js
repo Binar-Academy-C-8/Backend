@@ -23,6 +23,7 @@ module.exports = {
       },
       role: {
         type: Sequelize.ENUM(['admin', 'member']),
+        defaultValue: 'member',
       },
       image: {
         type: Sequelize.STRING,

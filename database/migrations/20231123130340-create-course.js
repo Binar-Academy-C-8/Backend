@@ -1,4 +1,4 @@
-'use strict';
+'use strict'
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
@@ -9,35 +9,49 @@ module.exports = {
         primaryKey: true,
         type: Sequelize.INTEGER,
       },
-      codeCourse: {
+      courseCode: {
         type: Sequelize.STRING,
+        allowNull: false,
       },
-      courseName: {
-        type: Sequelize.STRING,
-      },
-      image: {
-        type: Sequelize.STRING,
-      },
-      courseType: {
-        type: Sequelize.ENUM(['Free', 'Premium']),
-      },
-      courseLevel: {
-        type: Sequelize.ENUM(['Beginner', 'Intermediate', 'Advenced']),
-      },
-      aboutCourse: {
-        type: Sequelize.STRING,
-      },
-      perpouseCourse: {
-        type: Sequelize.STRING,
-      },
-      statusCourse: {
-        type: Sequelize.ENUM(['InProgress', 'Complete']),
-      },
-      progressBar: {
-        type: Sequelize.FLOAT,
+      userId: {
+        type: Sequelize.INTEGER,
+        allowNull: false,
       },
       categoryId: {
         type: Sequelize.INTEGER,
+        allowNull: false,
+      },
+      courseName: {
+        type: Sequelize.STRING,
+        allowNull: false,
+      },
+      image: {
+        type: Sequelize.STRING,
+        defaultValue:
+          'https://ik.imagekit.io/xphqqd3ms/image(1).png?updatedAt=1701517286117',
+        allowNull: false,
+      },
+      courseType: {
+        type: Sequelize.ENUM(['free', 'premium']),
+        allowNull: false,
+      },
+      courseLevel: {
+        type: Sequelize.ENUM(['beginner', 'intermediate', 'advanced']),
+        allowNull: false,
+      },
+      aboutCourse: {
+        type: Sequelize.TEXT,
+      },
+      intendedFor: {
+        type: Sequelize.TEXT,
+      },
+      coursePrice: {
+        type: Sequelize.FLOAT,
+      },
+      isPromo: {
+        type: Sequelize.BOOLEAN,
+        allowNull: false,
+        defaultValue: false,
       },
       createdAt: {
         allowNull: false,
@@ -47,9 +61,9 @@ module.exports = {
         allowNull: false,
         type: Sequelize.DATE,
       },
-    });
+    })
   },
   async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable('Courses');
+    await queryInterface.dropTable('Courses')
   },
-};
+}

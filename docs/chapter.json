@@ -17,9 +17,9 @@
     }
   ],
   "paths": {
-    "/chapter/all-chapter": {
+    "/chapter": {
       "get": {
-        "tags": ["Chapters"],
+        "tags": ["Chapter"],
         "security": [
           {
             "bearerToken": []
@@ -122,7 +122,7 @@
     },
     "/chapter/{id}": {
       "get": {
-        "tags": ["Chapters"],
+        "tags": ["Chapter"],
         "security": [
           {
             "bearerToken": []
@@ -211,7 +211,7 @@
     },
     "/chapter/create/{id}": {
       "post": {
-        "tags": ["Chapters"],
+        "tags": ["Chapter"],
         "security": [
           {
             "bearerToken": [],
@@ -321,7 +321,7 @@
     },
     "/chapter/update/{id}": {
       "patch": {
-        "tags": ["Chapters"],
+        "tags": ["Chapter"],
         "security": [
           {
             "bearerToken": []
@@ -435,7 +435,7 @@
     },
     "/chapter/delete/{id}": {
       "delete": {
-        "tags": ["Chapters"],
+        "tags": ["Chapter"],
         "security": [
           {
             "bearerToken": []

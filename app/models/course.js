@@ -1,36 +1,57 @@
-'use strict';
-const { Model } = require('sequelize');
+'use strict'
+const { Model } = require('sequelize')
 module.exports = (sequelize, DataTypes) => {
   class Course extends Model {
-    /**
-     * Helper method for defining associations.
-     * This method is not a part of Sequelize lifecycle.
-     * The `models/index` file will call this method automatically.
-     */
     static associate(models) {
-      // define association here
+      Course.belongsTo(models.User, {
+        foreignKey: {
+          name: 'userId',
+          allowNull: false,
+        },
+        as: 'courseBy',
+      })
+      Course.belongsTo(models.Category, {
+        foreignKey: {
+          name: 'categoryId',
+          allowNull: false,
+        },
+      })
       Course.hasMany(models.Chapter, {
-        foreignKey: 'courseId',
-      });
+        foreignKey: {
+          name: 'courseId',
+          allowNull: false,
+        },
+      })
     }
   }
   Course.init(
     {
-      codeCourse: DataTypes.STRING,
-      courseName: DataTypes.STRING,
-      image: DataTypes.STRING,
-      courseType: DataTypes.ENUM(['Free', 'Premium']),
-      courseLevel: DataTypes.ENUM(['Beginner', 'Intermediate', 'Advenced']),
-      aboutCourse: DataTypes.STRING,
-      perpouseCourse: DataTypes.STRING,
-      statusCourse: DataTypes.ENUM(['InProgress', 'Complete']),
-      progressBar: DataTypes.FLOAT,
-      categoryId: DataTypes.INTEGER,
+      courseCode: { type: DataTypes.STRING, allowNull: false },
+      categoryId: { type: DataTypes.INTEGER, allowNull: false },
+      userId: { type: DataTypes.INTEGER, allowNull: false },
+      courseName: { type: DataTypes.STRING, allowNull: false },
+      image: {
+        type: DataTypes.STRING,
+        allowNull: false,
+        defaultValue:
+          'https://ik.imagekit.io/xphqqd3ms/image(1).png?updatedAt=1701517286117',
+      },
+      courseType: {
+        type: DataTypes.ENUM(['free', 'premium']),
+        allowNull: false,
+      },
+      courseLevel: {
+        type: DataTypes.ENUM(['beginner', 'intermediate', 'advanced']),
+        allowNull: false,
+      },
+      aboutCourse: { type: DataTypes.TEXT },
+      intendedFor: { type: DataTypes.TEXT },
+      coursePrice: { type: DataTypes.FLOAT, allowNull: false },
     },
     {
       sequelize,
       modelName: 'Course',
     }
-  );
-  return Course;
-};
+  )
+  return Course
+}
