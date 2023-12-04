@@ -7,9 +7,9 @@ const createChapter = async (req, res, next) => {
   try {
     const course = await Course.findByPk(req.params.id);
 
-    if (!course) return next(new ApiError('Id course not found', 404));
+    if (!course) return next(new ApiError('Data course tidak ditemukan', 404));
 
-    if (!chapterTitle) return next(new ApiError('Field must be required', 400));
+    if (!chapterTitle) return next(new ApiError('Kolom harus diisi', 400));
 
     const chapter = await Chapter.create({
       chapterTitle,
@@ -34,7 +34,8 @@ const findAllChapter = async (req, res, next) => {
     });
 
     res.status(200).json({
-      status: 'success',
+      status: 'Sukses',
+      message: 'Sukses menambahkan data',
       data: {
         chapters,
       },
@@ -53,10 +54,11 @@ const findChapter = async (req, res, next) => {
       include: ['Course'],
     });
 
-    if (!chapter) return next(new ApiError('Data not found'), 404);
+    if (!chapter)
+      return next(new ApiError('Data chapter tidak ditemukan'), 404);
 
     res.status(200).json({
-      status: 'success',
+      status: 'Sukses',
       data: {
         chapter,
       },
@@ -76,9 +78,10 @@ const updateChapter = async (req, res, next) => {
       },
     });
 
-    if (!chapterId) return next(new ApiError('Data not found'), 404);
+    if (!chapterId)
+      return next(new ApiError('Data chapter tidak ditemukan'), 404);
 
-    if (!chapterTitle) return next(new ApiError('Field must be required', 400));
+    if (!chapterTitle) return next(new ApiError('Kolom harus diisi', 400));
 
     const chapter = await Chapter.update(
       {
@@ -88,12 +91,14 @@ const updateChapter = async (req, res, next) => {
         where: {
           id: req.params.id,
         },
+        returning: true,
       }
     );
 
     res.status(201).json({
-      status: 'success',
-      message: 'Successfully updated data',
+      status: 'Sukses',
+      message: 'Sukses memperbarui data',
+      data: chapter[1],
     });
   } catch (err) {
     next(new ApiError(err.message, 500));
@@ -108,15 +113,16 @@ const deleteChapter = async (req, res, next) => {
       },
     });
 
-    if (!chapterId) return next(new ApiError('Data not found'), 404);
+    if (!chapterId)
+      return next(new ApiError('Data chapter tidak ditemukan'), 404);
 
     const chapter = await Chapter.destroy({
       where: { id: req.params.id },
     });
 
     res.status(200).json({
-      status: 'success',
-      message: 'Successfully deleted data',
+      status: 'Sukses',
+      message: 'Sukses menghapus data',
     });
   } catch (err) {
     next(new ApiError(err.message, 500));

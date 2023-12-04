@@ -17,7 +17,7 @@
     }
   ],
   "paths": {
-    "/chapters": {
+    "/chapter/all-chapter": {
       "get": {
         "tags": ["Chapters"],
         "security": [
@@ -120,7 +120,7 @@
         }
       }
     },
-    "/chapters/{id}": {
+    "/chapter/{id}": {
       "get": {
         "tags": ["Chapters"],
         "security": [
@@ -209,7 +209,7 @@
         }
       }
     },
-    "/chapters/create/{id}": {
+    "/chapter/create/{id}": {
       "post": {
         "tags": ["Chapters"],
         "security": [
@@ -319,8 +319,8 @@
         }
       }
     },
-    "/chapters/update/{id}": {
-      "put": {
+    "/chapter/update/{id}": {
+      "patch": {
         "tags": ["Chapters"],
         "security": [
           {
@@ -372,6 +372,18 @@
                     "message": {
                       "type": "string",
                       "example": "Successfully updated chapter"
+                    },
+                    "data": {
+                      "type": "object",
+                      "example": [
+                        {
+                          "id": 3,
+                          "chapterTitle": "vegsd",
+                          "courseId": 1,
+                          "createdAt": "2023-11-27T15:38:17.418Z",
+                          "updatedAt": "2023-11-29T15:23:52.903Z"
+                        }
+                      ]
                     }
                   }
                 }
@@ -421,7 +433,7 @@
         }
       }
     },
-    "/chapters/delete/{id}": {
+    "/chapter/delete/{id}": {
       "delete": {
         "tags": ["Chapters"],
         "security": [

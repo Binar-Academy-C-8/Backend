@@ -8,6 +8,6 @@ const Chapter = require('./chapterRouter.js');
 router.use('/api-docs', swaggerUI.serve);
 router.use('/api-docs', swaggerUI.setup(swaggerDocument));
 
-router.use('/api/v1/chapters', Chapter);
+router.use('/api/v1/chapter', Chapter);
 
 module.exports = router;
