@@ -3,6 +3,20 @@ const ApiError = require('../../utils/apiError');
 const Sequelize = require('sequelize');
 const Op = Sequelize.Op;
 
+const getUsers = async (req, res, next) => {
+  try {
+    const allUser = await User.findAll();
+    res.status(200).json({
+      status: 'Success',
+      data: {
+        allUser,
+      },
+    });
+  } catch (err) {
+    next(new ApiError(err.message, 500));
+  }
+};
+
 const updateUser = async (req, res, next) => {
   const { name, phoneNumber, country, city, image } = req.body;
 
@@ -79,6 +93,7 @@ const deleteUser = async (req, res, next) => {
 };
 
 module.exports = {
+  getUsers,
   updateUser,
   deleteUser,
 };
