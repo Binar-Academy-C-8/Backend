@@ -19,12 +19,14 @@ const register = async (req, res, next) => {
     })
 
     if (user) {
-      return next(new ApiError('User email already taken', 400))
+      return next(new ApiError('Email pengguna sudah digunakan', 400))
     }
 
     const passwordLength = password.length < 8
     if (passwordLength) {
-      return next(new ApiError('Minimum password must be 8 characters', 400))
+      return next(
+        new ApiError('Panjang kata sandi minimal harus 8 karakter', 400)
+      )
     }
 
     const saltRounds = 10
@@ -77,7 +79,7 @@ const register = async (req, res, next) => {
     await sendEmail(mailOptions)
 
     res.status(200).json({
-      status: 'Register successful',
+      status: 'Registrasi berhasil',
       data: {
         email,
         ...newUser,
@@ -100,10 +102,10 @@ const login = async (req, res, next) => {
     })
 
     if (!user) {
-      return next(new ApiError('Email not found', 404))
+      return next(new ApiError('Email tidak ditemukan', 404))
     }
     if (user.verified !== true) {
-      return next(new ApiError('User not verified', 401))
+      return next(new ApiError('Pengguna belum diverifikasi', 401));
     }
 
     if (user && bcrypt.compareSync(password, user.password)) {
@@ -119,11 +121,16 @@ const login = async (req, res, next) => {
 
       res.status(200).json({
         status: 'Success',
-        message: 'Login successful',
-        data: token,
+        message: 'Login berhasil',
+        data: {
+          token,
+          id: user.userId,
+          name: user.User.name,
+          email: user.email,
+        },
       })
     } else {
-      return next(new ApiError('Incorrect password', 401))
+      return next(new ApiError('Kata sandi salah', 401))
     }
   } catch (err) {
     next(new ApiError(err.message, 500))
@@ -142,11 +149,11 @@ const authenticateAdmin = async (req, res, next) => {
     })
 
     if (!user) {
-      return next(new ApiError('Email not found', 404))
+      return next(new ApiError('Email tidak ditemukan', 404))
     }
 
     if (user.User.role !== 'admin') {
-      return next(new ApiError('Unauthorized. Only admin can login', 401))
+      return next(new ApiError('Hanya admin yang dapat login', 401))
     }
 
     if (user && bcrypt.compareSync(password, user.password)) {
@@ -166,7 +173,7 @@ const authenticateAdmin = async (req, res, next) => {
         data: token,
       })
     } else {
-      return next(new ApiError('Incorrect password', 401))
+      return next(new ApiError('Kata sandi salah', 401))
     }
   } catch (err) {
     next(new ApiError(err.message, 500))
@@ -178,6 +185,7 @@ const authenticate = async (req, res, next) => {
     res.status(200).json({
       status: 'Success',
       data: {
+        id: req.user.id,
         name: req.user.name,
         image: req.user.image,
         phoneNumber: req.user.phoneNumber,
@@ -204,7 +212,7 @@ const updateNewPassword = async (req, res, next) => {
     })
 
     if (users.verified !== true) {
-      return next(new ApiError('User not verified', 401))
+      return next(new ApiError('Pengguna belum diverifikasi', 401))
     }
 
     // Hash password baru
@@ -225,7 +233,7 @@ const updateNewPassword = async (req, res, next) => {
 
     res.status(200).json({
       status: 'Success',
-      message: 'Update Password successful',
+      message: 'Pembaruan Kata Sandi berhasil',
     })
   } catch (err) {
     next(new ApiError(err.message, 500))

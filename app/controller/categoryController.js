@@ -85,7 +85,7 @@ const updateCategory = async (req, res, next) => {
 
     res.status(200).json({
       status: 'success',
-      message: `success update category with id ${id}`,
+      message: `Berhasil memperbarui kategori dengan ID ${id}`,
       data: updatedCategory[1],
     })
   } catch (err) {
@@ -101,7 +101,7 @@ const deleteCategory = async (req, res, next) => {
 
     res.status(201).json({
       status: 'success',
-      message: `success delete category with id ${id}`,
+      message: `Berhasil menghapus kategori dengan ID ${id}`,
     })
   } catch (err) {
     next(new ApiError(err.message, 500))

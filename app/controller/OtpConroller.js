@@ -1,5 +1,6 @@
 const generatedOTP = require('../../utils/generatedOTP');
 const sendEmail = require('../../utils/sendEmail');
+const jwt = require('jsonwebtoken');
 
 const { Auth, User, OTP } = require('../models');
 const { AUTH_EMAIL } = process.env;
@@ -22,11 +23,11 @@ const verifyOTP = async (req, res, next) => {
 
     // Cek apakah pengguna ditemukan dan OTP sesuai
     if (!userOtp) {
-      return next(new ApiError('OTP code has expired', 401));
+      return next(new ApiError('Kode OTP telah kedaluwarsa', 401));
     }
 
     if (!bcrypt.compareSync(String(code), String(userOtp.code))) {
-      return next(new ApiError('Invalid OTP', 403));
+      return next(new ApiError('OTP tidak valid', 403));
     }
 
     await Auth.update(
@@ -40,6 +41,22 @@ const verifyOTP = async (req, res, next) => {
       }
     );
 
+    const userAuth = await Auth.findOne({
+      where: {
+        userId,
+      },
+    });
+
+    const token = jwt.sign(
+      {
+        id: userOtp.userId,
+        username: userOtp.User.name,
+        role: userOtp.User.role,
+        email: userAuth.email,
+      },
+      process.env.JWT_SECRET
+    );
+
     // Verifikasi berhasil, hapus data OTP dari database
     await OTP.destroy({
       where: {
@@ -49,7 +66,13 @@ const verifyOTP = async (req, res, next) => {
 
     res.status(200).json({
       status: 'Success',
-      message: 'OTP verification successful',
+      message: 'Verifikasi OTP berhasil',
+      data: {
+        token,
+        id: userOtp.userId,
+        name: userOtp.User.name,
+        email: userAuth.email
+      },
     });
   } catch (err) {
     next(new ApiError(err.message, 500));
@@ -68,7 +91,7 @@ const sendOtp = async (req, res, next) => {
     });
 
     if (!user) {
-      return next(new ApiError('User not found', 404));
+      return next(new ApiError('Pengguna tidak ditemukan', 404));
     }
 
     await OTP.destroy({
@@ -119,7 +142,7 @@ const sendOtp = async (req, res, next) => {
       status: 'Success',
       data: {
         newOtpRequest,
-        message: 'OTP sent successfully',
+        message: 'OTP berhasil terkirim',
       },
     });
   } catch (err) {

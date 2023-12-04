@@ -222,15 +222,15 @@
                       "oneOf": [
                         {
                           "type": "object",
-                          "example": "Username already taken"
+                          "example": "Nama pengguna sudah digunakan"
                         },
                         {
                           "type": "object",
-                          "example": "User email already taken"
+                          "example": "Email pengguna sudah digunakan"
                         },
                         {
                           "type": "object",
-                          "example": "Minimum password must be 8 characters"
+                          "example": "Panjang kata sandi minimal harus 8 karakter"
                         }
                       ]
                     }
@@ -288,7 +288,7 @@
                     },
                     "message": {
                       "type": "string",
-                      "example": "OTP verification successful"
+                      "example": "Verifikasi OTP berhasil"
                     }
                   }
                 }
@@ -308,7 +308,7 @@
                     },
                     "message": {
                       "type": "object",
-                      "example": "OTP code has expired"
+                      "example": "Kode OTP telah kedaluwarsa"
                     }
                   }
                 }
@@ -328,7 +328,7 @@
                     },
                     "message": {
                       "type": "object",
-                      "example": "Invalid OTP"
+                      "example": "OTP tidak valid"
                     }
                   }
                 }
@@ -377,7 +377,7 @@
                     },
                     "message": {
                       "type": "string",
-                      "example": "Login successful"
+                      "example": "Login berhasil"
                     },
                     "data": {
                       "type": "object",
@@ -408,11 +408,11 @@
                       "oneOf": [
                         {
                           "type": "object",
-                          "example": "Incorrect password"
+                          "example": "Kata sandi salah"
                         },
                         {
                           "type": "object",
-                          "example": "User not verified"
+                          "example": "Pengguna belum diverifikasi"
                         }
                       ]
                     }
@@ -434,7 +434,7 @@
                     },
                     "message": {
                       "type": "object",
-                      "example": "Email not found"
+                      "example": "Email tidak ditemukan"
                     }
                   }
                 }
@@ -510,11 +510,11 @@
                       "oneOf": [
                         {
                           "type": "object",
-                          "example": "Unauthorized. Only admin can login"
+                          "example": "Hanya admin yang dapat login"
                         },
                         {
                           "type": "object",
-                          "example": "Incorrect password"
+                          "example": "Kata sandi salah"
                         }
                       ]
                     }
@@ -536,7 +536,7 @@
                     },
                     "message": {
                       "type": "object",
-                      "example": "Email not found"
+                      "example": "Email tidak ditemukan"
                     }
                   }
                 }
@@ -613,7 +613,7 @@
                         },
                         "message": {
                           "type": "string",
-                          "example": "OTP sent successfully"
+                          "example": "OTP berhasil terkirim"
                         }
                       }
                     }
@@ -635,7 +635,7 @@
                     },
                     "message": {
                       "type": "object",
-                      "example": "User not found"
+                      "example": "User tidak ditemukan"
                     }
                   }
                 }
@@ -712,7 +712,7 @@
                         },
                         "message": {
                           "type": "string",
-                          "example": "OTP sent successfully"
+                          "example": "OTP berhasil terkirim"
                         }
                       }
                     }
@@ -734,7 +734,7 @@
                     },
                     "message": {
                       "type": "object",
-                      "example": "User not found"
+                      "example": "User tidak ditemukan"
                     }
                   }
                 }
@@ -790,7 +790,7 @@
                     },
                     "message": {
                       "type": "string",
-                      "example": "OTP verification successful"
+                      "example": "Verifikasi OTP berhasil"
                     }
                   }
                 }
@@ -810,7 +810,7 @@
                     },
                     "message": {
                       "type": "object",
-                      "example": "OTP code has expired"
+                      "example": "Kode OTP telah kedaluwarsa"
                     }
                   }
                 }
@@ -830,7 +830,7 @@
                     },
                     "message": {
                       "type": "object",
-                      "example": "Invalid OTP"
+                      "example": "OTP tidak valid"
                     }
                   }
                 }
@@ -886,7 +886,7 @@
                     },
                     "message": {
                       "type": "string",
-                      "example": "Update Password successful"
+                      "example": "Pembaruan Kata Sandi berhasil"
                     }
                   }
                 }
@@ -906,7 +906,7 @@
                     },
                     "message": {
                       "type": "object",
-                      "example": "User not verified"
+                      "example": "Pengguna belum diverifikasi"
                     }
                   }
                 }
@@ -1164,7 +1164,7 @@
                     },
                     "message": {
                       "type": "object",
-                      "example": "Name already taken"
+                      "example": "Nama pengguna sudah digunakan"
                     }
                   }
                 }
@@ -2542,7 +2542,7 @@
                     },
                     "message": {
                       "type": "object",
-                      "example": "You must log in"
+                      "example": "Anda harus masuk"
                     }
                   }
                 }
