@@ -1,10 +1,25 @@
-const { User, Auth } = require('../models');
-const ApiError = require('../../utils/apiError');
-const Sequelize = require('sequelize');
-const Op = Sequelize.Op;
+const { User, Auth } = require('../models')
+const ApiError = require('../../utils/apiError')
+const Sequelize = require('sequelize')
+const Op = Sequelize.Op
 
+const getUsers = async (req, res, next) => {
+  try {
+    const allUser = await User.findAll()
+    res.status(200).json({
+      status: 'Success',
+      data: {
+        allUser,
+      },
+    })
+  } catch (err) {
+    next(new ApiError(err.message, 500))
+  }
+}
+
+// update User
 const updateUser = async (req, res, next) => {
-  const { name, phoneNumber, country, city, image } = req.body;
+  const { name, phoneNumber, country, city, image } = req.body
 
   try {
     const existingUser = await User.findOne({
@@ -12,39 +27,44 @@ const updateUser = async (req, res, next) => {
         name: name,
         id: { [Op.not]: req.params.id },
       },
-    });
+    })
 
     if (existingUser) {
-      return next(new ApiError('Name already taken', 400));
+      return next(new ApiError('Name already taken', 400))
     }
 
     const newUser = await User.update(
       {
-        name,
-        phoneNumber,
-        country,
-        city,
-        image,
+        name: name,
+        phoneNumber: phoneNumber,
+        country: country,
+        city: city,
+        image: image,
       },
       {
         where: {
           id: req.params.id,
         },
+        returning: true,
       }
-    );
+    )
 
     if (newUser == 0) {
-      return next(new ApiError('User not found', 404));
+      return next(new ApiError('User not found', 404))
     }
 
     res.status(200).json({
       status: 'Success',
-      message: 'Updated successfully',
-    });
+      data: {
+        updateUser: {
+          newUser,
+        },
+      },
+    })
   } catch (err) {
-    next(new ApiError(err.message, 500));
+    next(new ApiError(err.message, 500))
   }
-};
+}
 
 const deleteUser = async (req, res, next) => {
   try {
@@ -52,33 +72,34 @@ const deleteUser = async (req, res, next) => {
       where: {
         id: req.params.id,
       },
-    });
+    })
 
     if (!user) {
-      return next(new ApiError('The user with this Id was not found', 404));
+      return next(new ApiError('The user with this Id was not found', 404))
     }
 
     await User.destroy({
       where: {
         id: req.params.id,
       },
-    });
+    })
     await Auth.destroy({
       where: {
         id: req.params.id,
       },
-    });
+    })
 
     res.status(200).json({
       status: 'Success',
       message: 'Deleted successfully',
-    });
+    })
   } catch (err) {
-    next(new ApiError(err.message, 500));
+    next(new ApiError(err.message, 500))
   }
-};
+}
 
 module.exports = {
+  getUsers,
   updateUser,
   deleteUser,
-};
+}

@@ -507,8 +507,16 @@
                       "example": "Failed"
                     },
                     "message": {
-                      "type": "object",
-                      "example": "Unauthorized. Only admin can login"
+                      "oneOf": [
+                        {
+                          "type": "object",
+                          "example": "Unauthorized. Only admin can login"
+                        },
+                        {
+                          "type": "object",
+                          "example": "Incorrect password"
+                        }
+                      ]
                     }
                   }
                 }
@@ -988,6 +996,91 @@
         }
       }
     },
+    "/user": {
+      "get": {
+        "tags": ["Users"],
+        "summary": "Return hasil hit api getAllUser untuk admin",
+        "description": "ini API untuk melihat semua user",
+        "responses": {
+          "200": {
+            "description": "Sukses get users",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "Success"
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "allUser": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "id": { "type": "integer", "example": 1 },
+                              "name": {
+                                "type": "string",
+                                "example": "adminc8"
+                              },
+                              "phoneNumber": {
+                                "type": "string",
+                                "example": "+628236576342564"
+                              },
+                              "country": {
+                                "type": "string",
+                                "example": "Indonesia"
+                              },
+                              "city": {
+                                "type": "string",
+                                "example": "Jakarta"
+                              },
+                              "role": { "type": "string", "example": "admin" },
+                              "image": { "type": "string", "example": "" },
+                              "createdAt": {
+                                "type": "string",
+                                "example": "2023-12-01T06:57:34.253Z"
+                              },
+                              "updatedAt": {
+                                "type": "string",
+                                "example": "2023-12-01T06:57:34.253Z"
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Error dari server",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "Failed"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Internal server error"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/user/update/{id}": {
       "patch": {
         "tags": ["Users"],
@@ -1251,9 +1344,47 @@
         "tags": ["Course"],
         "summary": "Return hasil hit api course untuk user",
         "description": "ini API untuk melihat semua course",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "search",
+            "schema": { "type": "string", "example": "binar" },
+            "description": "query ini digunakan untuk mencari course berdasarkan nama course"
+          },
+          {
+            "in": "query",
+            "name": "category",
+            "schema": { "type": "integer", "example": 1 },
+            "description": "query ini digunakan untuk mencari course berdasarkan kode kategori course, untuk keterangan nama kategori bedasarkan id bisa dilihat pada endpoint category"
+          },
+          {
+            "in": "query",
+            "name": "level",
+            "schema": { "type": "string", "example": "beginner" },
+            "description": "query ini digunakan untuk mencari course berdasarkan level kesulitan course"
+          },
+          {
+            "in": "query",
+            "name": "type",
+            "schema": { "type": "string", "example": "free" },
+            "description": "query ini digunakan untuk mencari course berdasarkan tipe course"
+          },
+          {
+            "in": "query",
+            "name": "sort_by",
+            "schema": { "type": "string", "example": "createdAt" },
+            "description": "query ini digunakan untuk pengurutan course berdasarkan kolom data course yang dipilih, query order_by juga dibutuhkan agar operasi pengurutan berjalan lancar"
+          },
+          {
+            "in": "query",
+            "name": "order_by",
+            "schema": { "type": "string", "example": "asc" },
+            "description": "query ini digunakan untuk mencari course berdasarkan urutan keatas atau kebawah dan hanya menerima parameter asc dan desc, query sort_by juga dibutuhkan agar operasi pengurutan berjalan lancar, query ini bersifat case insensitive"
+          }
+        ],
         "responses": {
           "200": {
-            "description": "Sukses course",
+            "description": "success find all course",
             "content": {
               "application/json": {
                 "schema": {
@@ -1274,13 +1405,21 @@
                           "type": "string",
                           "example": "uiux123"
                         },
+                        "categoryId": {
+                          "type": "integer",
+                          "example": "1"
+                        },
+                        "userId": {
+                          "type": "integer",
+                          "example": 1
+                        },
                         "courseName": {
                           "type": "string",
-                          "example": "Build REST API with Java Spring"
+                          "example": "UI/UX is easy"
                         },
                         "image": {
                           "type": "string",
-                          "example": "https://ik.imagekit.io/xphqqd3ms/IMG-1701001286390.__S0maB0Ji.png"
+                          "example": "https://ik.imagekit.io/xphqqd3ms/UIUX.png?updatedAt=1701519810278"
                         },
                         "courseType": {
                           "type": "string",
@@ -1294,9 +1433,13 @@
                           "type": "string",
                           "example": "free"
                         },
-                        "categoryId": {
-                          "type": "integer",
-                          "example": "1"
+                        "intendedFor": {
+                          "type": "string",
+                          "example": "For beginner who want to be Profesional"
+                        },
+                        "coursePrice": {
+                          "type": "number",
+                          "example": 0
                         },
                         "updatedAt": {
                           "type": "string",
@@ -1307,25 +1450,20 @@
                           "example": "2023-11-28T06:25:24.446Z"
                         },
                         "Category": {
-                          "type": "object",
-                          "properties": {
-                            "id": {
-                              "type": "integer",
-                              "example": "1"
-                            },
-                            "categoryName": {
-                              "type": "string",
-                              "example": "UI/UX Design"
-                            },
-                            "updatedAt": {
-                              "type": "string",
-                              "example": "2023-11-28T06:25:24.446Z"
-                            },
-                            "createdAt": {
-                              "type": "string",
-                              "example": "2023-11-28T06:25:24.446Z"
-                            }
-                          }
+                          "type": "string",
+                          "example": "UI/UX Design"
+                        },
+                        "courseBy": {
+                          "type": "string",
+                          "example": "adminc8"
+                        },
+                        "durationPerCourseInMinutes": {
+                          "type": "integer",
+                          "example": 5
+                        },
+                        "modulePerCourse": {
+                          "type": "integer",
+                          "example": 3
                         }
                       }
                     }
@@ -1334,8 +1472,28 @@
               }
             }
           },
+          "400": {
+            "description": "bad request from user",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "Failed"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "please fill order_by query parameter with asc or desc"
+                    }
+                  }
+                }
+              }
+            }
+          },
           "500": {
-            "description": "Error dari server",
+            "description": "error from server",
             "content": {
               "application/json": {
                 "schema": {
@@ -1386,6 +1544,10 @@
                     "type": "string",
                     "example": "free"
                   },
+                  "coursePrice": {
+                    "type": "number",
+                    "example": 0
+                  },
                   "courseLevel": {
                     "type": "string",
                     "example": "beginner"
@@ -1428,6 +1590,10 @@
                   "courseType": {
                     "type": "string",
                     "example": "free"
+                  },
+                  "coursePrice": {
+                    "type": "number",
+                    "example": "0"
                   },
                   "courseLevel": {
                     "type": "string",
@@ -1520,6 +1686,26 @@
               }
             }
           },
+          "400": {
+            "description": "Ada field yang wajib diisi",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "Failed"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "fieldName cannot be null"
+                    }
+                  }
+                }
+              }
+            }
+          },
           "401": {
             "description": "Tidak ada token",
             "content": {
@@ -1602,13 +1788,21 @@
                           "type": "string",
                           "example": "uiux123"
                         },
+                        "categoryId": {
+                          "type": "integer",
+                          "example": "1"
+                        },
+                        "userId": {
+                          "type": "integer",
+                          "example": 1
+                        },
                         "courseName": {
                           "type": "string",
-                          "example": "Build REST API with Java Spring"
+                          "example": "UI/UX is easy"
                         },
                         "image": {
                           "type": "string",
-                          "example": "https://ik.imagekit.io/xphqqd3ms/IMG-1701001286390.__S0maB0Ji.png"
+                          "example": "https://ik.imagekit.io/xphqqd3ms/UIUX.png?updatedAt=1701519810278"
                         },
                         "courseType": {
                           "type": "string",
@@ -1622,9 +1816,13 @@
                           "type": "string",
                           "example": "free"
                         },
-                        "categoryId": {
-                          "type": "integer",
-                          "example": "1"
+                        "intendedFor": {
+                          "type": "string",
+                          "example": "For beginner who want to be Profesional"
+                        },
+                        "coursePrice": {
+                          "type": "number",
+                          "example": 0
                         },
                         "updatedAt": {
                           "type": "string",
@@ -1635,25 +1833,89 @@
                           "example": "2023-11-28T06:25:24.446Z"
                         },
                         "Category": {
-                          "type": "object",
-                          "properties": {
-                            "id": {
-                              "type": "integer",
-                              "example": "1"
-                            },
-                            "categoryName": {
-                              "type": "string",
-                              "example": "UI/UX Design"
-                            },
-                            "updatedAt": {
-                              "type": "string",
-                              "example": "2023-11-28T06:25:24.446Z"
-                            },
-                            "createdAt": {
-                              "type": "string",
-                              "example": "2023-11-28T06:25:24.446Z"
+                          "type": "string",
+                          "example": "UI/UX Design"
+                        },
+                        "courseBy": {
+                          "type": "string",
+                          "example": "adminc8"
+                        },
+                        "Chapters": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "id": {
+                                "type": "integer",
+                                "example": 1
+                              },
+                              "chapterTitle": {
+                                "type": "string",
+                                "example": "Pendahuluan"
+                              },
+                              "courseId": {
+                                "type": "integer",
+                                "example": 1
+                              },
+                              "updatedAt": {
+                                "type": "string",
+                                "example": "2023-11-28T06:25:24.446Z"
+                              },
+                              "createdAt": {
+                                "type": "string",
+                                "example": "2023-11-28T06:25:24.446Z"
+                              },
+                              "Contents": {
+                                "type": "array",
+                                "items": {
+                                  "type": "object",
+                                  "properties": {
+                                    "id": {
+                                      "type": "integer",
+                                      "example": 1
+                                    },
+                                    "contentTitle": {
+                                      "type": "string",
+                                      "example": "Tujuan Mengikuti Kelas Design System"
+                                    },
+                                    "contentUrl": {
+                                      "type": "string",
+                                      "example": "https://youtu.be/ixOd42SEUF0"
+                                    },
+                                    "duration": {
+                                      "type": "string",
+                                      "example": "1:00"
+                                    },
+                                    "status": {
+                                      "type": "boolean",
+                                      "example": true
+                                    },
+                                    "chapterId": {
+                                      "type": "integer",
+                                      "example": 1
+                                    },
+                                    "updatedAt": {
+                                      "type": "string",
+                                      "example": "2023-11-28T06:25:24.446Z"
+                                    },
+                                    "createdAt": {
+                                      "type": "string",
+                                      "example": "2023-11-28T06:25:24.446Z"
+                                    }
+                                  }
+                                }
+                              }
                             }
                           }
+                        },
+                        "durationPerCourseInMinutes": {
+                          "type": "integer",
+                          "example": 5
+                        },
+
+                        "modulePerCourse": {
+                          "type": "integer",
+                          "example": 3
                         }
                       }
                     }
@@ -1683,7 +1945,7 @@
             }
           },
           "500": {
-            "description": "Course tidak ada",
+            "description": "Kesalahan dari server",
             "content": {
               "application/json": {
                 "schema": {
@@ -1695,7 +1957,7 @@
                     },
                     "message": {
                       "type": "string",
-                      "example": "Internal server error"
+                      "example": "internal server error"
                     }
                   }
                 }
@@ -1745,6 +2007,10 @@
                     "type": "string",
                     "example": "free"
                   },
+                  "coursePrice": {
+                    "type": "number",
+                    "example": "0"
+                  },
                   "courseLevel": {
                     "type": "string",
                     "example": "beginner"
@@ -1787,6 +2053,10 @@
                   "courseType": {
                     "type": "string",
                     "example": "free"
+                  },
+                  "coursePrice": {
+                    "type": "number",
+                    "example": "0"
                   },
                   "courseLevel": {
                     "type": "string",
@@ -1877,6 +2147,26 @@
                           "example": "2023-11-28T06:25:24.446Z"
                         }
                       }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Ada field yang wajib diisi",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "Failed"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "fieldName cannot be null"
                     }
                   }
                 }
@@ -2170,30 +2460,16 @@
       "post": {
         "tags": ["Category"],
         "summary": "Return hasil hit api category untuk admin",
-        "description": "ini API untuk membuat course",
+        "description": "ini API untuk membuat category",
         "security": [
           {
             "bearerToken": []
           }
         ],
         "requestBody": {
-          "description": "ini request body untuk sukses membuat course",
+          "description": "ini request body untuk sukses membuat category",
+          "required": true,
           "content": {
-            "application/json": {
-              "schema": {
-                "type": "object",
-                "properties": {
-                  "categoryName": {
-                    "type": "string",
-                    "example": "Web Development"
-                  },
-                  "image": {
-                    "type": "string",
-                    "example": "https://ik.imagekit.io/xphqqd3ms/IMG-1701252283386._e2FCryU2W.png?updatedAt=1701252300430"
-                  }
-                }
-              }
-            },
             "multipart/form-data": {
               "schema": {
                 "type": "object",
@@ -2266,7 +2542,7 @@
                     },
                     "message": {
                       "type": "object",
-                      "example": "Token doesn't exist"
+                      "example": "You must log in"
                     }
                   }
                 }
@@ -2314,7 +2590,7 @@
         ],
         "responses": {
           "200": {
-            "description": "Sukses menampilkan course",
+            "description": "Sukses menampilkan category by id",
             "content": {
               "application/json": {
                 "schema": {
@@ -2466,21 +2742,6 @@
         "requestBody": {
           "description": "ini request body untuk sukses update data category",
           "content": {
-            "application/json": {
-              "schema": {
-                "type": "object",
-                "properties": {
-                  "categoryName": {
-                    "type": "string",
-                    "example": "Web Development"
-                  },
-                  "image": {
-                    "type": "string",
-                    "example": "https://ik.imagekit.io/xphqqd3ms/IMG-1701252283386._e2FCryU2W.png?updatedAt=1701252300430"
-                  }
-                }
-              }
-            },
             "multipart/form-data": {
               "schema": {
                 "type": "object",
@@ -2500,7 +2761,7 @@
         },
         "responses": {
           "200": {
-            "description": "Sukses menampilkan course",
+            "description": "Sukses update category",
             "content": {
               "application/json": {
                 "schema": {
@@ -3181,6 +3442,567 @@
                     "message": {
                       "type": "string",
                       "example": "Id chapter not found"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/content": {
+      "get": {
+        "tags": ["Content"],
+        "summary": "Return hasil hit api untuk semua data content",
+        "description": "ini API untuk mengambil semua data content",
+        "security": [
+          {
+            "bearerToken": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Sukses menampilkan data content",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "Success"
+                    },
+                    "message": {
+                      "type": "object",
+                      "example": "get all data content succesfull"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Data content kosong di database",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "Failed"
+                    },
+                    "message": {
+                      "type": "object",
+                      "example": "Data content is empty"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/content/{contentId}": {
+      "get": {
+        "tags": ["Content"],
+        "summary": "Return hasil hit api data content dengan id",
+        "description": "ini API untuk mengambil data content dengan id",
+        "parameters": [
+          {
+            "name": "contentId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            },
+            "description": "Content ID"
+          }
+        ],
+        "security": [
+          {
+            "bearerToken": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Sukses menampilkan data content dengan id",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "Success"
+                    },
+                    "message": {
+                      "type": "object",
+                      "example": "Get data content by id succesfull "
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Data content dengan id tidak ditemukan",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "Failed"
+                    },
+                    "message": {
+                      "type": "object",
+                      "example": "Data content with id is empty"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/content/insert-bylink/{chapterId}": {
+      "post": {
+        "tags": ["Content"],
+        "summary": "Return  upload content dengan link",
+        "description": "ini API untuk upload content dengan link",
+        "parameters": [
+          {
+            "name": "chapterId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            },
+            "description": "Chapter ID"
+          }
+        ],
+        "security": [
+          {
+            "bearerToken": []
+          }
+        ],
+        "requestBody": {
+          "description": "ini request body untuk sukses upload content dengan link",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "contentTitle": {
+                    "type": "string",
+                    "example": "Belajar1"
+                  },
+                  "contentUrl": {
+                    "type": "string",
+                    "example": "https://youtu.be/ixOd42SEUF0"
+                  },
+                  "videoDuration": {
+                    "type": "string",
+                    "example": "02.36"
+                  },
+                  "status": {
+                    "type": "boolean",
+                    "example": true
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Sukses menambahkan data content dengan link video",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "Success"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "successfully uploaded content data"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/content/insert-byfile/{chapterId}": {
+      "post": {
+        "tags": ["Content"],
+        "summary": "Return  upload content dengan file",
+        "description": "ini API untuk upload content dengan file",
+        "parameters": [
+          {
+            "name": "chapterId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            },
+            "description": "Chapter ID"
+          }
+        ],
+        "security": [
+          {
+            "bearerToken": []
+          }
+        ],
+        "requestBody": {
+          "description": "ini request body untuk sukses upload content dengan file",
+          "required": true,
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "fileVideo": {
+                    "type": "string",
+                    "format": "binary",
+                    "description": "Insert video file"
+                  },
+                  "contentTitle": {
+                    "type": "string"
+                  },
+                  "status": {
+                    "type": "boolean",
+                    "example": true
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Sukses menambahkan data content dengan file video",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "Success"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "successfully uploaded content data"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/content/update-bylink/{chapterId}/{contentId}": {
+      "patch": {
+        "tags": ["Content"],
+        "summary": "Return  update content dengan link",
+        "description": "ini API untuk update content dengan link",
+        "parameters": [
+          {
+            "name": "chapterId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            },
+            "description": "Chapter ID"
+          },
+          {
+            "name": "contentId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            },
+            "description": "Content ID"
+          }
+        ],
+        "security": [
+          {
+            "bearerToken": []
+          }
+        ],
+        "requestBody": {
+          "description": "ini request body untuk sukses update content dengan link",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "contentTitle": {
+                    "type": "string",
+                    "example": "Belajar2"
+                  },
+                  "contentUrl": {
+                    "type": "string",
+                    "example": "https://youtu.be/DwTkyMJi890"
+                  },
+                  "status": {
+                    "type": "boolean",
+                    "example": true
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Sukses update data content dengan link video",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "Success"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "successfully uploaded content data"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Data content dengan id tidak ditemukan",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "Failed"
+                    },
+                    "message": {
+                      "type": "object",
+                      "example": "Data content with id is empty"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Tipe konten harus link ",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "Failed"
+                    },
+                    "message": {
+                      "type": "object",
+                      "example": "Video  not a YouTube link"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/content/update-byfile/{chapterId}/{contentId}": {
+      "patch": {
+        "tags": ["Content"],
+        "summary": "Return  update content dengan file",
+        "description": "ini API untuk update content dengan file",
+        "parameters": [
+          {
+            "name": "chapterId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            },
+            "description": "Chapter ID"
+          },
+          {
+            "name": "contentId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            },
+            "description": "Content ID"
+          }
+        ],
+        "security": [
+          {
+            "bearerToken": []
+          }
+        ],
+        "requestBody": {
+          "description": "ini request body untuk sukses update content dengan file",
+          "required": true,
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "fileVideo": {
+                    "type": "string",
+                    "format": "binary",
+                    "description": "Update video file"
+                  },
+                  "contentTitle": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Sukses update data content dengan file video",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "Success"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "successfully updated content data"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Data content dengan id tidak ditemukan",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "Failed"
+                    },
+                    "message": {
+                      "type": "object",
+                      "example": "Data content with id is empty"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Tipe konten harus file ",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "Failed"
+                    },
+                    "message": {
+                      "type": "object",
+                      "example": "Video not a Imagekit link"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/content/deleted/{contentId}": {
+      "delete": {
+        "tags": ["Content"],
+        "summary": "Return  delete content ",
+        "description": "ini API untuk delete content",
+        "parameters": [
+          {
+            "name": "contentId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            },
+            "description": "Content ID"
+          }
+        ],
+        "security": [
+          {
+            "bearerToken": []
+          }
+        ],
+
+        "responses": {
+          "200": {
+            "description": "Pesan jika sukses delete data content",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "Success"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "successfully delete content data"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Pesan ditampilkan jika data content dengan id tidak ditemukan",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "Failed"
+                    },
+                    "message": {
+                      "type": "object",
+                      "example": "Data content with id is empty"
                     }
                   }
                 }

@@ -34,7 +34,9 @@ const getContentByid = async (req, res, next) => {
     })
 
     if (dataContent === null) {
-      return next(new ApiError(`Data with id: ${id} content is empty`, 404))
+      return next(
+        new ApiError(`Data with id: ${contentId} content is empty`, 404)
+      )
     }
 
     res.status(200).json({
@@ -80,7 +82,16 @@ const insertContentByFile = async (req, res, next) => {
     const { chapterId } = req.params
     const videoBuffer = req.file.buffer
     const video = req.file
-    console.log(contentTitle)
+
+    const chapterData = await Chapter.findOne({
+      where: {
+        id: chapterId,
+      },
+    })
+
+    if (chapterData === null) {
+      return next(new ApiError('Chapter data is not found!', 404))
+    }
 
     const timeScale = videoBuffer.readUInt32BE(
       videoBuffer.indexOf(Buffer.from('mvhd')) + 16
@@ -246,7 +257,7 @@ const updateContentByFile = async (req, res, next) => {
       }
 
       res.status(200).json({
-        status: 'success',
+        status: 'Success',
         data: {
           updateContent: {
             updateContent,
