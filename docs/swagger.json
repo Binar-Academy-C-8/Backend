@@ -996,6 +996,91 @@
         }
       }
     },
+    "/user": {
+      "get": {
+        "tags": ["Users"],
+        "summary": "Return hasil hit api getAllUser untuk admin",
+        "description": "ini API untuk melihat semua user",
+        "responses": {
+          "200": {
+            "description": "Sukses get users",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "Success"
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "allUser": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "id": { "type": "integer", "example": 1 },
+                              "name": {
+                                "type": "string",
+                                "example": "adminc8"
+                              },
+                              "phoneNumber": {
+                                "type": "string",
+                                "example": "+628236576342564"
+                              },
+                              "country": {
+                                "type": "string",
+                                "example": "Indonesia"
+                              },
+                              "city": {
+                                "type": "string",
+                                "example": "Jakarta"
+                              },
+                              "role": { "type": "string", "example": "admin" },
+                              "image": { "type": "string", "example": "" },
+                              "createdAt": {
+                                "type": "string",
+                                "example": "2023-12-01T06:57:34.253Z"
+                              },
+                              "updatedAt": {
+                                "type": "string",
+                                "example": "2023-12-01T06:57:34.253Z"
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Error dari server",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "Failed"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Internal server error"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/user/update/{id}": {
       "patch": {
         "tags": ["Users"],
