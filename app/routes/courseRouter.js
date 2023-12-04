@@ -13,7 +13,7 @@ router.post(
   multer.single('image'),
   courseController.createCourse
 )
-router.get('/:id', checkCourseId, courseController.getOneCourse)
+router.get('/:id', authMe, checkCourseId, courseController.getOneCourse)
 router.patch(
   '/update/:id',
   authMe,

@@ -11,30 +11,47 @@ module.exports = {
       },
       courseCode: {
         type: Sequelize.STRING,
+        allowNull: false,
       },
-      courseName: {
-        type: Sequelize.STRING,
-      },
-      image: {
-        type: Sequelize.STRING,
-      },
-      courseType: {
-        type: Sequelize.ENUM(['free', 'premium']),
-      },
-      courseLevel: {
-        type: Sequelize.ENUM(['beginner', 'intermediate', 'advance']),
-      },
-      aboutCourse: {
-        type: Sequelize.STRING,
-      },
-      intendedFor: {
-        type: Sequelize.STRING,
-      },
-      courseStatus: {
-        type: Sequelize.ENUM(['inProgress', 'completed']),
+      userId: {
+        type: Sequelize.INTEGER,
+        allowNull: false,
       },
       categoryId: {
         type: Sequelize.INTEGER,
+        allowNull: false,
+      },
+      courseName: {
+        type: Sequelize.STRING,
+        allowNull: false,
+      },
+      image: {
+        type: Sequelize.STRING,
+        defaultValue:
+          'https://ik.imagekit.io/xphqqd3ms/image(1).png?updatedAt=1701517286117',
+        allowNull: false,
+      },
+      courseType: {
+        type: Sequelize.ENUM(['free', 'premium']),
+        allowNull: false,
+      },
+      courseLevel: {
+        type: Sequelize.ENUM(['beginner', 'intermediate', 'advanced']),
+        allowNull: false,
+      },
+      aboutCourse: {
+        type: Sequelize.TEXT,
+      },
+      intendedFor: {
+        type: Sequelize.TEXT,
+      },
+      coursePrice: {
+        type: Sequelize.FLOAT,
+      },
+      isPromo: {
+        type: Sequelize.BOOLEAN,
+        allowNull: false,
+        defaultValue: false,
       },
       createdAt: {
         allowNull: false,
