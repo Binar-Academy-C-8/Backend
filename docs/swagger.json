@@ -1438,7 +1438,7 @@
                           "example": "For beginner who want to be Profesional"
                         },
                         "coursePrice": {
-                          "type": "float",
+                          "type": "number",
                           "example": 0
                         },
                         "updatedAt": {
@@ -1545,7 +1545,7 @@
                     "example": "free"
                   },
                   "coursePrice": {
-                    "type": "float",
+                    "type": "number",
                     "example": 0
                   },
                   "courseLevel": {
@@ -1592,7 +1592,7 @@
                     "example": "free"
                   },
                   "coursePrice": {
-                    "type": "float",
+                    "type": "number",
                     "example": "0"
                   },
                   "courseLevel": {
@@ -1821,7 +1821,7 @@
                           "example": "For beginner who want to be Profesional"
                         },
                         "coursePrice": {
-                          "type": "float",
+                          "type": "number",
                           "example": 0
                         },
                         "updatedAt": {
@@ -2008,7 +2008,7 @@
                     "example": "free"
                   },
                   "coursePrice": {
-                    "type": "float",
+                    "type": "number",
                     "example": "0"
                   },
                   "courseLevel": {
@@ -2055,7 +2055,7 @@
                     "example": "free"
                   },
                   "coursePrice": {
-                    "type": "float",
+                    "type": "number",
                     "example": "0"
                   },
                   "courseLevel": {
