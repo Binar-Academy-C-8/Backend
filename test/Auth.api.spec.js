@@ -15,6 +15,7 @@ describe("API Register", () => {
       city: "Bandung"
     };
     const response = await request(app).post("/api/v1/auth/member/register").send(user);
+    console.log(response.text)
     expect(response.statusCode).toBe(200);
     expect(response.text.status).toBe('Register successful');
   });
