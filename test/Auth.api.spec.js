@@ -14,7 +14,7 @@ describe("API Register", () => {
       country: "Indonesia",
       city: "Bandung"
     };
-    const response = await request(app).post("/api/register").send(user);
+    const response = await request(app).post("/api/v1/auth/member/register").send(user);
     expect(response.statusCode).toBe(200);
   });
   it("Failed register because user password minimum not match", async () => {
@@ -26,7 +26,7 @@ describe("API Register", () => {
       country: "Indonesia",
       city: "Bandung"
     };
-    const response = await request(app).post("/api/register").send(user);
+    const response = await request(app).post("/api/v1/auth/member/register").send(user);
     expect(response.statusCode).toBe(400);
   });
   it("Failed register because email already exist", async () => {
@@ -38,7 +38,7 @@ describe("API Register", () => {
       country: "Indonesia",
       city: "Bandung"
     };
-    const response = await request(app).post("/api/register").send(user);
+    const response = await request(app).post("/api/v1/auth/member/register").send(user);
     expect(response.statusCode).toBe(400);
   });
 });
