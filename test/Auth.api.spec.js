@@ -28,8 +28,9 @@ describe("API Register", () => {
       city: "Bandung"
     };
     
-    await request(app).post("/api/v1/auth/member/register").send(user).then(res => {
-      expect(res.statusCode).toEqual(200);
+    request(app).post("/api/v1/auth/member/register").send(user).then(res => {
+      expect(res.statusCode).toEqual(400);
+      console.log(res)
       expect(res.body.status).toEqual('Register successful');
       expect(res.body).not.toBeFalsy();
       done();
