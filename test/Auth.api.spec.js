@@ -16,6 +16,7 @@ describe("API Register", () => {
     };
     const response = await request(app).post("/api/v1/auth/member/register").send(user);
     expect(response.statusCode).toBe(200);
+    expect(response.text.status).toBe('Register successful');
   });
   it("Failed register because user password minimum not match", async () => {
     const user = {
@@ -28,7 +29,7 @@ describe("API Register", () => {
     };
     const response = await request(app).post("/api/v1/auth/member/register").send(user);
     expect(response.statusCode).toBe(400);
-    expect(response.message).toBe('Minimum password must be 8 characters')
+    expect(response.text.message).toBe('Minimum password must be 8 characters')
   });
   it("Failed register because email already exist", async () => {
     const user = {
@@ -41,6 +42,6 @@ describe("API Register", () => {
     };
     const response = await request(app).post("/api/v1/auth/member/register").send(user);
     expect(response.statusCode).toBe(400);
-    expect(response.message).toBe('User email already taken')
+    expect(response.text.message).toBe('User email already taken')
   });
 });
