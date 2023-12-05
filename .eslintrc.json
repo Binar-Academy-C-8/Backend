@@ -9,6 +9,7 @@
     "ecmaVersion": "latest"
   },
   "rules": {
-    "linebreak-style": "off"
+    "linebreak-style": "off",
+    "semi": [2, "never"]
   }
 }

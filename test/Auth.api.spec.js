@@ -27,8 +27,8 @@ describe("API Register", () => {
       city: "Bandung"
     };
     const response = await request(app).post("/api/v1/auth/member/register").send(user);
-    console.log(response)
     expect(response.statusCode).toBe(400);
+    expect(response.message).toBe('Minimum password must be 8 characters')
   });
   it("Failed register because email already exist", async () => {
     const user = {
@@ -40,7 +40,7 @@ describe("API Register", () => {
       city: "Bandung"
     };
     const response = await request(app).post("/api/v1/auth/member/register").send(user);
-    console.log(response)
     expect(response.statusCode).toBe(400);
+    expect(response.message).toBe('User email already taken')
   });
 });

@@ -11,7 +11,7 @@
     "db:seed": "sequelize db:seed:all",
     "db:migrate:undo": "sequelize db:migrate:undo:all",
     "db:drop": "sequelize db:drop",
-    "lint": "eslint",
+    "lint": "eslint .",
     "fixlint": "eslint . --fix",
     "test": "jest --setupFiles dotenv/config --coverage --colors --verbose --detectOpenHandles --forceExit"
   },
