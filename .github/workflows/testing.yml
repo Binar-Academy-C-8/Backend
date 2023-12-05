@@ -23,7 +23,7 @@ jobs:
       PORT: 3000
       JWT_SECRET: rahasia
       JWT_EXPIREDIN: 1d
-
+      PASSWORD_HASH: admin123
     steps:
       - name: Get code
         uses: actions/checkout@v3
