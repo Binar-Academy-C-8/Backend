@@ -16,8 +16,9 @@ describe("API Register", () => {
     };
     const response = await request(app).post("/api/v1/auth/member/register").send(user);
     expect(response.statusCode).toBe(200);
-    expect(response.text.status).toBe('Register successful');
+    expect(response.body.status).toBe('Register successful');
   });
+
   it("Failed register because user password minimum not match", async () => {
     const user = {
       email: "imamtaufiq333@gmail.com",
@@ -27,14 +28,9 @@ describe("API Register", () => {
       country: "Indonesia",
       city: "Bandung"
     };
-    
-    request(app).post("/api/v1/auth/member/register").send(user).then(res => {
-      expect(res.statusCode).toEqual(400);
-      console.log(res)
-      expect(res.body.status).toEqual('Register successful');
-      expect(res.body).not.toBeFalsy();
-      done();
-    })
+    const response = await request(app).post("/api/v1/auth/member/register").send(user);
+    expect(response.statusCode).toBe(400);
+    expect(response.body.message).toBe('Minimum password must be 8 characters')
   });
 
   it("Failed register because email already exist", async () => {
@@ -48,5 +44,6 @@ describe("API Register", () => {
     };
     const response = await request(app).post("/api/v1/auth/member/register").send(user);
     expect(response.statusCode).toBe(400);
+    expect(response.body.message).toBe('User email already taken')
   });
 });
