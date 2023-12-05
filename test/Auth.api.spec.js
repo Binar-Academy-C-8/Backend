@@ -7,26 +7,36 @@ require("dotenv").config();
 describe("API Register", () => {
   it("success register", async () => {
     const user = {
-      email: faker.internet.email(),
+      email: "imamtaufiq133@gmail.com",
       password: "12345678",
-      firstName: "reinhart00",
-      lastName: "jims",
-      NIK: "012345678",
+      name: "imam",
       phoneNumber: "01234567",
-      address: "rumahku dimana no 10",
+      country: "Indonesia",
+      city: "Bandung"
     };
     const response = await request(app).post("/api/register").send(user);
-    expect(response.statusCode).toBe(201);
+    expect(response.statusCode).toBe(200);
   });
-  it("Failed register", async () => {
+  it("Failed register because user password minimum not match", async () => {
     const user = {
-      email: "reinhart0@gmail.com",
-      password: "",
-      firstName: "reinhart00",
-      lastName: "jims",
-      NIK: "012345678",
+      email: "imamtaufiq333@gmail.com",
+      password: "123",
+      name: "imam",
       phoneNumber: "01234567",
-      address: "rumahku dimana no 10",
+      country: "Indonesia",
+      city: "Bandung"
+    };
+    const response = await request(app).post("/api/register").send(user);
+    expect(response.statusCode).toBe(400);
+  });
+  it("Failed register because email already exist", async () => {
+    const user = {
+      email: "imamtaufiq133@gmail.com",
+      password: "1234567890",
+      name: "imam",
+      phoneNumber: "01234567",
+      country: "Indonesia",
+      city: "Bandung"
     };
     const response = await request(app).post("/api/register").send(user);
     expect(response.statusCode).toBe(400);
