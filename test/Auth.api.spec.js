@@ -27,6 +27,7 @@ describe("API Register", () => {
       city: "Bandung"
     };
     const response = await request(app).post("/api/v1/auth/member/register").send(user);
+    console.log(response)
     expect(response.statusCode).toBe(400);
   });
   it("Failed register because email already exist", async () => {
@@ -39,6 +40,7 @@ describe("API Register", () => {
       city: "Bandung"
     };
     const response = await request(app).post("/api/v1/auth/member/register").send(user);
+    console.log(response)
     expect(response.statusCode).toBe(400);
   });
 });
