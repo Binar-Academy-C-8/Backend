@@ -9,5 +9,5 @@ databaseValidation()
 const { PORT = 3000, HOST } = process.env
 
 app.listen(PORT, () => {
-  console.log(`Local is running : http://localhost:${PORT}`)
+  console.log(`Local is running : http://${HOST}:${PORT}`)
 })
