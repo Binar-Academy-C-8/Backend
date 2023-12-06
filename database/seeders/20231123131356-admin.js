@@ -29,6 +29,16 @@ module.exports = {
         createdAt: new Date(),
         updatedAt: new Date(),
       },
+      {
+        name: 'imam',
+        phoneNumber: '+628236576342564',
+        country: 'Indonesia',
+        city: 'Jakarta',
+        role: 'member',
+        image: '',
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      },
     ])
 
     const adminPassword = process.env.PASSWORD_HASH
@@ -49,6 +59,13 @@ module.exports = {
         email: 'memberc8@gmail.com',
         password: hashedPassword,
         userId: users[1].id,
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      },
+      {
+        email: 'imam.user@gmail.com',
+        userId: users[2].id,
+        verified: true,
         createdAt: new Date(),
         updatedAt: new Date(),
       },
