@@ -64,6 +64,7 @@ module.exports = {
       },
       {
         email: 'imam.user@gmail.com',
+        password: hashedPassword,
         userId: users[2].id,
         verified: true,
         createdAt: new Date(),

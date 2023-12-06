@@ -71,7 +71,7 @@ describe('API Login', () => {
 
   it('Failed login because user not verified', async () => {
     const user = {
-      email: 'imamtaufiq333@gmail.com',
+      email: 'imamtaufiq133@gmail.com',
       password: '123',
     }
     const response = await request(app)
