@@ -78,7 +78,7 @@ const register = async (req, res, next) => {
     }
     await sendEmail(mailOptions)
 
-    res.status(200).json({
+    res.status(201).json({
       status: 'Registrasi berhasil',
       data: {
         email,

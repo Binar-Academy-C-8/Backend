@@ -60,4 +60,33 @@ const createTransaction = async (req, res, next) => {
   }
 };
 
+export const paymentCallback = async (req, res, next) => {
+  const { order_id, status_code, gross_amount, signature_key, transaction_status } = req.body;
+
+  try {
+    const serverKey = SERVER_KEY;
+    const hashed = crypto
+      .createHash("sha512")
+      .update(order_id + status_code + gross_amount + serverKey)
+      .digest("hex");
+
+    if (hashed === signature_key) {
+      if (transaction_status === "settlement") {
+        const transaction = await Transaction.findOne({ courseId: order_id });
+        if (!transaction) return next(new ApiError("Transaksi tidak ada", 404));
+
+        // Update status transaksi sesuai dengan data callback
+        transaction.status = "paid";
+        await transaction.save();
+      }
+    }
+
+    res.status(200).json({
+      message: "success",
+    });
+  } catch (error) {
+    next(new ApiError("Failed to process payment callback", 500));
+  }
+};
+
 module.exports = { createTransaction };
