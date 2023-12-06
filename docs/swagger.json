@@ -1245,7 +1245,7 @@
     "/course": {
       "get": {
         "tags": ["Course"],
-        "summary": "Return hasil hit api course untuk user",
+        "summary": "Return hasil hit api data semua course untuk user",
         "description": "ini API untuk melihat semua course",
         "parameters": [
           {
@@ -1287,7 +1287,7 @@
         ],
         "responses": {
           "200": {
-            "description": "success find all course",
+            "description": "sukses menampilkan semua kursus",
             "content": {
               "application/json": {
                 "schema": {
@@ -1318,7 +1318,7 @@
                         },
                         "courseName": {
                           "type": "string",
-                          "example": "UI/UX is easy"
+                          "example": "UI/UX course for beginner"
                         },
                         "image": {
                           "type": "string",
@@ -1338,7 +1338,7 @@
                         },
                         "intendedFor": {
                           "type": "string",
-                          "example": "For beginner who want to be Profesional"
+                          "example": "Untuk pemula yang ingin menjadi profesional"
                         },
                         "coursePrice": {
                           "type": "float",
@@ -1352,7 +1352,7 @@
                           "type": "string",
                           "example": "2023-11-28T06:25:24.446Z"
                         },
-                        "Category": {
+                        "category": {
                           "type": "string",
                           "example": "UI/UX Design"
                         },
@@ -1376,7 +1376,7 @@
             }
           },
           "400": {
-            "description": "bad request from user",
+            "description": "bad request dari user",
             "content": {
               "application/json": {
                 "schema": {
@@ -1388,7 +1388,7 @@
                     },
                     "message": {
                       "type": "string",
-                      "example": "please fill order_by query parameter with asc or desc"
+                      "example": "tolong isi query parameter order_by dengan asc atau desc"
                     }
                   }
                 }
@@ -1396,7 +1396,7 @@
             }
           },
           "500": {
-            "description": "error from server",
+            "description": "Kesalahan dari server",
             "content": {
               "application/json": {
                 "schema": {
@@ -1441,7 +1441,7 @@
                   },
                   "courseName": {
                     "type": "string",
-                    "example": "Binar Beginner UI/UX "
+                    "example": "UI/UX course for beginner"
                   },
                   "courseType": {
                     "type": "string",
@@ -1461,7 +1461,7 @@
                   },
                   "intendedFor": {
                     "type": "string",
-                    "example": "For beginner who want to be Profesional"
+                    "example": "Untuk pemula yang ingin menjadi profesional"
                   },
                   "courseStatus": {
                     "type": "string",
@@ -1488,7 +1488,7 @@
                   },
                   "courseName": {
                     "type": "string",
-                    "example": "Binar Beginner UI/UX "
+                    "example": "UI/UX course for beginner"
                   },
                   "courseType": {
                     "type": "string",
@@ -1508,7 +1508,7 @@
                   },
                   "intendedFor": {
                     "type": "string",
-                    "example": "For beginner who want to be Profesional"
+                    "example": "Untuk pemula yang ingin menjadi profesional"
                   },
                   "courseStatus": {
                     "type": "string",
@@ -1622,7 +1622,7 @@
                     },
                     "message": {
                       "type": "object",
-                      "example": "Token doesn't exist"
+                      "example": "Token tidak ada"
                     }
                   }
                 }
@@ -1630,7 +1630,7 @@
             }
           },
           "500": {
-            "description": "Error from server",
+            "description": "Kesalahan dari server",
             "content": {
               "application/json": {
                 "schema": {
@@ -1657,6 +1657,11 @@
         "tags": ["Course"],
         "summary": "Return hasil hit api course untuk mendapatkan data satu course by id",
         "description": "ini API untuk melihat semua course",
+        "security": [
+          {
+            "bearerToken": []
+          }
+        ],
         "parameters": [
           {
             "name": "courseId",
@@ -1701,7 +1706,7 @@
                         },
                         "courseName": {
                           "type": "string",
-                          "example": "UI/UX is easy"
+                          "example": "UI/UX course for beginner"
                         },
                         "image": {
                           "type": "string",
@@ -1721,7 +1726,7 @@
                         },
                         "intendedFor": {
                           "type": "string",
-                          "example": "For beginner who want to be Profesional"
+                          "example": "Untuk pemula yang ingin menjadi profesional"
                         },
                         "coursePrice": {
                           "type": "float",
@@ -1743,7 +1748,7 @@
                           "type": "string",
                           "example": "adminc8"
                         },
-                        "Chapters": {
+                        "chapters": {
                           "type": "array",
                           "items": {
                             "type": "object",
@@ -1768,7 +1773,7 @@
                                 "type": "string",
                                 "example": "2023-11-28T06:25:24.446Z"
                               },
-                              "Contents": {
+                              "contents": {
                                 "type": "array",
                                 "items": {
                                   "type": "object",
@@ -1840,7 +1845,7 @@
                     },
                     "message": {
                       "type": "string",
-                      "example": "course not found"
+                      "example": "kursus dengan id n tidak ditemukan"
                     }
                   }
                 }
@@ -1892,7 +1897,7 @@
           }
         ],
         "requestBody": {
-          "description": "ini request body untuk sukses update data course",
+          "description": "ini request body untuk sukses memperbarui data course",
           "content": {
             "application/json": {
               "schema": {
@@ -1904,7 +1909,7 @@
                   },
                   "courseName": {
                     "type": "string",
-                    "example": "Binar Beginner UI/UX "
+                    "example": "UI/UX course for beginner"
                   },
                   "courseType": {
                     "type": "string",
@@ -1924,7 +1929,7 @@
                   },
                   "intendedFor": {
                     "type": "string",
-                    "example": "For beginner who want to be Profesional"
+                    "example": "Untuk pemula yang ingin menjadi profesional"
                   },
                   "courseStatus": {
                     "type": "string",
@@ -1951,7 +1956,7 @@
                   },
                   "courseName": {
                     "type": "string",
-                    "example": "Binar Beginner UI/UX "
+                    "example": "UI/UX course for beginner"
                   },
                   "courseType": {
                     "type": "string",
@@ -1971,7 +1976,7 @@
                   },
                   "intendedFor": {
                     "type": "string",
-                    "example": "For beginner who want to be Profesional"
+                    "example": "Untuk pemula yang ingin menjadi profesional"
                   },
                   "courseStatus": {
                     "type": "string",
@@ -1992,7 +1997,7 @@
         },
         "responses": {
           "200": {
-            "description": "Sukses menampilkan course",
+            "description": "Sukses menampilkan course yang diperbarui",
             "content": {
               "application/json": {
                 "schema": {
@@ -2035,7 +2040,7 @@
                         },
                         "intendedFor": {
                           "type": "string",
-                          "example": "For beginner who want to be Profesional"
+                          "example": "Untuk pemula yang ingin menjadi profesional"
                         },
                         "categoryId": {
                           "type": "integer",
@@ -2089,7 +2094,7 @@
                     },
                     "message": {
                       "type": "object",
-                      "example": "Token doesn't exist"
+                      "example": "Token tidak ada"
                     }
                   }
                 }
@@ -2109,7 +2114,7 @@
                     },
                     "message": {
                       "type": "string",
-                      "example": "course not found"
+                      "example": "kursus dengan id n tidak ditemukan"
                     }
                   }
                 }
@@ -2174,7 +2179,7 @@
                     },
                     "message": {
                       "type": "object",
-                      "example": "Deleted successfully"
+                      "example": "berhasil menghapus course dengan id n"
                     }
                   }
                 }
@@ -2182,7 +2187,7 @@
             }
           },
           "400": {
-            "description": "id tidak ditemukan",
+            "description": "Course tidak ada",
             "content": {
               "application/json": {
                 "schema": {
@@ -2194,7 +2199,7 @@
                     },
                     "message": {
                       "type": "object",
-                      "example": "Id does not exist"
+                      "example": "kursus dengan id n tidak ditemukan"
                     }
                   }
                 }
@@ -2214,7 +2219,7 @@
                     },
                     "message": {
                       "type": "object",
-                      "example": "Token doesn't exist"
+                      "example": "Token tidak ada"
                     }
                   }
                 }
@@ -2222,7 +2227,7 @@
             }
           },
           "500": {
-            "description": "Token invalid",
+            "description": "Error dari server",
             "content": {
               "application/json": {
                 "schema": {
@@ -2234,7 +2239,7 @@
                     },
                     "message": {
                       "type": "object",
-                      "example": "Invalid signature"
+                      "example": "Internal server error"
                     }
                   }
                 }

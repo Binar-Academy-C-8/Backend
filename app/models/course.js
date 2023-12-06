@@ -15,12 +15,14 @@ module.exports = (sequelize, DataTypes) => {
           name: 'categoryId',
           allowNull: false,
         },
+        as: 'category',
       })
       Course.hasMany(models.Chapter, {
         foreignKey: {
           name: 'courseId',
           allowNull: false,
         },
+        as: 'chapters',
       })
     }
   }

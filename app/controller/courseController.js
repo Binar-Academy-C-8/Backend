@@ -22,7 +22,7 @@ const getAllCourse = async (req, res, next) => {
     if (type) {
       const types = ['free', 'premium']
       if (!types.includes(type)) {
-        next(new ApiError('invalid course type input', 400))
+        next(new ApiError('tipe kursus tidak valid', 400))
       }
       filter.courseType = type.toLowerCase()
     }
@@ -30,7 +30,7 @@ const getAllCourse = async (req, res, next) => {
     if (level) {
       const levels = ['beginner', 'intermediate', 'advanced']
       if (!levels.includes(level)) {
-        next(new ApiError('invalid course level input', 400))
+        next(new ApiError('level tidak valid', 400))
         return
       }
       filter.courseLevel = level.toLowerCase()
@@ -40,7 +40,7 @@ const getAllCourse = async (req, res, next) => {
       if (!['asc', 'desc'].includes(order_by.toLowerCase())) {
         next(
           new ApiError(
-            'please fill order_by query parameter with asc or desc',
+            'tolong isi query parameter order_by dengan asc atau desc',
             400
           )
         )
@@ -51,7 +51,10 @@ const getAllCourse = async (req, res, next) => {
 
     const getCourse = await Course.findAll({
       where: { ...filter },
-      include: [{ model: Category }, { model: User, as: 'courseBy' }],
+      include: [
+        { model: Category, as: 'category' },
+        { model: User, as: 'courseBy' },
+      ],
       order,
     })
 
@@ -96,7 +99,7 @@ const getAllCourse = async (req, res, next) => {
         return {
           ...course.toJSON(),
           courseBy: course.toJSON().courseBy.name,
-          Category: course.toJSON().Category.categoryName,
+          category: course.toJSON().category.categoryName,
           durationPerCourseInMinutes: Math.round(totalDurationPerCourse),
           modulePerCourse,
         }
@@ -116,9 +119,13 @@ const getOneCourse = async (req, res, next) => {
   try {
     const course = await Course.findByPk(req.params.id, {
       include: [
-        { model: Category },
+        { model: Category, as: 'category' },
         { model: User, as: 'courseBy' },
-        { model: Chapter, include: [{ model: Content }] },
+        {
+          model: Chapter,
+          as: 'chapters',
+          include: [{ model: Content, as: 'contents' }],
+        },
       ],
     })
     const modulePerCourse = await Chapter.count({
@@ -151,10 +158,8 @@ const getOneCourse = async (req, res, next) => {
     const totalCourseDuration = chapterDuration.reduce((acc, curr) => {
       return acc + curr
     }, 0)
-
     const objCourse = course.toJSON()
-
-    const Chapters = objCourse.Chapters.map((chapter, i) => {
+    const resChapter = objCourse.chapters.map((chapter, i) => {
       return {
         ...chapter,
         durationPerChapterInMinutes: Math.round(chapterDuration[i]),
@@ -166,9 +171,9 @@ const getOneCourse = async (req, res, next) => {
       data: {
         ...course.toJSON(),
         courseBy: course.toJSON().courseBy.name,
-        Category: course.toJSON().Category.categoryName,
+        category: course.toJSON().category.categoryName,
         modulePerCourse,
-        Chapters,
+        chapters: resChapter,
         durationPerCourseInMinutes: Math.round(totalCourseDuration),
       },
     })
@@ -238,7 +243,7 @@ const updateCourse = async (req, res, next) => {
 
     res.status(200).json({
       status: 'success',
-      message: `success update course with id ${id}`,
+      message: `berhasil memperbarui data kursus dengan id ${id}`,
       data: updatedCourse[1],
     })
   } catch (err) {
@@ -259,7 +264,7 @@ const deleteCourse = async (req, res, next) => {
 
     res.status(201).json({
       status: 'success',
-      message: `success delete course with id ${id}`,
+      message: `berhasil menghapus course dengan id ${id}`,
     })
   } catch (err) {
     next(new ApiError(err.message, 500))
