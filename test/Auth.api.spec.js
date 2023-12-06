@@ -111,3 +111,25 @@ describe('API Login', () => {
     expect(response.body.message).toBe('Incorrect password')
   })
 })
+
+describe('API Auht Me', () => {
+  it('success get profile by token', async () => {
+    const user = {
+      email: 'imam.user@gmail.com',
+      password: 'admin123',
+    }
+    const response = await request(app)
+      .post('/api/v1/auth/member/login')
+      .send(user)
+    const userToken = response.body.data.token
+    console.log(userToken)
+
+    const responseAuthMe = await request(app)
+      .post('/api/v1/auth/member/login')
+      .set(`Authorization`, `Bearer ${userToken}`)
+      .send(user)
+    console.log(responseAuthMe.body)
+    expect(responseAuthMe.statusCode).toBe(200)
+    expect(responseAuthMe.body.status).toBe('Success')
+  })
+})
