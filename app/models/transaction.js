@@ -15,14 +15,24 @@ module.exports = (sequelize, DataTypes) => {
           allowNull: false,
         },
       })
+      this.belongsTo(models.User, {
+        foreignKey: {
+          name: 'userId',
+          // allowNull: false,
+        },
+      })
     }
   }
   Transaction.init(
     {
+      orderId: DataTypes.INTEGER,
       courseName: DataTypes.STRING,
       ppn: DataTypes.FLOAT,
       totalPrice: DataTypes.INTEGER,
-      paymentStatus: DataTypes.BOOLEAN,
+      paymentStatus: {
+        type: DataTypes.ENUM(['paid', 'unpaid']),
+        defaultValue: 'unpaid',
+      },
       paymentMethod: DataTypes.ENUM(['credit', 'debit']),
       userId: DataTypes.INTEGER,
       courseId: DataTypes.INTEGER,

@@ -1,92 +1,122 @@
-const Midtrans = require("midtrans-client");
-const { Transaction, Course } = require('../models');
-const { CLIENT_KEY, SERVER_KEY } = process.env;
-const ApiError = require('../../utils/apiError');
+const Midtrans = require('midtrans-client')
+const { Transaction, Course } = require('../models')
+const { CLIENT_KEY, SERVER_KEY, PUBLIC_API } = process.env
+const ApiError = require('../../utils/apiError')
+const axios = require('axios')
+const crypto = require('crypto')
+const mathRandom = require('../../utils/generatedOTP')
 
-const createTransaction = async (req, res, next) => {
-  const { courseId } = req.params;
-  const { totalPrice } = req.body;
+const createTransactionSnap = async (req, res, next) => {
+  const { courseId } = req.params
 
-  const course = await Course.findByPk(courseId);
-  console.log(course);
+  const course = await Course.findByPk(courseId)
 
   try {
-    const createdTransactionData = await Transaction.create({
-      courseName: course.courseName,
-      courseId,
-      totalPrice,
-    });
+    const quantity = 1
 
-    const quantity = 1;
-
-    // Menginisialisasi objek Midtrans Snap
     let snap = new Midtrans.Snap({
       isProduction: false,
       serverKey: SERVER_KEY,
       clientKey: CLIENT_KEY,
-    });
+    })
 
-    // Membuat transaksi Midtrans
-    const transaction = await snap.createTransaction({
+    const random = await mathRandom()
+
+    let data = {
       item_details: [
         {
-          id: createdTransactionData.courseId,
-          name: createdTransactionData.courseName,
-          price: createdTransactionData.totalPrice,
+          id: course.id,
+          name: course.courseName,
+          price: course.coursePrice,
           quantity,
-        }
+        },
       ],
       transaction_details: {
-        order_id: createdTransactionData.courseId,
-        gross_amount: createdTransactionData.totalPrice * quantity,
+        order_id: random,
+        gross_amount: course.coursePrice * quantity,
       },
-      // customer_details: {
-      //   first_name: createdTransactionData.courseName
-      // }
-    });
+      customer_details: {
+        first_name: 'nirwan',
+        email: 'arrachmann@gmail.com',
+        phone: '+628123456',
+      },
+    }
 
-    // Mengembalikan response dengan status 201 dan data transaksi
-    // const dataTransaction = {
-    //   response: JSON.stringify(transaction),
-    // };
+    const transaction = await snap.createTransaction(data)
+
+    const createdTransactionData = await Transaction.create({
+      courseName: course.courseName,
+      courseId: course.id,
+      totalPrice: course.coursePrice,
+      orderId: data.transaction_details.order_id,
+    })
+
     res.status(201).json({
       status: 'success',
       url: transaction.redirect_url,
       token: transaction.token,
-      course
-    });
+      course,
+      orderId: data.transaction_details.order_id,
+    })
   } catch (err) {
-    next(new ApiError(err.message));
+    next(new ApiError(`Gagal membuat pembayaran: ${err.message}`, 500))
   }
-};
+}
 
-export const paymentCallback = async (req, res, next) => {
-  const { order_id, status_code, gross_amount, signature_key, transaction_status } = req.body;
+const paymentCallback = async (req, res, next) => {
+  const {
+    order_id,
+    status_code,
+    gross_amount,
+    transaction_status,
+    signature_key,
+  } = req.body
 
   try {
-    const serverKey = SERVER_KEY;
+    const serverKey = SERVER_KEY
+
     const hashed = crypto
-      .createHash("sha512")
+      .createHash('sha512')
       .update(order_id + status_code + gross_amount + serverKey)
-      .digest("hex");
+      .digest('hex')
 
     if (hashed === signature_key) {
-      if (transaction_status === "settlement") {
-        const transaction = await Transaction.findOne({ courseId: order_id });
-        if (!transaction) return next(new ApiError("Transaksi tidak ada", 404));
+      if (
+        transaction_status == 'settlement' ||
+        transaction_status == 'capture'
+      ) {
+        const payment = await Transaction.findOne({
+          where: { orderId: order_id },
+        })
+        if (!payment) return next(new ApiError('Transaksi tidak ada', 404))
 
-        // Update status transaksi sesuai dengan data callback
-        transaction.status = "paid";
-        await transaction.save();
+        await payment.update({ paymentStatus: 'paid' })
       }
     }
 
     res.status(200).json({
-      message: "success",
-    });
-  } catch (error) {
-    next(new ApiError("Failed to process payment callback", 500));
+      message: 'success',
+    })
+  } catch (err) {
+    next(new ApiError(`Gagal membuat pembayaran: ${err.message}`, 500))
   }
-};
+}
 
-module.exports = { createTransaction };
+const getPaymentDetail = async (req, res, next) => {
+  const { order_id } = req.params
+
+  try {
+    const payment = await Transaction.findOne({ orderId: order_id })
+    res.status(200).json({
+      payment,
+    })
+  } catch (err) {
+    next(new ApiError(`Gagal membuat pembayaran: ${err.message}`, 500))
+  }
+}
+
+module.exports = {
+  createTransactionSnap,
+  paymentCallback,
+  getPaymentDetail,
+}
