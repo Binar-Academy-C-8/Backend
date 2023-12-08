@@ -9,7 +9,8 @@ const createChapter = async (req, res, next) => {
 
     if (!course) return next(new ApiError('Data course tidak ditemukan', 404));
 
-    if (!chapterTitle) return next(new ApiError('Kolom harus diisi', 400));
+    if (!chapterTitle)
+      return next(new ApiError('Judul chapter harus diisi', 400));
 
     const chapter = await Chapter.create({
       chapterTitle,
@@ -17,7 +18,7 @@ const createChapter = async (req, res, next) => {
     });
 
     res.status(201).json({
-      status: 'success',
+      status: 'Sukses',
       data: {
         chapter,
       },
@@ -81,7 +82,8 @@ const updateChapter = async (req, res, next) => {
     if (!chapterId)
       return next(new ApiError('Data chapter tidak ditemukan'), 404);
 
-    if (!chapterTitle) return next(new ApiError('Kolom harus diisi', 400));
+    if (!chapterTitle)
+      return next(new ApiError('Judul chapter harus diisi', 400));
 
     const chapter = await Chapter.update(
       {

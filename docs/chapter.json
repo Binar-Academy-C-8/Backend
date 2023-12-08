@@ -1,17 +1,20 @@
 {
   "openapi": "3.0.0",
   "info": {
-    "title": "Challenge FSW 2 Chapter 5",
-    "description": "Challenge Chapter 5 - Car Management API",
+    "title": "Documentasi API Belajar",
+    "description": "Ini adalah API untuk aplikasi Belajar",
     "version": "1.0.0"
   },
   "tags": [
     {
-      "name": "Chapters",
+      "name": "Chapter",
       "description": "API untuk Chapter resources"
     }
   ],
   "servers": [
+    {
+      "url": "https://backend-production-f9e7.up.railway.app/api/v1"
+    },
     {
       "url": "http://localhost:9000/api/v1"
     }
@@ -37,7 +40,11 @@
                   "properties": {
                     "status": {
                       "type": "string",
-                      "example": "Success"
+                      "example": "Sukses"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Sukses menambahkan data"
                     },
                     "data": {
                       "type": "object",
@@ -152,7 +159,7 @@
                   "properties": {
                     "status": {
                       "type": "string",
-                      "example": "Success"
+                      "example": "Sukses"
                     },
                     "data": {
                       "type": "object",
@@ -195,11 +202,11 @@
                   "properties": {
                     "status": {
                       "type": "string",
-                      "example": "Failed"
+                      "example": "Gagal"
                     },
                     "message": {
                       "type": "string",
-                      "example": "Id chapter not found"
+                      "example": "Data chapter tidak ditemukan"
                     }
                   }
                 }
@@ -257,7 +264,7 @@
                   "properties": {
                     "status": {
                       "type": "string",
-                      "example": "Success"
+                      "example": "Sukses"
                     },
                     "data": {
                       "type": "object",
@@ -285,11 +292,11 @@
                   "properties": {
                     "status": {
                       "type": "string",
-                      "example": "Failed"
+                      "example": "Gagal"
                     },
                     "message": {
                       "type": "string",
-                      "example": "Field must be required"
+                      "example": "Judul chapter harus diisi"
                     }
                   }
                 }
@@ -305,11 +312,11 @@
                   "properties": {
                     "status": {
                       "type": "string",
-                      "example": "Failed"
+                      "example": "Gagal"
                     },
                     "message": {
                       "type": "string",
-                      "example": "Id course not found"
+                      "example": "Data chapter tidak ditemukan"
                     }
                   }
                 }
@@ -367,11 +374,11 @@
                   "properties": {
                     "status": {
                       "type": "string",
-                      "example": "Success"
+                      "example": "Sukses"
                     },
                     "message": {
                       "type": "string",
-                      "example": "Successfully updated chapter"
+                      "example": "Sukses memperbarui chapter"
                     },
                     "data": {
                       "type": "object",
@@ -399,11 +406,11 @@
                   "properties": {
                     "status": {
                       "type": "string",
-                      "example": "Failed"
+                      "example": "Gagal"
                     },
                     "message": {
                       "type": "string",
-                      "example": "Field must be required"
+                      "example": "Judul chapter harus diisi"
                     }
                   }
                 }
@@ -419,11 +426,11 @@
                   "properties": {
                     "status": {
                       "type": "string",
-                      "example": "Failed"
+                      "example": "Gagal"
                     },
                     "message": {
                       "type": "string",
-                      "example": "Id chapter not found"
+                      "example": "Data chapter tidak ditemukan"
                     }
                   }
                 }
@@ -465,11 +472,11 @@
                   "properties": {
                     "status": {
                       "type": "string",
-                      "example": "Success"
+                      "example": "Sukses"
                     },
                     "message": {
                       "type": "string",
-                      "example": "Successfully deleted chapter"
+                      "example": "Sukses menghapus data"
                     }
                   }
                 }
@@ -485,11 +492,11 @@
                   "properties": {
                     "status": {
                       "type": "string",
-                      "example": "Failed"
+                      "example": "Gagal"
                     },
                     "message": {
                       "type": "string",
-                      "example": "Id chapter not found"
+                      "example": "Data chapter tidak ditemukan"
                     }
                   }
                 }
