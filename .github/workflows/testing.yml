@@ -1,5 +1,6 @@
 name: Lint and Test Before Merge
 on:
+  workflow_dispatch:
   pull_request:
     types: [opened, edited, synchronize]
     branches:
@@ -10,20 +11,20 @@ jobs:
     runs-on: ubuntu-latest
     continue-on-error: true
     env:
-      DB_HOST: roundhouse.proxy.rlwy.net
-      DB_NAME: railway
-      DB_PASSWORD: FB3-C-cBE261Gcaab*66352bdgB5d212
-      DB_PORT: 36206
-      DB_USERNAME: postgres
-      IMAGEKIT_PUBLIC_KEY: public_DVITNf+5XTiO9Y3dKRqIlhuE58Q=
-      IMAGEKIT_PRIVATE_KEY: private_fNqHqD5ocFxgaoj8uWVeiJdXf9s=
-      IMAGEKIT_URL_ENDPOINT: https://ik.imagekit.io/dpmd80fxd
-      AUTH_EMAIL: jacksparrow133333@gmail.com
-      AUTH_PASSWORD: ofwf sdep whgd mrbt
+      DB_HOST: ${{secrets.PGHOST}}
+      DB_NAME: ${{secrets.PGDATABASE}}
+      DB_PASSWORD: ${{secrets.PGPASSWORD}}
+      DB_PORT: ${{secrets.PGPORT}}
+      DB_USERNAME: ${{secrets.PGUSER}}
+      IMAGEKIT_PUBLIC_KEY: ${{secrets.IMAGEKIT_PUBLIC_KEY}}
+      IMAGEKIT_PRIVATE_KEY: ${{secrets.IMAGEKIT_PRIVATE_KEY}}
+      IMAGEKIT_URL_ENDPOINT: ${{secrets.IMAGEKIT_URL_ENDPOINT}}
+      AUTH_EMAIL: ${{secrets.AUTH_EMAIL}}
+      AUTH_PASSWORD: ${{secrets.AUTH_PASSWORD}}
       PORT: 3000
-      JWT_SECRET: rahasia
+      JWT_SECRET: ${{secrets.JWT_SECRET}}
       JWT_EXPIREDIN: 1d
-      PASSWORD_HASH: admin123
+      PASSWORD_HASH: ${{secrets.PASSWORD_HASH}}
     steps:
       - name: Get code
         uses: actions/checkout@v3
