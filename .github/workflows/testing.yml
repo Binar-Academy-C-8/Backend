@@ -1,10 +1,6 @@
 name: Lint and Test Before Merge
 on:
   workflow_dispatch:
-  pull_request:
-    types: [opened, edited, synchronize]
-    branches:
-      - development
 jobs:
   test:
     environment: test
