@@ -105,7 +105,7 @@ const login = async (req, res, next) => {
       return next(new ApiError('Email tidak ditemukan', 404))
     }
     if (user.verified !== true) {
-      return next(new ApiError('Pengguna belum diverifikasi', 401));
+      return next(new ApiError('Pengguna belum diverifikasi', 401))
     }
 
     if (user && bcrypt.compareSync(password, user.password)) {
@@ -181,6 +181,12 @@ const authenticateAdmin = async (req, res, next) => {
 }
 
 const authenticate = async (req, res, next) => {
+  const authData = await Auth.findOne({
+    where: {
+      userId: req.user.id,
+    },
+    include: ['User'],
+  })
   try {
     res.status(200).json({
       status: 'Success',
@@ -191,6 +197,7 @@ const authenticate = async (req, res, next) => {
         phoneNumber: req.user.phoneNumber,
         country: req.user.country,
         city: req.user.city,
+        email: authData.email,
       },
     })
   } catch (err) {

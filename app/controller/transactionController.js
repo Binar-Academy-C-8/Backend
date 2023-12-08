@@ -1,5 +1,5 @@
 const Midtrans = require('midtrans-client')
-const { Transaction, Course } = require('../models')
+const { Transaction, Course, Auth } = require('../models')
 const { CLIENT_KEY, SERVER_KEY, PUBLIC_API } = process.env
 const ApiError = require('../../utils/apiError')
 const axios = require('axios')
@@ -7,11 +7,17 @@ const crypto = require('crypto')
 const mathRandom = require('../../utils/generatedOTP')
 
 const createTransactionSnap = async (req, res, next) => {
-  const { courseId } = req.params
-
-  const course = await Course.findByPk(courseId)
-
   try {
+    const { courseId } = req.params
+
+    const course = await Course.findByPk(courseId)
+    const authData = await Auth.findOne({
+      where: {
+        userId: req.user.id,
+      },
+      include: ['User'],
+    })
+
     const quantity = 1
 
     let snap = new Midtrans.Snap({
@@ -36,9 +42,9 @@ const createTransactionSnap = async (req, res, next) => {
         gross_amount: course.coursePrice * quantity,
       },
       customer_details: {
-        first_name: 'nirwan',
-        email: 'arrachmann@gmail.com',
-        phone: '+628123456',
+        first_name: authData.User.name,
+        email: authData.email,
+        phone: authData.User.phoneNumber,
       },
     }
 
@@ -46,6 +52,7 @@ const createTransactionSnap = async (req, res, next) => {
 
     const createdTransactionData = await Transaction.create({
       courseName: course.courseName,
+      userId: authData.id,
       courseId: course.id,
       totalPrice: course.coursePrice,
       orderId: data.transaction_details.order_id,
@@ -55,8 +62,9 @@ const createTransactionSnap = async (req, res, next) => {
       status: 'success',
       url: transaction.redirect_url,
       token: transaction.token,
-      course,
-      orderId: data.transaction_details.order_id,
+      email: authData.email,
+      createdTransactionData,
+      data,
     })
   } catch (err) {
     next(new ApiError(`Gagal membuat pembayaran: ${err.message}`, 500))
@@ -64,21 +72,24 @@ const createTransactionSnap = async (req, res, next) => {
 }
 
 const paymentCallback = async (req, res, next) => {
-  const {
-    order_id,
-    status_code,
-    gross_amount,
-    transaction_status,
-    signature_key,
-  } = req.body
-
   try {
+    const {
+      order_id,
+      status_code,
+      gross_amount,
+      transaction_status,
+      signature_key,
+    } = req.body
+
     const serverKey = SERVER_KEY
 
     const hashed = crypto
       .createHash('sha512')
       .update(order_id + status_code + gross_amount + serverKey)
       .digest('hex')
+
+    console.log(`hashed = ${hashed}`)
+    console.log(`signatur key = ${signature_key}`)
 
     if (hashed === signature_key) {
       if (
@@ -102,13 +113,26 @@ const paymentCallback = async (req, res, next) => {
   }
 }
 
-const getPaymentDetail = async (req, res, next) => {
-  const { order_id } = req.params
-
+const getAllTransaction = async (req, res, next) => {
   try {
-    const payment = await Transaction.findOne({ orderId: order_id })
+    const transactions = await Transaction.findAll()
     res.status(200).json({
-      payment,
+      status: 'Success',
+      data: {
+        transactions,
+      },
+    })
+  } catch (err) {
+    next(new ApiError(err.message, 500))
+  }
+}
+
+const getPaymentDetail = async (req, res, next) => {
+  try {
+    const { order_id } = req.params
+    const detailTransaction = await Transaction.findOne({ orderId: order_id })
+    res.status(200).json({
+      detailTransaction,
     })
   } catch (err) {
     next(new ApiError(`Gagal membuat pembayaran: ${err.message}`, 500))
@@ -118,5 +142,6 @@ const getPaymentDetail = async (req, res, next) => {
 module.exports = {
   createTransactionSnap,
   paymentCallback,
+  getAllTransaction,
   getPaymentDetail,
 }
