@@ -18,6 +18,9 @@ module.exports = {
       ppn: {
         type: Sequelize.FLOAT,
       },
+      price: {
+        type: Sequelize.INTEGER,
+      },
       totalPrice: {
         type: Sequelize.INTEGER,
       },
@@ -25,7 +28,7 @@ module.exports = {
         type: Sequelize.ENUM(['paid', 'unpaid']),
       },
       paymentMethod: {
-        type: Sequelize.ENUM(['credit', 'debit']),
+        type: Sequelize.STRING,
       },
       userId: {
         type: Sequelize.INTEGER,

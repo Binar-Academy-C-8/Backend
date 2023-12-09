@@ -1,8 +1,7 @@
 const Midtrans = require('midtrans-client')
 const { Transaction, Course, Auth } = require('../models')
-const { CLIENT_KEY, SERVER_KEY, PUBLIC_API } = process.env
+const { CLIENT_KEY, SERVER_KEY } = process.env
 const ApiError = require('../../utils/apiError')
-const axios = require('axios')
 const crypto = require('crypto')
 const mathRandom = require('../../utils/generatedOTP')
 
@@ -18,7 +17,16 @@ const createTransactionSnap = async (req, res, next) => {
       include: ['User'],
     })
 
+    if (!course) {
+      return next(
+        new ApiError(`Course dengan ID: ${courseId} tidak ditemukan`, 404)
+      )
+    }
+
     const quantity = 1
+    const ppnRate = 0.11
+    const ppn = course.coursePrice * ppnRate
+    const totalPrice = course.coursePrice + ppn
 
     let snap = new Midtrans.Snap({
       isProduction: false,
@@ -33,13 +41,13 @@ const createTransactionSnap = async (req, res, next) => {
         {
           id: course.id,
           name: course.courseName,
-          price: course.coursePrice,
+          price: totalPrice,
           quantity,
         },
       ],
       transaction_details: {
         order_id: random,
-        gross_amount: course.coursePrice * quantity,
+        gross_amount: totalPrice * quantity,
       },
       customer_details: {
         first_name: authData.User.name,
@@ -54,7 +62,9 @@ const createTransactionSnap = async (req, res, next) => {
       courseName: course.courseName,
       userId: authData.id,
       courseId: course.id,
-      totalPrice: course.coursePrice,
+      totalPrice: data.transaction_details.gross_amount,
+      ppn: ppn,
+      price: course.coursePrice,
       orderId: data.transaction_details.order_id,
     })
 
@@ -67,7 +77,7 @@ const createTransactionSnap = async (req, res, next) => {
       data,
     })
   } catch (err) {
-    next(new ApiError(`Gagal membuat pembayaran: ${err.message}`, 500))
+    next(new ApiError(err.message, 500))
   }
 }
 
@@ -79,6 +89,7 @@ const paymentCallback = async (req, res, next) => {
       gross_amount,
       transaction_status,
       signature_key,
+      payment_type,
     } = req.body
 
     const serverKey = SERVER_KEY
@@ -87,9 +98,6 @@ const paymentCallback = async (req, res, next) => {
       .createHash('sha512')
       .update(order_id + status_code + gross_amount + serverKey)
       .digest('hex')
-
-    console.log(`hashed = ${hashed}`)
-    console.log(`signatur key = ${signature_key}`)
 
     if (hashed === signature_key) {
       if (
@@ -101,7 +109,10 @@ const paymentCallback = async (req, res, next) => {
         })
         if (!payment) return next(new ApiError('Transaksi tidak ada', 404))
 
-        await payment.update({ paymentStatus: 'paid' })
+        await payment.update({
+          paymentStatus: 'paid',
+          paymentMethod: payment_type,
+        })
       }
     }
 
@@ -109,13 +120,18 @@ const paymentCallback = async (req, res, next) => {
       message: 'success',
     })
   } catch (err) {
-    next(new ApiError(`Gagal membuat pembayaran: ${err.message}`, 500))
+    next(new ApiError(`Gagal melakukan transaksi: ${err.message}`, 500))
   }
 }
 
 const getAllTransaction = async (req, res, next) => {
   try {
     const transactions = await Transaction.findAll()
+
+    if (!transactions) {
+      return next(new ApiError(`Data transaksi kosong`, 404))
+    }
+
     res.status(200).json({
       status: 'Success',
       data: {
@@ -130,12 +146,23 @@ const getAllTransaction = async (req, res, next) => {
 const getPaymentDetail = async (req, res, next) => {
   try {
     const { order_id } = req.params
-    const detailTransaction = await Transaction.findOne({ orderId: order_id })
+    const detailTransaction = await Transaction.findOne({
+      where: { orderId: order_id },
+    })
+    if (!detailTransaction) {
+      return next(
+        new ApiError(
+          `Detail pembayaran dengan ID: ${order_id} tidak ditemukan`,
+          404
+        )
+      )
+    }
+
     res.status(200).json({
       detailTransaction,
     })
   } catch (err) {
-    next(new ApiError(`Gagal membuat pembayaran: ${err.message}`, 500))
+    next(new ApiError(err.message, 500))
   }
 }
 
