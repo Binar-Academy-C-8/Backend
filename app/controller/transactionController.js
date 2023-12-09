@@ -9,6 +9,18 @@ const createTransactionSnap = async (req, res, next) => {
   try {
     const { courseId } = req.params
 
+    const existingTransaction = await Transaction.findOne({
+      where: {
+        userId: req.user.id,
+        courseId: courseId,
+        paymentStatus: 'paid',
+      },
+    })
+
+    if (existingTransaction) {
+      return next(new ApiError('Anda sudah membeli kursus ini sebelumnya', 400))
+    }
+
     const course = await Course.findByPk(courseId)
     const authData = await Auth.findOne({
       where: {
@@ -19,8 +31,15 @@ const createTransactionSnap = async (req, res, next) => {
 
     if (!course) {
       return next(
-        new ApiError(`Course dengan ID: ${courseId} tidak ditemukan`, 404)
+        new ApiError(`Kursus dengan ID: ${courseId} tidak ditemukan`, 404)
       )
+    }
+
+    if (course.coursePrice === 0) {
+      return res.status(200).json({
+        status: 'success',
+        message: 'Kursus ini gratis',
+      })
     }
 
     const quantity = 1
