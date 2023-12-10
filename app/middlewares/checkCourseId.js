@@ -5,7 +5,9 @@ const checkCourseId = async (req, res, next) => {
   try {
     const isCourseExist = await Course.findByPk(req.params.id)
     if (!isCourseExist) {
-      next(new ApiError(`course with id ${req.params.id} not found`, 404))
+      next(
+        new ApiError(`kursus dengan id ${req.params.id} tidak ditemukan`, 404)
+      )
       return
     }
     next()
