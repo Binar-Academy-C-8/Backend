@@ -1,5 +1,5 @@
 'use strict'
-const { Model } = require('sequelize')
+const { Model, INTEGER } = require('sequelize')
 module.exports = (sequelize, DataTypes) => {
   class Course extends Model {
     static associate(models) {
@@ -44,6 +44,7 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.ENUM(['beginner', 'intermediate', 'advanced']),
         allowNull: false,
       },
+      rating: { type: DataTypes.INTEGER },
       aboutCourse: { type: DataTypes.TEXT },
       intendedFor: { type: DataTypes.TEXT },
       coursePrice: { type: DataTypes.FLOAT, allowNull: false },

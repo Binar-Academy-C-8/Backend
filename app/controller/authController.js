@@ -178,6 +178,7 @@ const authenticate = async (req, res, next) => {
     res.status(200).json({
       status: 'Success',
       data: {
+        id: req.user.id,
         name: req.user.name,
         image: req.user.image,
         phoneNumber: req.user.phoneNumber,
@@ -193,7 +194,14 @@ const authenticate = async (req, res, next) => {
 const updateNewPassword = async (req, res, next) => {
   try {
     const { userId } = req.params
-    const { password } = req.body
+    const { password, confirmPassword } = req.body
+
+    if (password !== confirmPassword) {
+      return res.status(400).json({
+        status: 'Failed',
+        message: 'Password tidak sesuai',
+      })
+    }
 
     // Cari data pengguna berdasarkan ID
     const users = await Auth.findOne({
@@ -203,8 +211,11 @@ const updateNewPassword = async (req, res, next) => {
       include: ['User'],
     })
 
-    if (users.verified !== true) {
-      return next(new ApiError('User not verified', 401))
+    if (!users || users.verified !== true) {
+      return res.status(401).json({
+        status: 'Gagal',
+        message: 'Pengguna belum terverifikasi',
+      })
     }
 
     // Hash password baru

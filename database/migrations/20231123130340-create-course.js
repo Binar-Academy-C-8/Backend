@@ -32,12 +32,15 @@ module.exports = {
         allowNull: false,
       },
       courseType: {
-        type: Sequelize.ENUM(['free', 'premium']),
+        type: Sequelize.ENUM(['Free', 'Premium']),
         allowNull: false,
       },
       courseLevel: {
-        type: Sequelize.ENUM(['beginner', 'intermediate', 'advanced']),
+        type: Sequelize.ENUM(['Beginner', 'Intermediate', 'Advanced']),
         allowNull: false,
+      },
+      rating: {
+        type: Sequelize.FLOAT,
       },
       aboutCourse: {
         type: Sequelize.TEXT,
