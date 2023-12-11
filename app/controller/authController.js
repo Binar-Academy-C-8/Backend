@@ -104,9 +104,6 @@ const login = async (req, res, next) => {
     if (!user) {
       return next(new ApiError('Email tidak ditemukan', 404))
     }
-    if (user.verified !== true) {
-      return next(new ApiError('Pengguna belum diverifikasi', 401))
-    }
 
     if (user && bcrypt.compareSync(password, user.password)) {
       const token = jwt.sign(
@@ -118,7 +115,9 @@ const login = async (req, res, next) => {
         },
         process.env.JWT_SECRET
       )
-
+      if (user.verified !== true) {
+        return next(new ApiError('Pengguna belum diverifikasi', 401))
+      }
       res.status(200).json({
         status: 'Success',
         message: 'Login berhasil',
