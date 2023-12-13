@@ -39,11 +39,11 @@ module.exports = (sequelize, DataTypes) => {
           'https://ik.imagekit.io/xphqqd3ms/image(1).png?updatedAt=1701517286117',
       },
       courseType: {
-        type: DataTypes.ENUM(['free', 'premium']),
+        type: DataTypes.ENUM(['Free', 'Premium']),
         allowNull: false,
       },
       courseLevel: {
-        type: DataTypes.ENUM(['beginner', 'intermediate', 'advanced']),
+        type: DataTypes.ENUM(['Beginner', 'Intermediate', 'Advanced']),
         allowNull: false,
       },
       rating: { type: DataTypes.INTEGER },
