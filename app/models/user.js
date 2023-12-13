@@ -30,6 +30,13 @@ module.exports = (sequelize, DataTypes) => {
       })
 
       User.hasMany(models.CourseUser, { foreignKey: 'userId' })
+
+      User.hasMany(models.Transaction, {
+        foreignKey: {
+          name: 'userId',
+          allowNull: false,
+        },
+      })
     }
   }
   User.init(

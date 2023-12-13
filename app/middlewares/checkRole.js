@@ -1,17 +1,17 @@
-const ApiError = require("../../utils/apiError");
+const ApiError = require('../../utils/apiError')
 
 const checkRole = (roles) => {
-    return async (req, res, next) => {
-        if (!roles.includes(req.user.role)) {
-            return next(
-                new ApiError(
-                    `You are not ${roles.toString()}, so you do not have access.`,
-                    401
-                )
-            );
-        }
-        next();
-    };
-};
+  return async (req, res, next) => {
+    if (!roles.includes(req.user.role)) {
+      return next(
+        new ApiError(
+          `Anda bukan ${roles.toString()}, sehingga Anda tidak memiliki akses.`,
+          401
+        )
+      )
+    }
+    next()
+  }
+}
 
-module.exports = checkRole;
+module.exports = checkRole
