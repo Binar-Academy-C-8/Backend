@@ -24,7 +24,7 @@ const getAllCourse = async (req, res, next) => {
       if (!types.includes(type)) {
         next(new ApiError('tipe kursus tidak valid', 400));
       }
-      filter.courseType = type.toLowerCase();
+      filter.courseType = type;
     }
 
     if (level) {
@@ -33,7 +33,7 @@ const getAllCourse = async (req, res, next) => {
         next(new ApiError('level tidak valid', 400));
         return;
       }
-      filter.courseLevel = level.toLowerCase();
+      filter.courseLevel = level;
     }
 
     if (sort_by && order_by) {

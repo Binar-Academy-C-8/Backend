@@ -1,9 +1,9 @@
-'use strict';
+'use strict'
 
-const { User } = require('../../app/models');
-const dotenv = require('dotenv');
-const bcrypt = require('bcrypt');
-dotenv.config();
+const { User } = require('../../app/models')
+const dotenv = require('dotenv')
+const bcrypt = require('bcrypt')
+dotenv.config()
 
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
@@ -19,13 +19,13 @@ module.exports = {
         createdAt: new Date(),
         updatedAt: new Date(),
       },
-    ]);
+    ])
 
-    const adminPassword = process.env.PASSWORD_HASH;
-    const saltRounds = 10;
-    const hashedPassword = bcrypt.hashSync(adminPassword, saltRounds);
+    const adminPassword = process.env.PASSWORD_HASH
+    const saltRounds = 10
+    const hashedPassword = bcrypt.hashSync(adminPassword, saltRounds)
 
-    const users = await User.findAll();
+    const users = await User.findAll()
 
     await queryInterface.bulkInsert('Auths', [
       {
@@ -36,19 +36,11 @@ module.exports = {
         createdAt: new Date(),
         updatedAt: new Date(),
       },
-      {
-        email: 'memberc8@gmail.com',
-        password: hashedPassword,
-        userId: users[1].id,
-        verified: true,
-        createdAt: new Date(),
-        updatedAt: new Date(),
-      },
-    ]);
+    ])
   },
 
   async down(queryInterface, Sequelize) {
-    await queryInterface.bulkDelete('Users', null, {});
-    await queryInterface.bulkDelete('Auths', null, {});
+    await queryInterface.bulkDelete('Users', null, {})
+    await queryInterface.bulkDelete('Auths', null, {})
   },
-};
+}
