@@ -15,11 +15,15 @@ module.exports = {
       contentUrl: {
         type: Sequelize.STRING,
       },
+      youtubeId: {
+        type: Sequelize.STRING,
+      },
       duration: {
         type: Sequelize.STRING,
       },
       status: {
         type: Sequelize.BOOLEAN,
+        defaultValue: false,
       },
       chapterId: {
         type: Sequelize.INTEGER,

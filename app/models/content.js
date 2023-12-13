@@ -21,7 +21,11 @@ module.exports = (sequelize, DataTypes) => {
       contentTitle: DataTypes.STRING,
       contentUrl: DataTypes.STRING,
       duration: DataTypes.STRING,
-      status: DataTypes.BOOLEAN,
+      youtubeId: DataTypes.STRING,
+      status: {
+        type: DataTypes.BOOLEAN,
+        defaultValue: false,
+      },
       chapterId: DataTypes.INTEGER,
     },
     {
