@@ -92,6 +92,7 @@ const createTransactionSnap = async (req, res, next) => {
       url: transaction.redirect_url,
       token: transaction.token,
       email: authData.email,
+      name: data.customer_details.first_name,
       createdTransactionData,
       data,
     })
@@ -145,7 +146,7 @@ const paymentCallback = async (req, res, next) => {
 
 const getAllTransaction = async (req, res, next) => {
   try {
-    const transactions = await Transaction.findAll()
+    const transactions = await Transaction.findAll({ include: ['User'] })
 
     if (!transactions) {
       return next(new ApiError(`Data transaksi kosong`, 404))
@@ -153,9 +154,7 @@ const getAllTransaction = async (req, res, next) => {
 
     res.status(200).json({
       status: 'Success',
-      data: {
-        transactions,
-      },
+      transactions,
     })
   } catch (err) {
     next(new ApiError(err.message, 500))
@@ -167,6 +166,7 @@ const getPaymentDetail = async (req, res, next) => {
     const { order_id } = req.params
     const detailTransaction = await Transaction.findOne({
       where: { orderId: order_id },
+      include: ['User'],
     })
     if (!detailTransaction) {
       return next(

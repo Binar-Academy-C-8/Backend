@@ -2,6 +2,7 @@ const router = require('express').Router()
 
 const Transaction = require('../controller/transactionController')
 const authMe = require('../middlewares/authMe')
+const checkRole = require('../middlewares/checkRole')
 
 router.post('/payment-callback', Transaction.paymentCallback)
 router.post('/:courseId', authMe, Transaction.createTransactionSnap)
