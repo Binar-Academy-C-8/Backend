@@ -1,5 +1,5 @@
-'use strict'
-const { Model, INTEGER } = require('sequelize')
+'use strict';
+const { Model } = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
   class Course extends Model {
     static associate(models) {
@@ -9,21 +9,21 @@ module.exports = (sequelize, DataTypes) => {
           allowNull: false,
         },
         as: 'courseBy',
-      })
+      });
       Course.belongsTo(models.Category, {
         foreignKey: {
           name: 'categoryId',
           allowNull: false,
         },
         as: 'category',
-      })
+      });
       Course.hasMany(models.Chapter, {
         foreignKey: {
           name: 'courseId',
           allowNull: false,
         },
         as: 'chapters',
-      })
+      });
     }
   }
   Course.init(
@@ -39,11 +39,11 @@ module.exports = (sequelize, DataTypes) => {
           'https://ik.imagekit.io/xphqqd3ms/image(1).png?updatedAt=1701517286117',
       },
       courseType: {
-        type: DataTypes.ENUM(['free', 'premium']),
+        type: DataTypes.ENUM(['Free', 'Premium']),
         allowNull: false,
       },
       courseLevel: {
-        type: DataTypes.ENUM(['beginner', 'intermediate', 'advanced']),
+        type: DataTypes.ENUM(['Beginner', 'Intermediate', 'Advanced']),
         allowNull: false,
       },
       rating: { type: DataTypes.INTEGER },
@@ -55,6 +55,6 @@ module.exports = (sequelize, DataTypes) => {
       sequelize,
       modelName: 'Course',
     }
-  )
-  return Course
-}
+  );
+  return Course;
+};

@@ -222,15 +222,15 @@
                       "oneOf": [
                         {
                           "type": "object",
-                          "example": "Username already taken"
+                          "example": "Nama pengguna sudah digunakan"
                         },
                         {
                           "type": "object",
-                          "example": "User email already taken"
+                          "example": "Email pengguna sudah digunakan"
                         },
                         {
                           "type": "object",
-                          "example": "Minimum password must be 8 characters"
+                          "example": "Panjang kata sandi minimal harus 8 karakter"
                         }
                       ]
                     }
@@ -288,7 +288,7 @@
                     },
                     "message": {
                       "type": "string",
-                      "example": "OTP verification successful"
+                      "example": "Verifikasi OTP berhasil"
                     }
                   }
                 }
@@ -308,7 +308,7 @@
                     },
                     "message": {
                       "type": "object",
-                      "example": "OTP code has expired"
+                      "example": "Kode OTP telah kedaluwarsa"
                     }
                   }
                 }
@@ -328,7 +328,7 @@
                     },
                     "message": {
                       "type": "object",
-                      "example": "Invalid OTP"
+                      "example": "OTP tidak valid"
                     }
                   }
                 }
@@ -377,7 +377,7 @@
                     },
                     "message": {
                       "type": "string",
-                      "example": "Login successful"
+                      "example": "Login berhasil"
                     },
                     "data": {
                       "type": "object",
@@ -408,11 +408,11 @@
                       "oneOf": [
                         {
                           "type": "object",
-                          "example": "Incorrect password"
+                          "example": "Kata sandi salah"
                         },
                         {
                           "type": "object",
-                          "example": "User not verified"
+                          "example": "Pengguna belum diverifikasi"
                         }
                       ]
                     }
@@ -434,7 +434,7 @@
                     },
                     "message": {
                       "type": "object",
-                      "example": "Email not found"
+                      "example": "Email tidak ditemukan"
                     }
                   }
                 }
@@ -510,11 +510,11 @@
                       "oneOf": [
                         {
                           "type": "object",
-                          "example": "Unauthorized. Only admin can login"
+                          "example": "Hanya admin yang dapat login"
                         },
                         {
                           "type": "object",
-                          "example": "Incorrect password"
+                          "example": "Kata sandi salah"
                         }
                       ]
                     }
@@ -536,7 +536,7 @@
                     },
                     "message": {
                       "type": "object",
-                      "example": "Email not found"
+                      "example": "Email tidak ditemukan"
                     }
                   }
                 }
@@ -613,7 +613,7 @@
                         },
                         "message": {
                           "type": "string",
-                          "example": "OTP sent successfully"
+                          "example": "OTP berhasil terkirim"
                         }
                       }
                     }
@@ -635,7 +635,7 @@
                     },
                     "message": {
                       "type": "object",
-                      "example": "User not found"
+                      "example": "User tidak ditemukan"
                     }
                   }
                 }
@@ -712,7 +712,7 @@
                         },
                         "message": {
                           "type": "string",
-                          "example": "OTP sent successfully"
+                          "example": "OTP berhasil terkirim"
                         }
                       }
                     }
@@ -734,7 +734,7 @@
                     },
                     "message": {
                       "type": "object",
-                      "example": "User not found"
+                      "example": "User tidak ditemukan"
                     }
                   }
                 }
@@ -790,7 +790,7 @@
                     },
                     "message": {
                       "type": "string",
-                      "example": "OTP verification successful"
+                      "example": "Verifikasi OTP berhasil"
                     }
                   }
                 }
@@ -810,7 +810,7 @@
                     },
                     "message": {
                       "type": "object",
-                      "example": "OTP code has expired"
+                      "example": "Kode OTP telah kedaluwarsa"
                     }
                   }
                 }
@@ -830,7 +830,7 @@
                     },
                     "message": {
                       "type": "object",
-                      "example": "Invalid OTP"
+                      "example": "OTP tidak valid"
                     }
                   }
                 }
@@ -886,7 +886,7 @@
                     },
                     "message": {
                       "type": "string",
-                      "example": "Update Password successful"
+                      "example": "Pembaruan Kata Sandi berhasil"
                     }
                   }
                 }
@@ -906,7 +906,7 @@
                     },
                     "message": {
                       "type": "object",
-                      "example": "User not verified"
+                      "example": "Pengguna belum diverifikasi"
                     }
                   }
                 }
@@ -948,7 +948,7 @@
                               "type": "string",
                               "example": "User"
                             },
-                            "iamge": {
+                            "image": {
                               "type": "string",
                               "example": "https://tse2.mm.bing.net/th?id=OIP.U2iQ7wNK6ZzTW_traW_-PQHaHa&pid=Api&P=0&h=180"
                             },
@@ -1164,7 +1164,7 @@
                     },
                     "message": {
                       "type": "object",
-                      "example": "Name already taken"
+                      "example": "Nama pengguna sudah digunakan"
                     }
                   }
                 }
@@ -2547,7 +2547,7 @@
                     },
                     "message": {
                       "type": "object",
-                      "example": "You must log in"
+                      "example": "Anda harus masuk"
                     }
                   }
                 }
@@ -4008,6 +4008,637 @@
                     "message": {
                       "type": "object",
                       "example": "Data content with id is empty"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/transaction/payment-callback": {
+      "post": {
+        "tags": ["Payment"],
+        "summary": "Return hasil hit API untuk payment callback dari Midtrans",
+        "description": "ini API untuk payment callback",
+        "responses": {
+          "200": {
+            "description": "Sukses transaksi",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "Success"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Transaksi tidak ada",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "Failed"
+                    },
+                    "message": {
+                      "type": "object",
+                      "example": "Transaksi tidak ada"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Error from server",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "Failed"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Internal server error"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/transaction/{courseId}": {
+      "post": {
+        "tags": ["Payment"],
+        "security": [
+          {
+            "bearerToken": []
+          }
+        ],
+        "summary": "Return hasil hit API Create transaksi",
+        "description": "API untuk membuat transaksi",
+        "parameters": [
+          {
+            "name": "courseId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "example": 1
+            },
+            "description": "Course ID"
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Sukses membuat chapter",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "success"
+                    },
+                    "url": {
+                      "type": "string",
+                      "example": "https://app.sandbox.midtrans.com/snap/v3/redirection/215a8168-b8dc-4ea2-ac8c-f7a215d1169e"
+                    },
+                    "token": {
+                      "type": "string",
+                      "example": "215a8168-b8dc-4ea2-ac8c-f7a215d1169e"
+                    },
+                    "email": {
+                      "type": "string",
+                      "example": "adminc8@mail.com"
+                    },
+                    "createdTransactionData": {
+                      "type": "object",
+                      "properties": {
+                        "paymentStatus": {
+                          "type": "string",
+                          "example": "unpaid"
+                        },
+                        "id": {
+                          "type": "integer",
+                          "example": 8
+                        },
+                        "courseName": {
+                          "type": "string",
+                          "example": "Belajar Kotlin Lanjutan"
+                        },
+                        "userId": {
+                          "type": "integer",
+                          "example": 1
+                        },
+                        "courseId": {
+                          "type": "integer",
+                          "example": 4
+                        },
+                        "totalPrice": {
+                          "type": "integer",
+                          "example": 220890
+                        },
+                        "ppn": {
+                          "type": "integer",
+                          "example": 21890
+                        },
+                        "price": {
+                          "type": "integer",
+                          "example": 199000
+                        },
+                        "orderId": {
+                          "type": "integer",
+                          "example": 3914
+                        },
+                        "updatedAt": {
+                          "type": "string",
+                          "format": "date-time",
+                          "example": "2023-12-09T10:14:11.697Z"
+                        },
+                        "createdAt": {
+                          "type": "string",
+                          "format": "date-time",
+                          "example": "2023-12-09T10:14:11.697Z"
+                        },
+                        "paymentMethod": {
+                          "type": ["string", "null"],
+                          "example": null
+                        }
+                      }
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "item_details": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "id": {
+                                "type": "integer",
+                                "example": 4
+                              },
+                              "name": {
+                                "type": "string",
+                                "example": "Belajar Kotlin Lanjutan"
+                              },
+                              "price": {
+                                "type": "integer",
+                                "example": 220890
+                              },
+                              "quantity": {
+                                "type": "integer",
+                                "example": 1
+                              }
+                            }
+                          }
+                        },
+                        "transaction_details": {
+                          "type": "object",
+                          "properties": {
+                            "order_id": {
+                              "type": "string",
+                              "example": "3914"
+                            },
+                            "gross_amount": {
+                              "type": "integer",
+                              "example": 220890
+                            }
+                          }
+                        },
+                        "customer_details": {
+                          "type": "object",
+                          "properties": {
+                            "first_name": {
+                              "type": "string",
+                              "example": "adminc8"
+                            },
+                            "email": {
+                              "type": "string",
+                              "example": "adminc8@mail.com"
+                            },
+                            "phone": {
+                              "type": "string",
+                              "example": "+628236576342564"
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Jika sudah pernah membeli sebelumnya",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "Failed"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Anda sudah membeli kursus ini sebelumnya"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Jika belum login",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "Failed"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Anda harus masuk"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Jika id course tidak ada",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "Failed"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Kursus dengan ID: 40 tidak ditemukan"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Error from server",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "Failed"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Internal server error"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/transaction": {
+      "get": {
+        "tags": ["Payment"],
+        "security": [
+          {
+            "bearerToken": []
+          }
+        ],
+        "summary": "Return hasil hit API get all transaction",
+        "description": "API untuk get all transaction",
+        "responses": {
+          "200": {
+            "description": "Sukses get data transaksi",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "Success"
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "transactions": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "id": {
+                                "type": "integer",
+                                "example": 1
+                              },
+                              "orderId": {
+                                "type": "integer",
+                                "example": 5785
+                              },
+                              "courseName": {
+                                "type": "string",
+                                "example": "Belajar Kotlin Lanjutan"
+                              },
+                              "ppn": {
+                                "type": "integer",
+                                "example": 21890
+                              },
+                              "price": {
+                                "type": "integer",
+                                "example": 199000
+                              },
+                              "totalPrice": {
+                                "type": "integer",
+                                "example": 220890
+                              },
+                              "paymentStatus": {
+                                "type": "string",
+                                "example": "paid"
+                              },
+                              "paymentMethod": {
+                                "type": ["string", "null"],
+                                "example": "bank_transfer"
+                              },
+                              "userId": {
+                                "type": "integer",
+                                "example": 3
+                              },
+                              "courseId": {
+                                "type": "integer",
+                                "example": 4
+                              },
+                              "createdAt": {
+                                "type": "string",
+                                "format": "date-time",
+                                "example": "2023-12-09T04:54:43.060Z"
+                              },
+                              "updatedAt": {
+                                "type": "string",
+                                "format": "date-time",
+                                "example": "2023-12-09T04:56:45.806Z"
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Jika data transaksi kosong",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "Failed"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Data transaksi kosong"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Jika belum login",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "Failed"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Anda harus masuk"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Error from server",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "Failed"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Internal server error"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/transaction/{order_id}": {
+      "get": {
+        "tags": ["Payment"],
+        "security": [
+          {
+            "bearerToken": []
+          }
+        ],
+        "summary": "Return hasil hit API get transaksi by order id",
+        "description": "API untuk get transaksi by order id",
+        "parameters": [
+          {
+            "name": "order_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "example": 5785
+            },
+            "description": "Course ID"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Sukses get data transaksi by order id",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "Success"
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "transactions": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "id": {
+                                "type": "integer",
+                                "example": 1
+                              },
+                              "orderId": {
+                                "type": "integer",
+                                "example": 5785
+                              },
+                              "courseName": {
+                                "type": "string",
+                                "example": "Belajar Kotlin Lanjutan"
+                              },
+                              "ppn": {
+                                "type": "integer",
+                                "example": 21890
+                              },
+                              "price": {
+                                "type": "integer",
+                                "example": 199000
+                              },
+                              "totalPrice": {
+                                "type": "integer",
+                                "example": 220890
+                              },
+                              "paymentStatus": {
+                                "type": "string",
+                                "example": "paid"
+                              },
+                              "paymentMethod": {
+                                "type": ["string", "null"],
+                                "example": "bank_transfer"
+                              },
+                              "userId": {
+                                "type": "integer",
+                                "example": 3
+                              },
+                              "courseId": {
+                                "type": "integer",
+                                "example": 4
+                              },
+                              "createdAt": {
+                                "type": "string",
+                                "format": "date-time",
+                                "example": "2023-12-09T04:54:43.060Z"
+                              },
+                              "updatedAt": {
+                                "type": "string",
+                                "format": "date-time",
+                                "example": "2023-12-09T04:56:45.806Z"
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Jika belum login",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "Failed"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Anda harus masuk"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Jika id transaksi tidak ada",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "Failed"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Detail pembayaran dengan ID: 10 tidak ditemukan"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Error from server",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "Failed"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Internal server error"
                     }
                   }
                 }
