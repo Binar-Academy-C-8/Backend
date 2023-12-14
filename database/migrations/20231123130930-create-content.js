@@ -23,6 +23,7 @@ module.exports = {
       },
       status: {
         type: Sequelize.BOOLEAN,
+        defaultValue: false,
       },
       chapterId: {
         type: Sequelize.INTEGER,
