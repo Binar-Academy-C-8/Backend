@@ -1,0 +1,518 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "Documentasi API Belajar",
+    "description": "Ini adalah API untuk aplikasi Belajar",
+    "version": "1.0.0"
+  },
+  "tags": [
+    {
+      "name": "Chapter",
+      "description": "API untuk Chapter resources"
+    }
+  ],
+  "servers": [
+    {
+      "url": "https://backend-production-f9e7.up.railway.app/api/v1"
+    },
+    {
+      "url": "http://localhost:9000/api/v1"
+    }
+  ],
+  "paths": {
+    "/chapter": {
+      "get": {
+        "tags": ["Chapter"],
+        "security": [
+          {
+            "bearerToken": []
+          }
+        ],
+        "summary": "Return hasil hit API find All Chapter",
+        "description": "API untuk melihat semua chapter yang ada",
+        "responses": {
+          "200": {
+            "description": "Sukses mengambil data chapter",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "Sukses"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Sukses menambahkan data"
+                    },
+                    "data": {
+                      "type": "object",
+                      "example": {
+                        "chapters": [
+                          {
+                            "id": 3,
+                            "chapterTitle": "Pengenalan Database",
+                            "courseId": 1,
+                            "createdAt": "2023-11-27T15:38:17.418Z",
+                            "updatedAt": "2023-11-27T15:38:17.418Z",
+                            "Course": {
+                              "id": 1,
+                              "codeCourse": null,
+                              "courseName": null,
+                              "image": null,
+                              "courseType": null,
+                              "courseLevel": null,
+                              "aboutCourse": null,
+                              "perpouseCourse": null,
+                              "statusCourse": null,
+                              "progressBar": null,
+                              "categoryId": null,
+                              "createdAt": "2023-11-27T15:00:30.541Z",
+                              "updatedAt": "2023-11-27T15:00:30.541Z"
+                            }
+                          },
+                          {
+                            "id": 5,
+                            "chapterTitle": "Pengenalan Database",
+                            "courseId": 2,
+                            "createdAt": "2023-11-27T15:49:11.993Z",
+                            "updatedAt": "2023-11-27T15:49:11.993Z",
+                            "Course": {
+                              "id": 2,
+                              "codeCourse": null,
+                              "courseName": null,
+                              "image": null,
+                              "courseType": null,
+                              "courseLevel": null,
+                              "aboutCourse": null,
+                              "perpouseCourse": null,
+                              "statusCourse": null,
+                              "progressBar": null,
+                              "categoryId": null,
+                              "createdAt": "2023-11-27T15:00:38.684Z",
+                              "updatedAt": "2023-11-27T15:00:38.684Z"
+                            }
+                          },
+                          {
+                            "id": 4,
+                            "chapterTitle": "asdasdasd",
+                            "courseId": 2,
+                            "createdAt": "2023-11-27T15:38:46.270Z",
+                            "updatedAt": "2023-11-27T15:53:55.918Z",
+                            "Course": {
+                              "id": 2,
+                              "codeCourse": null,
+                              "courseName": null,
+                              "image": null,
+                              "courseType": null,
+                              "courseLevel": null,
+                              "aboutCourse": null,
+                              "perpouseCourse": null,
+                              "statusCourse": null,
+                              "progressBar": null,
+                              "categoryId": null,
+                              "createdAt": "2023-11-27T15:00:38.684Z",
+                              "updatedAt": "2023-11-27T15:00:38.684Z"
+                            }
+                          }
+                        ]
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/chapter/{id}": {
+      "get": {
+        "tags": ["Chapter"],
+        "security": [
+          {
+            "bearerToken": []
+          }
+        ],
+        "summary": "Return hasil hit API find Chapter by Id",
+        "description": "Menampilkan data chapter berdasarkan ID",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "example": 1
+            },
+            "description": "User ID"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Sukses mendapatkan data chapter",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "Sukses"
+                    },
+                    "data": {
+                      "type": "object",
+                      "example": {
+                        "chapter": {
+                          "id": 4,
+                          "chapterTitle": "asdasdasd",
+                          "courseId": 2,
+                          "createdAt": "2023-11-27T15:38:46.270Z",
+                          "updatedAt": "2023-11-27T15:53:55.918Z",
+                          "Course": {
+                            "id": 2,
+                            "codeCourse": null,
+                            "courseName": null,
+                            "image": null,
+                            "courseType": null,
+                            "courseLevel": null,
+                            "aboutCourse": null,
+                            "perpouseCourse": null,
+                            "statusCourse": null,
+                            "progressBar": null,
+                            "categoryId": null,
+                            "createdAt": "2023-11-27T15:00:38.684Z",
+                            "updatedAt": "2023-11-27T15:00:38.684Z"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Jika id chapter tidak ada",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "Gagal"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Data chapter tidak ditemukan"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/chapter/create/{id}": {
+      "post": {
+        "tags": ["Chapter"],
+        "security": [
+          {
+            "bearerToken": [],
+            "roles": ["Admin"]
+          }
+        ],
+        "summary": "Return hasil hit API Create Chapter",
+        "description": "API untuk membuat chapter",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "example": 1
+            },
+            "description": "Course ID"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "chapterTitle": {
+                    "type": "string",
+                    "example": "Pengenalan Database"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Sukses membuat chapter",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "Sukses"
+                    },
+                    "data": {
+                      "type": "object",
+                      "example": {
+                        "chapter": {
+                          "id": 6,
+                          "chapterTitle": "Pengenalan Database",
+                          "courseId": 1,
+                          "updatedAt": "2023-11-27T16:41:01.175Z",
+                          "createdAt": "2023-11-27T16:41:01.175Z"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Jika field tidak diisi",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "Gagal"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Judul chapter harus diisi"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Jika id course tidak ada",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "Gagal"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Data chapter tidak ditemukan"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/chapter/update/{id}": {
+      "patch": {
+        "tags": ["Chapter"],
+        "security": [
+          {
+            "bearerToken": []
+          }
+        ],
+        "summary": "Return hasil hit API edit chapters",
+        "description": "API untuk mengedit chapters",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "example": 1
+            },
+            "description": "Chapter ID"
+          }
+        ],
+        "requestBody": {
+          "description": "Request body untuk sukses edit chapter",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "chapterTitle": {
+                    "type": "string",
+                    "example": "Javascript"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Sukses mengedit chapter",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "Sukses"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Sukses memperbarui chapter"
+                    },
+                    "data": {
+                      "type": "object",
+                      "example": [
+                        {
+                          "id": 3,
+                          "chapterTitle": "vegsd",
+                          "courseId": 1,
+                          "createdAt": "2023-11-27T15:38:17.418Z",
+                          "updatedAt": "2023-11-29T15:23:52.903Z"
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Jika field tidak diisi",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "Gagal"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Judul chapter harus diisi"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Jika id chapter tidak ada",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "Gagal"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Data chapter tidak ditemukan"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/chapter/delete/{id}": {
+      "delete": {
+        "tags": ["Chapter"],
+        "security": [
+          {
+            "bearerToken": []
+          }
+        ],
+        "summary": "Return hasil hit API Delete Chapter",
+        "description": "API untuk delete chapter",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "example": 1
+            },
+            "description": "Course ID"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Sukses menghapus chapter",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "Sukses"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Sukses menghapus data"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Jika id chapter tidak ada",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "Gagal"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Data chapter tidak ditemukan"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "securitySchemes": {
+      "bearerToken": {
+        "type": "http",
+        "scheme": "bearer"
+      }
+    }
+  }
+}

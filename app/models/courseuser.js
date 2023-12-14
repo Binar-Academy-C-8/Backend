@@ -9,12 +9,17 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       CourseUser.belongsTo(models.User, { foreignKey: 'userId' });
+      CourseUser.belongsTo(models.Course, { foreignKey: 'courseId' });
     }
   }
   CourseUser.init(
     {
       userId: DataTypes.INTEGER,
       courseId: DataTypes.INTEGER,
+      courseStatus: {
+        type: DataTypes.ENUM(['inProgress', 'Selesai']),
+        allowNull: false,
+      },
     },
     {
       sequelize,

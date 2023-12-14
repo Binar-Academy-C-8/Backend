@@ -29,6 +29,7 @@ const verifyOTP = async (req, res, next) => {
     if (!bcrypt.compareSync(String(code), String(userOtp.code))) {
       return next(new ApiError('OTP tidak valid', 403));
     }
+    //dwadawda
 
     await Auth.update(
       {
@@ -71,7 +72,7 @@ const verifyOTP = async (req, res, next) => {
         token,
         id: userOtp.userId,
         name: userOtp.User.name,
-        email: userAuth.email
+        email: userAuth.email,
       },
     });
   } catch (err) {

@@ -52,7 +52,7 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.ENUM(['Beginner', 'Intermediate', 'Advanced']),
         allowNull: false,
       },
-      // rating: { type: DataTypes.INTEGER },
+      rating: { type: DataTypes.INTEGER },
       aboutCourse: { type: DataTypes.TEXT },
       intendedFor: { type: DataTypes.TEXT },
       coursePrice: { type: DataTypes.FLOAT, allowNull: false },
