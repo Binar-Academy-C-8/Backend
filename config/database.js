@@ -1,3 +1,4 @@
+/* eslint-disable comma-dangle */
 const Sequelize = require('sequelize')
 
 const {
@@ -8,15 +9,10 @@ const {
   DB_PORT = '5432',
 } = process.env
 
-const sequelize = new Sequelize(
-  `${DB_NAME}_development`,
-  DB_USERNAME,
-  DB_PASSWORD,
-  {
-    host: DB_HOST,
-    dialect: 'postgres',
-  }
-)
+const sequelize = new Sequelize(`${DB_NAME}_test`, DB_USERNAME, DB_PASSWORD, {
+  host: DB_HOST,
+  dialect: 'postgres',
+})
 
 const databaseValidation = async () => {
   try {
@@ -32,7 +28,7 @@ module.exports = {
   development: {
     username: DB_USERNAME,
     password: DB_PASSWORD,
-    database: `${DB_NAME}_development`,
+    database: `${DB_NAME}_test`,
     host: DB_HOST,
     port: DB_PORT,
     dialect: 'postgres',
@@ -40,7 +36,7 @@ module.exports = {
   test: {
     username: DB_USERNAME,
     password: DB_PASSWORD,
-    database: `${DB_NAME}_development`,
+    database: `${DB_NAME}_test`,
     host: DB_HOST,
     port: DB_PORT,
     dialect: 'postgres',

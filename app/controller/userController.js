@@ -1,6 +1,6 @@
+const Sequelize = require('sequelize')
 const { User, Auth } = require('../models')
 const ApiError = require('../../utils/apiError')
-const Sequelize = require('sequelize')
 const imagekit = require('../libs/imagekit')
 const path = require('path')
 const Op = Sequelize.Op
@@ -39,13 +39,16 @@ const getUserByEmail = async (req, res, next) => {
 
 // update User
 const updateUser = async (req, res, next) => {
-  const id = req.params.id
+  const { id } = req.params.id
   const userBody = req.body
-  const file = req.file
+  const { file } = req.file
   const condition = { where: { id }, returning: true }
   let image
 
   try {
+    if (!id) {
+      return next(new ApiError('Pengguna tidak ditemukan', 404))
+    }
     if (file) {
       const filename = file.originalname
       const extension = path.extname(filename)

@@ -7,7 +7,7 @@ require('dotenv').config()
 describe('API Register', () => {
   it('success register', async () => {
     const user = {
-      email: 'imamtaufiq133@gmail.com',
+      email: 'nuralirajab03@gmail.com',
       password: '12345678',
       name: 'imam',
       phoneNumber: '01234567',
@@ -17,13 +17,13 @@ describe('API Register', () => {
     const response = await request(app)
       .post('/api/v1/auth/member/register')
       .send(user)
-    expect(response.statusCode).toBe(200)
-    expect(response.body.status).toBe('Register successful')
+    expect(response.statusCode).toBe(201)
+    expect(response.body.status).toBe('Registerasi berhasil')
   })
 
   it('Failed register because user password minimum not match', async () => {
     const user = {
-      email: 'imamtaufiq333@gmail.com',
+      email: 'nuralirajab03@gmail.com',
       password: '123',
       name: 'imam',
       phoneNumber: '01234567',
@@ -34,12 +34,14 @@ describe('API Register', () => {
       .post('/api/v1/auth/member/register')
       .send(user)
     expect(response.statusCode).toBe(400)
-    expect(response.body.message).toBe('Minimum password must be 8 characters')
+    expect(response.body.message).toBe(
+      'Panjang kata sandi minimal harus 8 karakter'
+    )
   })
 
   it('Failed register because email already exist', async () => {
     const user = {
-      email: 'imamtaufiq133@gmail.com',
+      email: 'nuralirajab03@gmail.com',
       password: '1234567890',
       name: 'imam',
       phoneNumber: '01234567',
@@ -50,7 +52,7 @@ describe('API Register', () => {
       .post('/api/v1/auth/member/register')
       .send(user)
     expect(response.statusCode).toBe(400)
-    expect(response.body.message).toBe('User email already taken')
+    expect(response.body.message).toBe('Email pengguna sudah digunakan')
   })
 })
 
