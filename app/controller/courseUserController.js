@@ -37,9 +37,13 @@ const getAllCoursesData = async (req, res, next) => {
         {
           model: Course,
           include: [
-            { model: Category },
+            { model: Category, as: 'category' },
             { model: User, as: 'courseBy' },
-            { model: Chapter, include: [{ model: Content }] },
+            {
+              model: Chapter,
+              as: 'chapters',
+              include: [{ model: Content, as: 'contents' }],
+            },
           ],
         },
         {
@@ -50,14 +54,14 @@ const getAllCoursesData = async (req, res, next) => {
 
     const formattedCourses = courses.map((courseUser) => {
       const course = courseUser.Course
-      if (!course || !course.Chapters) {
+      if (!course || !course.chapters) {
         return null
       }
-      const modulePerCourse = course.Chapters.length
-      const totalDurationPerCourse = course.Chapters.reduce(
+      const modulePerCourse = course.chapters.length
+      const totalDurationPerCourse = course.chapters.reduce(
         (acc, chapter) =>
           acc +
-          chapter.Contents.reduce(
+          chapter.contents.reduce(
             (contentAcc, content) => contentAcc + parseFloat(content.duration),
             0
           ),
@@ -84,7 +88,7 @@ const getAllCoursesData = async (req, res, next) => {
         coursePrice: course.coursePrice,
         courseCreatedAt: course.createdAt,
         courseUpdatedAt: course.updatedAt,
-        categoryName: course.Category.categoryName,
+        categoryName: course.category.categoryName,
         courseBy: {
           id: course.courseBy.id,
           name: course.courseBy.name,
@@ -107,14 +111,14 @@ const getAllCoursesData = async (req, res, next) => {
           createdAt: courseUser.User.createdAt,
           updatedAt: courseUser.User.updatedAt,
         },
-        chapters: course.Chapters.map((chapter) => {
+        chapters: course.chapters.map((chapter) => {
           return {
             id: chapter.id,
             chapterTitle: chapter.chapterTitle,
             courseId: chapter.courseId,
             createdAt: chapter.createdAt,
             updatedAt: chapter.updatedAt,
-            contents: (chapter.Contents || []).map((content) => {
+            contents: (chapter.contents || []).map((content) => {
               return {
                 id: content.id,
                 contentTitle: content.contentTitle,
@@ -130,7 +134,7 @@ const getAllCoursesData = async (req, res, next) => {
         }),
         durationPerCourseInMinutes: Math.round(totalDurationPerCourse),
         modulePerCourse,
-        Category: course.toJSON().Category.categoryName,
+        Category: course.toJSON().category.categoryName,
         Level: course.toJSON().courseLevel,
       }
 
@@ -155,9 +159,13 @@ const getDataCourse = async (req, res, next) => {
         {
           model: Course,
           include: [
-            { model: Category },
+            { model: Category, as: 'category' },
             { model: User, as: 'courseBy' },
-            { model: Chapter, include: [{ model: Content }] },
+            {
+              model: Chapter,
+              as: 'chapters',
+              include: [{ model: Content, as: 'contents' }],
+            },
           ],
         },
         {
@@ -169,14 +177,14 @@ const getDataCourse = async (req, res, next) => {
     const formattedCourses = courses.map((courseUser) => {
       const course = courseUser.Course
       const user = courseUser.User
-      if (!course || !course.Chapters) {
+      if (!course || !course.chapters) {
         return null
       }
-      const modulePerCourse = course.Chapters.length
-      const totalDurationPerCourse = course.Chapters.reduce(
+      const modulePerCourse = course.chapters.length
+      const totalDurationPerCourse = course.chapters.reduce(
         (acc, chapter) =>
           acc +
-          chapter.Contents.reduce(
+          chapter.contents.reduce(
             (contentAcc, content) => contentAcc + parseFloat(content.duration),
             0
           ),
@@ -202,7 +210,7 @@ const getDataCourse = async (req, res, next) => {
         coursePrice: course.coursePrice,
         courseCreatedAt: course.createdAt,
         courseUpdatedAt: course.updatedAt,
-        categoryName: course.Category.categoryName,
+        categoryName: course.category.categoryName,
         courseBy: {
           id: course.courseBy.id,
           name: course.courseBy.name,
@@ -214,14 +222,14 @@ const getDataCourse = async (req, res, next) => {
           createdAt: course.courseBy.createdAt,
           updatedAt: course.courseBy.updatedAt,
         },
-        chapters: course.Chapters.map((chapter) => {
+        chapters: course.chapters.map((chapter) => {
           return {
             id: chapter.id,
             chapterTitle: chapter.chapterTitle,
             courseId: chapter.courseId,
             createdAt: chapter.createdAt,
             updatedAt: chapter.updatedAt,
-            contents: (chapter.Contents || []).map((content) => {
+            contents: (chapter.contents || []).map((content) => {
               return {
                 id: content.id,
                 contentTitle: content.contentTitle,
@@ -237,7 +245,7 @@ const getDataCourse = async (req, res, next) => {
         }),
         durationPerCourseInMinutes: Math.round(totalDurationPerCourse),
         modulePerCourse,
-        Category: course.toJSON().Category.categoryName,
+        Category: course.toJSON().category.categoryName,
         Level: course.toJSON().courseLevel,
       }
 
@@ -279,13 +287,19 @@ const getCourseById = async (req, res, next) => {
         {
           model: Course,
           include: [
-            { model: Category },
+            { model: Category, as: 'category' },
             { model: User, as: 'courseBy' },
-            { model: Chapter, include: [{ model: Content }] },
+            {
+              model: Chapter,
+              as: 'chapters',
+              include: [{ model: Content, as: 'contents' }],
+            },
           ],
         },
+        {
+          model: User,
+        },
       ],
-      logging: console.log,
     })
 
     if (!courseUser) {
@@ -295,11 +309,11 @@ const getCourseById = async (req, res, next) => {
     }
 
     const course = courseUser.Course
-    const modulePerCourse = course.Chapters.length
-    const totalDurationPerCourse = course.Chapters.reduce(
+    const modulePerCourse = course.chapters.length
+    const totalDurationPerCourse = course.chapters.reduce(
       (acc, chapter) =>
         acc +
-        chapter.Contents.reduce(
+        chapter.contents.reduce(
           (contentAcc, content) => contentAcc + parseFloat(content.duration),
           0
         ),
@@ -328,8 +342,8 @@ const getCourseById = async (req, res, next) => {
       coursePrice: course.coursePrice,
       courseCreatedAt: course.createdAt,
       courseUpdatedAt: course.updatedAt,
-      categoryName: course.Category.categoryName,
-      contentUrl: course.Chapters[0]?.Contents.find(
+      categoryName: course.category.categoryName,
+      contentUrl: course.chapters[0]?.contents.find(
         (content) => content.id === 1
       )?.contentUrl,
       courseBy: {
@@ -343,14 +357,14 @@ const getCourseById = async (req, res, next) => {
         createdAt: course.courseBy.createdAt,
         updatedAt: course.courseBy.updatedAt,
       },
-      chapters: course.Chapters.map((chapter) => {
+      chapters: course.chapters.map((chapter) => {
         return {
           id: chapter.id,
           chapterTitle: chapter.chapterTitle,
           courseId: chapter.courseId,
           createdAt: chapter.createdAt,
           updatedAt: chapter.updatedAt,
-          contents: chapter.Contents.map((content) => {
+          contents: chapter.contents.map((content) => {
             return {
               id: content.id,
               contentTitle: content.contentTitle,
@@ -366,7 +380,7 @@ const getCourseById = async (req, res, next) => {
       }),
       durationPerCourseInMinutes: Math.round(totalDurationPerCourse),
       modulePerCourse,
-      Category: course.toJSON().Category.categoryName,
+      Category: course.toJSON().category.categoryName,
       Level: course.toJSON().courseLevel,
     }
 
@@ -403,7 +417,7 @@ const updateCourseStatus = async (req, res, next) => {
 
     if (!courseUser) {
       return res.status(404).json({
-        error: 'CourseUser not found',
+        error: 'CourseUser tidak ditemukan',
       })
     }
 
