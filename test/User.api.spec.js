@@ -82,3 +82,41 @@ describe('API update user', () => {
     expect(response.body.message).toBe('Pengguna tidak ditemukan')
   })
 })
+
+describe('API delete user', () => {
+  it('success delete data user', async () => {
+    const admin = {
+      email: 'adminc8@mail.com',
+      password: 'admin123',
+    }
+    const check = await request(app)
+      .post('/api/v1/auth/admin/login')
+      .send(admin)
+    const res = JSON.parse(check.text)
+    const token = res.data
+    console.log(token)
+    const response = await request(app)
+      .delete('/api/v1/user/delete/2')
+      .set(`Authorization`, `Bearer ${token}`)
+    expect(response.statusCode).toBe(200)
+    expect(response.body.message).toBe('Berhasil dihapus')
+  })
+
+  it('failed delete user because id not found', async () => {
+    const admin = {
+      email: 'adminc8@mail.com',
+      password: 'admin123',
+    }
+    const check = await request(app)
+      .post('/api/v1/auth/admin/login')
+      .send(admin)
+    const res = JSON.parse(check.text)
+    const token = res.data
+    console.log(token)
+    const response = await request(app)
+      .delete('/api/v1/user/delete/2')
+      .set(`Authorization`, `Bearer ${token}`)
+    expect(response.statusCode).toBe(404)
+    expect(response.body.message).toBe('Pengguna dengan Id ini tidak ditemukan')
+  })
+})

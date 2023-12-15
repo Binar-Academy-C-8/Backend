@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<coverage generated="1702571259672" clover="3.2.0">
-  <project timestamp="1702571259672" name="All files">
-    <metrics statements="958" coveredstatements="376" conditionals="182" coveredconditionals="14" methods="109" coveredmethods="26" elements="1249" coveredelements="416" complexity="0" loc="958" ncloc="958" packages="8" files="45" classes="45"/>
+<coverage generated="1702635754178" clover="3.2.0">
+  <project timestamp="1702635754179" name="All files">
+    <metrics statements="958" coveredstatements="385" conditionals="182" coveredconditionals="17" methods="109" coveredmethods="28" elements="1249" coveredelements="430" complexity="0" loc="958" ncloc="958" packages="8" files="45" classes="45"/>
     <package name="app">
       <metrics statements="16" coveredstatements="15" conditionals="0" coveredconditionals="0" methods="1" coveredmethods="0"/>
       <file name="index.js" path="D:\STUPEN\latihan-kelas\Finall-Project\app\index.js">
@@ -25,7 +25,7 @@
       </file>
     </package>
     <package name="app.controller">
-      <metrics statements="631" coveredstatements="111" conditionals="148" coveredconditionals="5" methods="71" coveredmethods="2"/>
+      <metrics statements="631" coveredstatements="116" conditionals="148" coveredconditionals="7" methods="71" coveredmethods="3"/>
       <file name="OtpConroller.js" path="D:\STUPEN\latihan-kelas\Finall-Project\app\controller\OtpConroller.js">
         <metrics statements="45" coveredstatements="11" conditionals="6" coveredconditionals="0" methods="2" coveredmethods="0"/>
         <line num="1" count="2" type="stmt"/>
@@ -111,29 +111,29 @@
         <line num="81" count="0" type="stmt"/>
         <line num="89" count="0" type="stmt"/>
         <line num="93" count="2" type="stmt"/>
-        <line num="94" count="2" type="stmt"/>
-        <line num="95" count="2" type="stmt"/>
-        <line num="97" count="2" type="stmt"/>
-        <line num="104" count="2" type="cond" truecount="1" falsecount="1"/>
+        <line num="94" count="0" type="stmt"/>
+        <line num="95" count="0" type="stmt"/>
+        <line num="97" count="0" type="stmt"/>
+        <line num="104" count="0" type="cond" truecount="0" falsecount="2"/>
         <line num="105" count="0" type="stmt"/>
-        <line num="108" count="2" type="cond" truecount="3" falsecount="1"/>
-        <line num="109" count="2" type="stmt"/>
-        <line num="118" count="2" type="cond" truecount="1" falsecount="1"/>
+        <line num="108" count="0" type="cond" truecount="0" falsecount="4"/>
+        <line num="109" count="0" type="stmt"/>
+        <line num="118" count="0" type="cond" truecount="0" falsecount="2"/>
         <line num="119" count="0" type="stmt"/>
-        <line num="121" count="2" type="stmt"/>
+        <line num="121" count="0" type="stmt"/>
         <line num="132" count="0" type="stmt"/>
         <line num="135" count="0" type="stmt"/>
         <line num="139" count="2" type="stmt"/>
-        <line num="140" count="0" type="stmt"/>
-        <line num="141" count="0" type="stmt"/>
-        <line num="143" count="0" type="stmt"/>
-        <line num="150" count="0" type="cond" truecount="0" falsecount="2"/>
+        <line num="140" count="2" type="stmt"/>
+        <line num="141" count="2" type="stmt"/>
+        <line num="143" count="2" type="stmt"/>
+        <line num="150" count="2" type="cond" truecount="1" falsecount="1"/>
         <line num="151" count="0" type="stmt"/>
-        <line num="154" count="0" type="cond" truecount="0" falsecount="2"/>
+        <line num="154" count="2" type="cond" truecount="1" falsecount="1"/>
         <line num="155" count="0" type="stmt"/>
-        <line num="158" count="0" type="cond" truecount="0" falsecount="4"/>
-        <line num="159" count="0" type="stmt"/>
-        <line num="169" count="0" type="stmt"/>
+        <line num="158" count="2" type="cond" truecount="3" falsecount="1"/>
+        <line num="159" count="2" type="stmt"/>
+        <line num="169" count="2" type="stmt"/>
         <line num="175" count="0" type="stmt"/>
         <line num="178" count="0" type="stmt"/>
         <line num="182" count="2" type="stmt"/>
@@ -565,12 +565,12 @@
         <line num="445" count="2" type="stmt"/>
       </file>
       <file name="errorController.js" path="D:\STUPEN\latihan-kelas\Finall-Project\app\controller\errorController.js">
-        <metrics statements="5" coveredstatements="1" conditionals="2" coveredconditionals="0" methods="1" coveredmethods="0"/>
+        <metrics statements="5" coveredstatements="5" conditionals="2" coveredconditionals="1" methods="1" coveredmethods="1"/>
         <line num="1" count="2" type="stmt"/>
-        <line num="2" count="0" type="cond" truecount="0" falsecount="2"/>
-        <line num="3" count="0" type="stmt"/>
-        <line num="4" count="0" type="stmt"/>
-        <line num="6" count="0" type="stmt"/>
+        <line num="2" count="2" type="cond" truecount="1" falsecount="1"/>
+        <line num="3" count="2" type="stmt"/>
+        <line num="4" count="2" type="stmt"/>
+        <line num="6" count="2" type="stmt"/>
       </file>
       <file name="transactionController.js" path="D:\STUPEN\latihan-kelas\Finall-Project\app\controller\transactionController.js">
         <metrics statements="57" coveredstatements="11" conditionals="18" coveredconditionals="0" methods="4" coveredmethods="0"/>
@@ -633,7 +633,7 @@
         <line num="188" count="2" type="stmt"/>
       </file>
       <file name="userController.js" path="D:\STUPEN\latihan-kelas\Finall-Project\app\controller\userController.js">
-        <metrics statements="49" coveredstatements="14" conditionals="10" coveredconditionals="0" methods="4" coveredmethods="1"/>
+        <metrics statements="49" coveredstatements="15" conditionals="10" coveredconditionals="1" methods="4" coveredmethods="1"/>
         <line num="1" count="2" type="stmt"/>
         <line num="2" count="2" type="stmt"/>
         <line num="3" count="2" type="stmt"/>
@@ -654,9 +654,9 @@
         <line num="31" count="0" type="stmt"/>
         <line num="36" count="0" type="stmt"/>
         <line num="41" count="2" type="stmt"/>
-        <line num="42" count="2" type="stmt"/>
-        <line num="43" count="2" type="stmt"/>
-        <line num="44" count="2" type="stmt"/>
+        <line num="42" count="0" type="stmt"/>
+        <line num="43" count="0" type="stmt"/>
+        <line num="44" count="0" type="stmt"/>
         <line num="45" count="0" type="stmt"/>
         <line num="48" count="0" type="stmt"/>
         <line num="49" count="0" type="cond" truecount="0" falsecount="2"/>
@@ -674,10 +674,10 @@
         <line num="73" count="0" type="stmt"/>
         <line num="75" count="0" type="stmt"/>
         <line num="79" count="2" type="stmt"/>
-        <line num="80" count="0" type="stmt"/>
-        <line num="81" count="0" type="stmt"/>
-        <line num="87" count="0" type="cond" truecount="0" falsecount="2"/>
-        <line num="88" count="0" type="stmt"/>
+        <line num="80" count="2" type="stmt"/>
+        <line num="81" count="2" type="stmt"/>
+        <line num="87" count="2" type="cond" truecount="1" falsecount="1"/>
+        <line num="88" count="2" type="stmt"/>
         <line num="91" count="0" type="stmt"/>
         <line num="96" count="0" type="stmt"/>
         <line num="102" count="0" type="stmt"/>
@@ -1071,13 +1071,13 @@
       </file>
     </package>
     <package name="utils">
-      <metrics statements="34" coveredstatements="18" conditionals="2" coveredconditionals="0" methods="5" coveredmethods="0"/>
+      <metrics statements="34" coveredstatements="22" conditionals="2" coveredconditionals="1" methods="5" coveredmethods="1"/>
       <file name="apiError.js" path="D:\STUPEN\latihan-kelas\Finall-Project\utils\apiError.js">
-        <metrics statements="5" coveredstatements="1" conditionals="2" coveredconditionals="0" methods="1" coveredmethods="0"/>
-        <line num="3" count="0" type="stmt"/>
-        <line num="5" count="0" type="stmt"/>
-        <line num="6" count="0" type="cond" truecount="0" falsecount="2"/>
-        <line num="8" count="0" type="stmt"/>
+        <metrics statements="5" coveredstatements="5" conditionals="2" coveredconditionals="1" methods="1" coveredmethods="1"/>
+        <line num="3" count="2" type="stmt"/>
+        <line num="5" count="2" type="stmt"/>
+        <line num="6" count="2" type="cond" truecount="1" falsecount="1"/>
+        <line num="8" count="2" type="stmt"/>
         <line num="12" count="2" type="stmt"/>
       </file>
       <file name="generatedOTP.js" path="D:\STUPEN\latihan-kelas\Finall-Project\utils\generatedOTP.js">
