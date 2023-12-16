@@ -1,5 +1,5 @@
 const Midtrans = require('midtrans-client')
-const { Transaction, Course, Auth } = require('../models')
+const { Transaction, Course, Auth, User } = require('../models')
 const { CLIENT_KEY, SERVER_KEY } = process.env
 const ApiError = require('../../utils/apiError')
 const crypto = require('crypto')
@@ -37,7 +37,7 @@ const createTransactionSnap = async (req, res, next) => {
 
     if (course.coursePrice === 0) {
       return res.status(200).json({
-        status: 'success',
+        status: 'Success',
         message: 'Kursus ini gratis',
       })
     }
@@ -88,7 +88,7 @@ const createTransactionSnap = async (req, res, next) => {
     })
 
     res.status(201).json({
-      status: 'success',
+      status: 'Success',
       url: transaction.redirect_url,
       token: transaction.token,
       email: authData.email,
@@ -161,6 +161,40 @@ const getAllTransaction = async (req, res, next) => {
   }
 }
 
+const getUserTransaction = async (req, res, next) => {
+  try {
+    const userTransactions = await User.findOne({
+      where: {
+        id: req.user.id,
+      },
+      include: [
+        {
+          model: Transaction,
+          as: 'Transactions',
+          where: {
+            userId: req.user.id,
+          },
+        },
+      ],
+    })
+
+    if (
+      !userTransactions ||
+      !userTransactions.Transactions ||
+      userTransactions.Transactions.length === 0
+    ) {
+      return next(new ApiError(`Data transaksi kosong`, 404))
+    }
+
+    res.status(200).json({
+      status: 'Success',
+      userTransactions,
+    })
+  } catch (err) {
+    next(new ApiError(err.message, 500))
+  }
+}
+
 const getPaymentDetail = async (req, res, next) => {
   try {
     const { order_id } = req.params
@@ -178,6 +212,7 @@ const getPaymentDetail = async (req, res, next) => {
     }
 
     res.status(200).json({
+      status: 'Success',
       detailTransaction,
     })
   } catch (err) {
@@ -190,4 +225,5 @@ module.exports = {
   paymentCallback,
   getAllTransaction,
   getPaymentDetail,
+  getUserTransaction,
 }

@@ -49,7 +49,6 @@ const getUserByEmail = async (req, res, next) => {
   }
 }
 
-// update User
 const updateUser = async (req, res, next) => {
   const id = req.params.id
   const userBody = req.body
@@ -242,7 +241,6 @@ const getDataCourse = async (req, res, next) => {
       }
     })
 
-    // const course = await mapCourse
     res.status(200).json({
       data: formattedCourses,
     })

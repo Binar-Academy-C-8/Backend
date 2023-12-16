@@ -36,6 +36,7 @@ module.exports = (sequelize, DataTypes) => {
           name: 'userId',
           allowNull: false,
         },
+        // as: 'transactions',
       })
     }
   }
