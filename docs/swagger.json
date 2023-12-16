@@ -4127,7 +4127,7 @@
         ],
         "responses": {
           "201": {
-            "description": "Sukses membuat chapter",
+            "description": "Sukses membuat transaksi",
             "content": {
               "application/json": {
                 "schema": {
