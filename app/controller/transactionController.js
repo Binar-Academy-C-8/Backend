@@ -13,12 +13,29 @@ const createTransactionSnap = async (req, res, next) => {
       where: {
         userId: req.user.id,
         courseId: courseId,
+        paymentStatus: 'unpaid',
+      },
+    })
+
+    const hasPurchasedBefore = await Transaction.findOne({
+      where: {
+        userId: req.user.id,
+        courseId: courseId,
         paymentStatus: 'paid',
       },
     })
 
-    if (existingTransaction) {
+    if (hasPurchasedBefore) {
       return next(new ApiError('Anda sudah membeli kursus ini sebelumnya', 400))
+    }
+
+    if (existingTransaction) {
+      return next(
+        new ApiError(
+          'Anda memiliki transaksi yang belum dibayar untuk kursus ini, silahkan cek riwayat transaksi',
+          409
+        )
+      )
     }
 
     const course = await Course.findByPk(courseId)
@@ -85,6 +102,7 @@ const createTransactionSnap = async (req, res, next) => {
       ppn: ppn,
       price: course.coursePrice,
       orderId: data.transaction_details.order_id,
+      linkPayment: transaction.redirect_url,
     })
 
     res.status(201).json({
@@ -163,32 +181,53 @@ const getAllTransaction = async (req, res, next) => {
 
 const getUserTransaction = async (req, res, next) => {
   try {
-    const userTransactions = await User.findOne({
+    const userTransactions = await Transaction.findAll({
       where: {
-        id: req.user.id,
+        userId: req.user.id,
       },
-      include: [
-        {
-          model: Transaction,
-          as: 'Transactions',
-          where: {
-            userId: req.user.id,
-          },
-        },
-      ],
+      include: ['Course'],
     })
 
-    if (
-      !userTransactions ||
-      !userTransactions.Transactions ||
-      userTransactions.Transactions.length === 0
-    ) {
+    if (userTransactions.length === 0) {
       return next(new ApiError(`Data transaksi kosong`, 404))
     }
 
+    const formattedTransactions = userTransactions.map((transaction) => {
+      return {
+        id: transaction.id,
+        orderId: transaction.orderId,
+        ppn: transaction.ppn,
+        price: transaction.price,
+        totalPrice: transaction.totalPrice,
+        paymentStatus: transaction.paymentStatus,
+        paymentMethod: transaction.paymentMethod,
+        userId: transaction.userId,
+        courseId: transaction.courseId,
+        linkPayment: transaction.linkPayment,
+        createdAt: transaction.createdAt,
+        updatedAt: transaction.updatedAt,
+        course: {
+          id: transaction.Course.id,
+          courseCode: transaction.Course.courseCode,
+          categoryId: transaction.Course.categoryId,
+          adminId: transaction.Course.userId,
+          courseName: transaction.Course.courseName,
+          image: transaction.Course.image,
+          courseType: transaction.Course.courseType,
+          courseLevel: transaction.Course.courseLevel,
+          rating: transaction.Course.rating,
+          aboutCourse: transaction.Course.aboutCourse,
+          intendedFor: transaction.Course.intendedFor,
+          coursePrice: transaction.Course.coursePrice,
+          createdAt: transaction.Course.createdAt,
+          updatedAt: transaction.Course.updatedAt,
+        },
+      }
+    })
+
     res.status(200).json({
       status: 'Success',
-      userTransactions,
+      userTransactions: formattedTransactions,
     })
   } catch (err) {
     next(new ApiError(err.message, 500))

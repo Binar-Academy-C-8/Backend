@@ -37,6 +37,7 @@ module.exports = (sequelize, DataTypes) => {
       paymentMethod: DataTypes.STRING,
       userId: DataTypes.INTEGER,
       courseId: DataTypes.INTEGER,
+      linkPayment: DataTypes.STRING,
     },
     {
       sequelize,

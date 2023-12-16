@@ -4188,6 +4188,10 @@
                           "type": "integer",
                           "example": 3914
                         },
+                        "linkPayment": {
+                          "type": "string",
+                          "example": "https://app.sandbox.midtrans.com/snap/v3/redirection/36fcd82d-a125-4125-89b8-eaca53234703"
+                        },
                         "updatedAt": {
                           "type": "string",
                           "format": "date-time",
@@ -4282,6 +4286,26 @@
                     "message": {
                       "type": "string",
                       "example": "Anda sudah membeli kursus ini sebelumnya"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Konflik, pengguna memiliki transaksi yang belum dibayar",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "Failed"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Anda memiliki transaksi yang belum dibayar untuk kursus ini, silahkan cek riwayat transaksi"
                     }
                   }
                 }
@@ -4735,100 +4759,118 @@
                       "example": "Success"
                     },
                     "userTransactions": {
-                      "type": "object",
-                      "properties": {
-                        "id": {
-                          "type": "integer",
-                          "example": 2
-                        },
-                        "name": {
-                          "type": "string",
-                          "example": "steven"
-                        },
-                        "phoneNumber": {
-                          "type": "string",
-                          "example": "0812988430"
-                        },
-                        "country": {
-                          "type": "string",
-                          "example": "Indonesia"
-                        },
-                        "city": {
-                          "type": "string",
-                          "example": "Tangerang"
-                        },
-                        "role": {
-                          "type": "string",
-                          "example": "member"
-                        },
-                        "image": {
-                          "type": "string",
-                          "example": "https://tse2.mm.bing.net/th?id=OIP.U2iQ7wNK6ZzTW_traW_-PQHaHa&pid=Api&P=0&h=180"
-                        },
-                        "createdAt": {
-                          "type": "string",
-                          "format": "date-time",
-                          "example": "2023-12-15T03:26:11.441Z"
-                        },
-                        "updatedAt": {
-                          "type": "string",
-                          "format": "date-time",
-                          "example": "2023-12-15T03:26:11.441Z"
-                        },
-                        "Transactions": {
-                          "type": "array",
-                          "items": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "id": {
+                            "type": "integer",
+                            "example": 1
+                          },
+                          "orderId": {
+                            "type": "integer",
+                            "example": 9598
+                          },
+                          "ppn": {
+                            "type": "integer",
+                            "example": 21890
+                          },
+                          "price": {
+                            "type": "integer",
+                            "example": 199000
+                          },
+                          "totalPrice": {
+                            "type": "integer",
+                            "example": 220890
+                          },
+                          "paymentStatus": {
+                            "type": "string",
+                            "example": "unpaid"
+                          },
+                          "paymentMethod": {
+                            "type": ["string", "null"],
+                            "example": null
+                          },
+                          "userId": {
+                            "type": "integer",
+                            "example": 3
+                          },
+                          "courseId": {
+                            "type": "integer",
+                            "example": 4
+                          },
+                          "linkPayment": {
+                            "type": "string",
+                            "example": "https://app.sandbox.midtrans.com/snap/v3/redirection/86f8cd8e-31ae-479e-8a58-f43c387623a8"
+                          },
+                          "createdAt": {
+                            "type": "string",
+                            "format": "date-time",
+                            "example": "2023-12-16T13:14:36.020Z"
+                          },
+                          "updatedAt": {
+                            "type": "string",
+                            "format": "date-time",
+                            "example": "2023-12-16T13:14:36.020Z"
+                          },
+                          "course": {
                             "type": "object",
                             "properties": {
                               "id": {
                                 "type": "integer",
-                                "example": 3
+                                "example": 4
                               },
-                              "orderId": {
+                              "courseCode": {
+                                "type": "string",
+                                "example": "AD1"
+                              },
+                              "categoryId": {
                                 "type": "integer",
-                                "example": 3285
+                                "example": 4
+                              },
+                              "adminId": {
+                                "type": "integer",
+                                "example": 1
                               },
                               "courseName": {
                                 "type": "string",
                                 "example": "Belajar Kotlin Lanjutan"
                               },
-                              "ppn": {
-                                "type": "integer",
-                                "example": 21890
+                              "image": {
+                                "type": "string",
+                                "example": "https://ik.imagekit.io/AliRajab03/IMG-1701735564320._8NY5we_7t.jpeg?updatedAt=1701735567581"
                               },
-                              "price": {
+                              "courseType": {
+                                "type": "string",
+                                "example": "Premium"
+                              },
+                              "courseLevel": {
+                                "type": "string",
+                                "example": "Advanced"
+                              },
+                              "rating": {
+                                "type": "number",
+                                "example": 4.2
+                              },
+                              "aboutCourse": {
+                                "type": "string",
+                                "example": "Belajar Kotlin Lanjutan adalah kelas yang dirancang khusus bagi mereka yang telah memiliki pemahaman dasar tentang bahasa pemrograman Kotlin dan ingin mengambil langkah lebih jauh. Dalam kelas ini, peserta akan dihadapkan pada konsep-konsep tingkat lanjut seperti generic, extension functions, coroutines, dan fitur-fitur canggih lainnya yang membuat Kotlin menjadi bahasa yang powerful dan ekspresif."
+                              },
+                              "intendedFor": {
+                                "type": "string",
+                                "example": "Android developer Profesional"
+                              },
+                              "coursePrice": {
                                 "type": "integer",
                                 "example": 199000
                               },
-                              "totalPrice": {
-                                "type": "integer",
-                                "example": 220890
-                              },
-                              "paymentStatus": {
-                                "type": "string",
-                                "example": "unpaid"
-                              },
-                              "paymentMethod": {
-                                "type": ["string", "null"],
-                                "example": null
-                              },
-                              "userId": {
-                                "type": "integer",
-                                "example": 2
-                              },
-                              "courseId": {
-                                "type": "integer",
-                                "example": 4
-                              },
                               "createdAt": {
                                 "type": "string",
-                                "format": "date-time",
-                                "example": "2023-12-16T08:56:29.259Z"
+                                "example": "2023-11-28T06:25:24.446Z"
                               },
                               "updatedAt": {
                                 "type": "string",
-                                "format": "date-time",
-                                "example": "2023-12-16T08:56:29.259Z"
+                                "example": "2023-11-28T06:25:24.446Z"
                               }
                             }
                           }
