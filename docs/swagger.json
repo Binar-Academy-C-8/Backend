@@ -4137,18 +4137,6 @@
                       "type": "string",
                       "example": "Success"
                     },
-                    "url": {
-                      "type": "string",
-                      "example": "https://app.sandbox.midtrans.com/snap/v3/redirection/215a8168-b8dc-4ea2-ac8c-f7a215d1169e"
-                    },
-                    "token": {
-                      "type": "string",
-                      "example": "215a8168-b8dc-4ea2-ac8c-f7a215d1169e"
-                    },
-                    "email": {
-                      "type": "string",
-                      "example": "adminc8@mail.com"
-                    },
                     "createdTransactionData": {
                       "type": "object",
                       "properties": {
