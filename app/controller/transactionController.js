@@ -107,12 +107,8 @@ const createTransactionSnap = async (req, res, next) => {
 
     res.status(201).json({
       status: 'Success',
-      url: transaction.redirect_url,
-      token: transaction.token,
-      email: authData.email,
-      name: data.customer_details.first_name,
       createdTransactionData,
-      data,
+      course,
     })
   } catch (err) {
     next(new ApiError(err.message, 500))

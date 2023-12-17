@@ -4135,7 +4135,7 @@
                   "properties": {
                     "status": {
                       "type": "string",
-                      "example": "success"
+                      "example": "Success"
                     },
                     "url": {
                       "type": "string",
@@ -4158,49 +4158,49 @@
                         },
                         "id": {
                           "type": "integer",
-                          "example": 8
+                          "example": 12
                         },
                         "courseName": {
                           "type": "string",
-                          "example": "Belajar Kotlin Lanjutan"
+                          "example": "Mastery Product Management"
                         },
                         "userId": {
                           "type": "integer",
-                          "example": 1
+                          "example": 3
                         },
                         "courseId": {
                           "type": "integer",
-                          "example": 4
+                          "example": 5
                         },
                         "totalPrice": {
                           "type": "integer",
-                          "example": 220890
+                          "example": 222000
                         },
                         "ppn": {
                           "type": "integer",
-                          "example": 21890
+                          "example": 22000
                         },
                         "price": {
                           "type": "integer",
-                          "example": 199000
+                          "example": 200000
                         },
                         "orderId": {
                           "type": "integer",
-                          "example": 3914
+                          "example": 7050
                         },
                         "linkPayment": {
                           "type": "string",
-                          "example": "https://app.sandbox.midtrans.com/snap/v3/redirection/36fcd82d-a125-4125-89b8-eaca53234703"
+                          "example": "https://app.sandbox.midtrans.com/snap/v3/redirection/ce98d7f3-7642-4d3e-81fa-7fef45ac5bf6"
                         },
                         "updatedAt": {
                           "type": "string",
                           "format": "date-time",
-                          "example": "2023-12-09T10:14:11.697Z"
+                          "example": "2023-12-17T13:17:23.650Z"
                         },
                         "createdAt": {
                           "type": "string",
                           "format": "date-time",
-                          "example": "2023-12-09T10:14:11.697Z"
+                          "example": "2023-12-17T13:17:23.650Z"
                         },
                         "paymentMethod": {
                           "type": ["string", "null"],
@@ -4208,62 +4208,66 @@
                         }
                       }
                     },
-                    "data": {
+                    "course": {
                       "type": "object",
                       "properties": {
-                        "item_details": {
-                          "type": "array",
-                          "items": {
-                            "type": "object",
-                            "properties": {
-                              "id": {
-                                "type": "integer",
-                                "example": 4
-                              },
-                              "name": {
-                                "type": "string",
-                                "example": "Belajar Kotlin Lanjutan"
-                              },
-                              "price": {
-                                "type": "integer",
-                                "example": 220890
-                              },
-                              "quantity": {
-                                "type": "integer",
-                                "example": 1
-                              }
-                            }
-                          }
+                        "id": {
+                          "type": "integer",
+                          "example": 5
                         },
-                        "transaction_details": {
-                          "type": "object",
-                          "properties": {
-                            "order_id": {
-                              "type": "string",
-                              "example": "3914"
-                            },
-                            "gross_amount": {
-                              "type": "integer",
-                              "example": 220890
-                            }
-                          }
+                        "courseCode": {
+                          "type": "string",
+                          "example": "PM1"
                         },
-                        "customer_details": {
-                          "type": "object",
-                          "properties": {
-                            "first_name": {
-                              "type": "string",
-                              "example": "adminc8"
-                            },
-                            "email": {
-                              "type": "string",
-                              "example": "adminc8@mail.com"
-                            },
-                            "phone": {
-                              "type": "string",
-                              "example": "+628236576342564"
-                            }
-                          }
+                        "categoryId": {
+                          "type": "integer",
+                          "example": 5
+                        },
+                        "userId": {
+                          "type": "integer",
+                          "example": 1
+                        },
+                        "courseName": {
+                          "type": "string",
+                          "example": "Mastery Product Management"
+                        },
+                        "image": {
+                          "type": "string",
+                          "example": "https://ik.imagekit.io/AliRajab03/IMG-1701735786642._-fTpdTNwR.jpeg?updatedAt=1701735789863"
+                        },
+                        "courseType": {
+                          "type": "string",
+                          "example": "Premium"
+                        },
+                        "courseLevel": {
+                          "type": "string",
+                          "example": "Advanced"
+                        },
+                        "rating": {
+                          "type": "number",
+                          "example": 4.1
+                        },
+                        "aboutCourse": {
+                          "type": "string",
+                          "example": "Mastery Product Management adalah kursus khusus yang dirancang bagi mereka yang sudah memiliki pemahaman dasar tentang manajemen produk dan ingin meningkatkan keterampilan mereka. Dalam kursus ini, peserta akan mendalami konsep-konsep tingkat lanjut seperti analisis pasar, perencanaan strategis, dan pengembangan produk yang adaptif. Kurikulum mencakup studi komprehensif tentang manajemen siklus hidup produk dan pertimbangan etika dalam ranah manajemen produk."
+                        },
+                        "intendedFor": {
+                          "type": "string",
+                          "example": "Dirancang khusus untuk manajer produk berpengalaman"
+                        },
+                        "coursePrice": {
+                          "type": "integer",
+                          "example": 200000
+                        },
+                        "createdAt": {
+                          "type": "string",
+                          "format": "date-time",
+                          "example": "2023-11-28T06:25:24.446Z"
+                        },
+                        "updatedAt": {
+                          "type": "string",
+                          "format": "date-time",
+                          "example": "2023-11-28T06:25:24.446Z"
                         }
                       }
                     }
