@@ -30,6 +30,10 @@ module.exports = (sequelize, DataTypes) => {
           allowNull: false,
         },
       })
+      Course.hasMany(models.CourseUser, {
+        foreignKey: 'courseId',
+        allowNull: false,
+      })
     }
   }
   Course.init(
@@ -48,13 +52,22 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.ENUM(['Free', 'Premium']),
         allowNull: false,
       },
+      telegramGroup: {
+        type: DataTypes.STRING,
+      },
       courseLevel: {
         type: DataTypes.ENUM(['Beginner', 'Intermediate', 'Advanced']),
         allowNull: false,
+        defaultValue: 0.0,
       },
-      rating: { type: DataTypes.INTEGER },
+      rating: { type: DataTypes.FLOAT, defaultValue: 0.0 },
       aboutCourse: { type: DataTypes.TEXT },
       intendedFor: { type: DataTypes.TEXT },
+      courseDiscountInPercent: {
+        type: DataTypes.FLOAT,
+        allowNull: false,
+        defaultValue: 0,
+      },
       coursePrice: { type: DataTypes.FLOAT, allowNull: false },
     },
     {

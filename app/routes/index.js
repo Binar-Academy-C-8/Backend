@@ -23,6 +23,6 @@ router.use('/api/v1/chapter', Chapter)
 router.use('/api/v1/content', Content)
 router.use('/api/v1/category', Category)
 router.use('/api/v1/transaction', transaction)
-router.use('/', Welcome.welcome)
+router.get('/', Welcome.welcome)
 
 module.exports = router
