@@ -289,6 +289,27 @@
                     "message": {
                       "type": "string",
                       "example": "Verifikasi OTP berhasil"
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "token": {
+                          "type": "string",
+                          "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NCwidXNlcm5hbWUiOiJuaXJ3YW4iLCJyb2xlIjoibWVtYmVyIiwiZW1haWwiOiJuaXJ3YW4uYXJyYWNoQGdtYWlsLmNvbSIsImlhdCI6MTcwMjcxOTg0OX0.PoRgbJfg0OCow2ZZM8KozLQ3FhX0Oe8VNQ163PZ7FvA"
+                        },
+                        "id": {
+                          "type": "integer",
+                          "example": 4
+                        },
+                        "name": {
+                          "type": "string",
+                          "example": "nirwan"
+                        },
+                        "email": {
+                          "type": "string",
+                          "example": "nirwan.arrach@gmail.com"
+                        }
+                      }
                     }
                   }
                 }
@@ -4110,7 +4131,7 @@
         ],
         "responses": {
           "201": {
-            "description": "Sukses membuat chapter",
+            "description": "Sukses membuat transaksi",
             "content": {
               "application/json": {
                 "schema": {
@@ -4118,19 +4139,7 @@
                   "properties": {
                     "status": {
                       "type": "string",
-                      "example": "success"
-                    },
-                    "url": {
-                      "type": "string",
-                      "example": "https://app.sandbox.midtrans.com/snap/v3/redirection/215a8168-b8dc-4ea2-ac8c-f7a215d1169e"
-                    },
-                    "token": {
-                      "type": "string",
-                      "example": "215a8168-b8dc-4ea2-ac8c-f7a215d1169e"
-                    },
-                    "email": {
-                      "type": "string",
-                      "example": "adminc8@mail.com"
+                      "example": "Success"
                     },
                     "createdTransactionData": {
                       "type": "object",
@@ -4141,45 +4150,49 @@
                         },
                         "id": {
                           "type": "integer",
-                          "example": 8
+                          "example": 12
                         },
                         "courseName": {
                           "type": "string",
-                          "example": "Belajar Kotlin Lanjutan"
+                          "example": "Mastery Product Management"
                         },
                         "userId": {
                           "type": "integer",
-                          "example": 1
+                          "example": 3
                         },
                         "courseId": {
                           "type": "integer",
-                          "example": 4
+                          "example": 5
                         },
                         "totalPrice": {
                           "type": "integer",
-                          "example": 220890
+                          "example": 222000
                         },
                         "ppn": {
                           "type": "integer",
-                          "example": 21890
+                          "example": 22000
                         },
                         "price": {
                           "type": "integer",
-                          "example": 199000
+                          "example": 200000
                         },
                         "orderId": {
                           "type": "integer",
-                          "example": 3914
+                          "example": 7050
+                        },
+                        "linkPayment": {
+                          "type": "string",
+                          "example": "https://app.sandbox.midtrans.com/snap/v3/redirection/ce98d7f3-7642-4d3e-81fa-7fef45ac5bf6"
                         },
                         "updatedAt": {
                           "type": "string",
                           "format": "date-time",
-                          "example": "2023-12-09T10:14:11.697Z"
+                          "example": "2023-12-17T13:17:23.650Z"
                         },
                         "createdAt": {
                           "type": "string",
                           "format": "date-time",
-                          "example": "2023-12-09T10:14:11.697Z"
+                          "example": "2023-12-17T13:17:23.650Z"
                         },
                         "paymentMethod": {
                           "type": ["string", "null"],
@@ -4187,62 +4200,66 @@
                         }
                       }
                     },
-                    "data": {
+                    "course": {
                       "type": "object",
                       "properties": {
-                        "item_details": {
-                          "type": "array",
-                          "items": {
-                            "type": "object",
-                            "properties": {
-                              "id": {
-                                "type": "integer",
-                                "example": 4
-                              },
-                              "name": {
-                                "type": "string",
-                                "example": "Belajar Kotlin Lanjutan"
-                              },
-                              "price": {
-                                "type": "integer",
-                                "example": 220890
-                              },
-                              "quantity": {
-                                "type": "integer",
-                                "example": 1
-                              }
-                            }
-                          }
+                        "id": {
+                          "type": "integer",
+                          "example": 5
                         },
-                        "transaction_details": {
-                          "type": "object",
-                          "properties": {
-                            "order_id": {
-                              "type": "string",
-                              "example": "3914"
-                            },
-                            "gross_amount": {
-                              "type": "integer",
-                              "example": 220890
-                            }
-                          }
+                        "courseCode": {
+                          "type": "string",
+                          "example": "PM1"
                         },
-                        "customer_details": {
-                          "type": "object",
-                          "properties": {
-                            "first_name": {
-                              "type": "string",
-                              "example": "adminc8"
-                            },
-                            "email": {
-                              "type": "string",
-                              "example": "adminc8@mail.com"
-                            },
-                            "phone": {
-                              "type": "string",
-                              "example": "+628236576342564"
-                            }
-                          }
+                        "categoryId": {
+                          "type": "integer",
+                          "example": 5
+                        },
+                        "userId": {
+                          "type": "integer",
+                          "example": 1
+                        },
+                        "courseName": {
+                          "type": "string",
+                          "example": "Mastery Product Management"
+                        },
+                        "image": {
+                          "type": "string",
+                          "example": "https://ik.imagekit.io/AliRajab03/IMG-1701735786642._-fTpdTNwR.jpeg?updatedAt=1701735789863"
+                        },
+                        "courseType": {
+                          "type": "string",
+                          "example": "Premium"
+                        },
+                        "courseLevel": {
+                          "type": "string",
+                          "example": "Advanced"
+                        },
+                        "rating": {
+                          "type": "number",
+                          "example": 4.1
+                        },
+                        "aboutCourse": {
+                          "type": "string",
+                          "example": "Mastery Product Management adalah kursus khusus yang dirancang bagi mereka yang sudah memiliki pemahaman dasar tentang manajemen produk dan ingin meningkatkan keterampilan mereka. Dalam kursus ini, peserta akan mendalami konsep-konsep tingkat lanjut seperti analisis pasar, perencanaan strategis, dan pengembangan produk yang adaptif. Kurikulum mencakup studi komprehensif tentang manajemen siklus hidup produk dan pertimbangan etika dalam ranah manajemen produk."
+                        },
+                        "intendedFor": {
+                          "type": "string",
+                          "example": "Dirancang khusus untuk manajer produk berpengalaman"
+                        },
+                        "coursePrice": {
+                          "type": "integer",
+                          "example": 200000
+                        },
+                        "createdAt": {
+                          "type": "string",
+                          "format": "date-time",
+                          "example": "2023-11-28T06:25:24.446Z"
+                        },
+                        "updatedAt": {
+                          "type": "string",
+                          "format": "date-time",
+                          "example": "2023-11-28T06:25:24.446Z"
                         }
                       }
                     }
@@ -4265,6 +4282,26 @@
                     "message": {
                       "type": "string",
                       "example": "Anda sudah membeli kursus ini sebelumnya"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Konflik, pengguna memiliki transaksi yang belum dibayar",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "Failed"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Anda memiliki transaksi yang belum dibayar untuk kursus ini, silahkan cek riwayat transaksi"
                     }
                   }
                 }
@@ -4342,7 +4379,7 @@
             "bearerToken": []
           }
         ],
-        "summary": "Return hasil hit API get all transaction",
+        "summary": "Return hasil hit API get all transaction untuk ADMIN",
         "description": "API untuk get all transaction",
         "responses": {
           "200": {
@@ -4370,7 +4407,7 @@
                               },
                               "orderId": {
                                 "type": "integer",
-                                "example": 5785
+                                "example": 7832
                               },
                               "courseName": {
                                 "type": "string",
@@ -4390,15 +4427,15 @@
                               },
                               "paymentStatus": {
                                 "type": "string",
-                                "example": "paid"
+                                "example": "unpaid"
                               },
                               "paymentMethod": {
                                 "type": ["string", "null"],
-                                "example": "bank_transfer"
+                                "example": null
                               },
                               "userId": {
                                 "type": "integer",
-                                "example": 3
+                                "example": 1
                               },
                               "courseId": {
                                 "type": "integer",
@@ -4407,12 +4444,55 @@
                               "createdAt": {
                                 "type": "string",
                                 "format": "date-time",
-                                "example": "2023-12-09T04:54:43.060Z"
+                                "example": "2023-12-15T09:08:09.018Z"
                               },
                               "updatedAt": {
                                 "type": "string",
                                 "format": "date-time",
-                                "example": "2023-12-09T04:56:45.806Z"
+                                "example": "2023-12-15T09:08:09.018Z"
+                              },
+                              "User": {
+                                "type": "object",
+                                "properties": {
+                                  "id": {
+                                    "type": "integer",
+                                    "example": 1
+                                  },
+                                  "name": {
+                                    "type": "string",
+                                    "example": "adminc8"
+                                  },
+                                  "phoneNumber": {
+                                    "type": "string",
+                                    "example": "+628236576342564"
+                                  },
+                                  "country": {
+                                    "type": "string",
+                                    "example": "Indonesia"
+                                  },
+                                  "city": {
+                                    "type": "string",
+                                    "example": "Jakarta"
+                                  },
+                                  "role": {
+                                    "type": "string",
+                                    "example": "admin"
+                                  },
+                                  "image": {
+                                    "type": "string",
+                                    "example": ""
+                                  },
+                                  "createdAt": {
+                                    "type": "string",
+                                    "format": "date-time",
+                                    "example": "2023-12-15T03:19:49.903Z"
+                                  },
+                                  "updatedAt": {
+                                    "type": "string",
+                                    "format": "date-time",
+                                    "example": "2023-12-15T03:19:49.903Z"
+                                  }
+                                }
                               }
                             }
                           }
@@ -4623,6 +4703,215 @@
                     "message": {
                       "type": "string",
                       "example": "Detail pembayaran dengan ID: 10 tidak ditemukan"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Error from server",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "Failed"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Internal server error"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/transaction/history": {
+      "get": {
+        "tags": ["Payment"],
+        "security": [
+          {
+            "bearerToken": []
+          }
+        ],
+        "summary": "Return hasil hit API riwayat transaksi MEMBER",
+        "description": "API untuk riwayat transaksi MEMBER",
+        "responses": {
+          "200": {
+            "description": "Sukses get data transaksi by order id",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "Success"
+                    },
+                    "userTransactions": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "id": {
+                            "type": "integer",
+                            "example": 1
+                          },
+                          "orderId": {
+                            "type": "integer",
+                            "example": 9598
+                          },
+                          "ppn": {
+                            "type": "integer",
+                            "example": 21890
+                          },
+                          "price": {
+                            "type": "integer",
+                            "example": 199000
+                          },
+                          "totalPrice": {
+                            "type": "integer",
+                            "example": 220890
+                          },
+                          "paymentStatus": {
+                            "type": "string",
+                            "example": "unpaid"
+                          },
+                          "paymentMethod": {
+                            "type": ["string", "null"],
+                            "example": null
+                          },
+                          "userId": {
+                            "type": "integer",
+                            "example": 3
+                          },
+                          "courseId": {
+                            "type": "integer",
+                            "example": 4
+                          },
+                          "linkPayment": {
+                            "type": "string",
+                            "example": "https://app.sandbox.midtrans.com/snap/v3/redirection/86f8cd8e-31ae-479e-8a58-f43c387623a8"
+                          },
+                          "createdAt": {
+                            "type": "string",
+                            "format": "date-time",
+                            "example": "2023-12-16T13:14:36.020Z"
+                          },
+                          "updatedAt": {
+                            "type": "string",
+                            "format": "date-time",
+                            "example": "2023-12-16T13:14:36.020Z"
+                          },
+                          "course": {
+                            "type": "object",
+                            "properties": {
+                              "id": {
+                                "type": "integer",
+                                "example": 4
+                              },
+                              "courseCode": {
+                                "type": "string",
+                                "example": "AD1"
+                              },
+                              "categoryId": {
+                                "type": "integer",
+                                "example": 4
+                              },
+                              "adminId": {
+                                "type": "integer",
+                                "example": 1
+                              },
+                              "courseName": {
+                                "type": "string",
+                                "example": "Belajar Kotlin Lanjutan"
+                              },
+                              "image": {
+                                "type": "string",
+                                "example": "https://ik.imagekit.io/AliRajab03/IMG-1701735564320._8NY5we_7t.jpeg?updatedAt=1701735567581"
+                              },
+                              "courseType": {
+                                "type": "string",
+                                "example": "Premium"
+                              },
+                              "courseLevel": {
+                                "type": "string",
+                                "example": "Advanced"
+                              },
+                              "rating": {
+                                "type": "number",
+                                "example": 4.2
+                              },
+                              "aboutCourse": {
+                                "type": "string",
+                                "example": "Belajar Kotlin Lanjutan adalah kelas yang dirancang khusus bagi mereka yang telah memiliki pemahaman dasar tentang bahasa pemrograman Kotlin dan ingin mengambil langkah lebih jauh. Dalam kelas ini, peserta akan dihadapkan pada konsep-konsep tingkat lanjut seperti generic, extension functions, coroutines, dan fitur-fitur canggih lainnya yang membuat Kotlin menjadi bahasa yang powerful dan ekspresif."
+                              },
+                              "intendedFor": {
+                                "type": "string",
+                                "example": "Android developer Profesional"
+                              },
+                              "coursePrice": {
+                                "type": "integer",
+                                "example": 199000
+                              },
+                              "createdAt": {
+                                "type": "string",
+                                "example": "2023-11-28T06:25:24.446Z"
+                              },
+                              "updatedAt": {
+                                "type": "string",
+                                "example": "2023-11-28T06:25:24.446Z"
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Jika belum login",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "Failed"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Anda harus masuk"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Jika data transaksi kosong",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "Failed"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Data transaksi kosong"
                     }
                   }
                 }
