@@ -1105,7 +1105,7 @@
         "requestBody": {
           "description": "ini request body untuk sukses update data user",
           "content": {
-            "application/json": {
+            "multipart/form-data": {
               "schema": {
                 "type": "object",
                 "properties": {
@@ -1124,6 +1124,10 @@
                   "city": {
                     "type": "string",
                     "example": "Kuala Lumpur"
+                  },
+                  "image": {
+                    "type": "string",
+                    "format": "binary"
                   }
                 }
               }
