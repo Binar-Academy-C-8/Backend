@@ -11,9 +11,16 @@ module.exports = {
       },
       userId: {
         type: Sequelize.INTEGER,
+        allowNull: false,
       },
       courseId: {
         type: Sequelize.INTEGER,
+        allowNull: false,
+      },
+      contentFinished: {
+        type: Sequelize.INTEGER,
+        allowNull: false,
+        defaultValue: 0,
       },
       courseStatus: {
         type: Sequelize.ENUM(['inProgress', 'Selesai']),

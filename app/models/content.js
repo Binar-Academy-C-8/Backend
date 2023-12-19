@@ -22,10 +22,6 @@ module.exports = (sequelize, DataTypes) => {
       contentUrl: DataTypes.STRING,
       duration: DataTypes.STRING,
       youtubeId: DataTypes.STRING,
-      status: {
-        type: DataTypes.BOOLEAN,
-        defaultValue: false,
-      },
       chapterId: DataTypes.INTEGER,
     },
     {

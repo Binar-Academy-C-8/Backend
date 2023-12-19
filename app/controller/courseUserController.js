@@ -5,387 +5,299 @@ const {
   Content,
   Category,
   Course,
+  Transaction,
 } = require('../models')
 const ApiError = require('../../utils/apiError')
 
-const getCourse = async (req, res, next) => {
-  const userId = req.params.id
-  const { courseId } = req.body
+const getAllMyCourse = async (req, res, next) => {
+  try {
+    const filter = {}
+    if (req.query.status) {
+      if (!['inProgress', 'Selesai'].includes(req.query.status)) {
+        return next(new ApiError('Status tidak valid', 400))
+      }
+      filter.courseStatus = req.query.status
+    }
+    const getCourseUser = await CourseUser.findAll({
+      where: { userId: req.user.id, ...filter },
+      include: [
+        {
+          model: Course,
+          as: 'course',
+          attributes: {
+            exclude: ['aboutCourse', 'intendedFor', 'telegramGroup'],
+          },
+          include: [
+            { model: Category, as: 'category' },
+            { model: User, as: 'courseBy' },
+            {
+              model: Chapter,
+              as: 'chapters',
+              include: [{ model: Content, as: 'contents' }],
+            },
+          ],
+        },
+      ],
+    })
 
+    const mapCourse = Promise.all(
+      getCourseUser.map(async (courseUser) => {
+        const course = courseUser.course
+        const chaptersByCourseId = course.toJSON().chapters
+        const contents = chaptersByCourseId.map((chapter) => {
+          const contents = chapter.contents.map((content) => {
+            return content
+          })
+          return contents
+        })
+
+        const totalDurationPerChapter = contents.map((content) => {
+          const sumDuration = content.reduce((acc, curr) => {
+            const duration = curr.duration.split(':')
+            const minutes = parseInt(duration[0])
+            const second =
+              duration[1] !== '00' ? parseFloat(duration[1] / 60) : 0
+            return (acc += minutes + second)
+          }, 0)
+          return sumDuration
+        })
+
+        const totalDurationPerCourse = totalDurationPerChapter.reduce(
+          (acc, curr) => acc + curr,
+          0
+        )
+
+        const modulePerCourse = await Chapter.count({
+          where: {
+            courseId: course.id,
+          },
+        })
+        const contentTotal = course.chapters.flatMap((chapter) => {
+          return chapter.contents.map((content) => {
+            return content.id
+          })
+        }).length
+
+        const courseProgressInPercentage = Math.round(
+          (courseUser.contentFinished / contentTotal) * 100
+        )
+        const isDiscount = course.courseDiscountInPercent > 0 ? true : false
+        const rawPrice =
+          course.coursePrice / (1 - course.courseDiscountInPercent / 100)
+
+        return {
+          ...course.toJSON(),
+          id: courseUser.id,
+          contentFinished: courseUser.contentFinished,
+          contentTotal,
+          courseStatus: courseUser.courseStatus,
+          courseProgressInPercentage,
+          courseUserId: courseUser.id,
+          courseBy: course.courseBy.name,
+          category: course.category.categoryName,
+          rawPrice,
+          durationPerCourseInMinutes: Math.round(totalDurationPerCourse),
+          isDiscount,
+          modulePerCourse,
+        }
+      })
+    )
+
+    const formatedCourses = await mapCourse
+    const courses = formatedCourses.map((course) => {
+      delete course.chapters
+      return course
+    })
+
+    res.status(200).json({
+      status: 'success',
+      courses,
+    })
+  } catch (err) {
+    next(new ApiError(err.message, 500))
+  }
+}
+
+const getOneMyCourse = async (req, res, next) => {
+  try {
+    const getUserCourse = await CourseUser.findOne({
+      where: { id: req.params.courseUserId, userId: req.user.id },
+      include: [
+        {
+          model: Course,
+          as: 'course',
+          include: [
+            {
+              model: Chapter,
+              as: 'chapters',
+              attributes: {
+                exclude: ['createdAt', 'updatedAt'],
+              },
+              include: [
+                {
+                  model: Content,
+                  as: 'contents',
+                  attributes: {
+                    exclude: ['createdAt', 'updatedAt'],
+                  },
+                },
+              ],
+            },
+            {
+              model: User,
+              as: 'courseBy',
+            },
+            {
+              model: Category,
+              as: 'category',
+            },
+          ],
+        },
+      ],
+    })
+    if (!getUserCourse) {
+      return next(new ApiError('Kurses berjalan tidak ditemukan', 404))
+    }
+    const myCourse = getUserCourse.toJSON()
+
+    const modulePerCourse = await Chapter.count({
+      where: {
+        courseId: myCourse.courseId,
+      },
+    })
+
+    const contentIndex = myCourse.course.chapters.flatMap((chapter) => {
+      return chapter.contents.map((content) => {
+        return content.id
+      })
+    })
+
+    const getChapterDuration = Promise.all(
+      myCourse.course.chapters.map(async (chapter) => {
+        const contents = await Content.findAll({
+          where: { chapterId: chapter.id },
+          raw: true,
+        })
+        const totalDuration = contents.reduce((acc, curr) => {
+          const duration = curr.duration.split(':')
+          const minutes = parseInt(duration[0])
+          const seconds = parseFloat(duration[1] / 60)
+          return (acc += minutes + seconds)
+        }, 0)
+        return totalDuration
+      })
+    )
+    const chapterDuration = await getChapterDuration
+
+    const totalCourseDuration = chapterDuration.reduce((acc, curr) => {
+      return acc + curr
+    }, 0)
+
+    const resChapter = myCourse.course.chapters.map((chapter, i) => {
+      chapter.contents = chapter.contents.map((content) => {
+        content.isWatched = false
+        content.isLocked = false
+        if (content.id < contentIndex[myCourse.contentFinished]) {
+          content.isWatched = true
+        }
+        if (content.id > contentIndex[myCourse.contentFinished]) {
+          content.isLocked = true
+          content.message =
+            'Silahkan tonton video sebelumnya, untuk mengakses video selanjutnya'
+        }
+        return content
+      })
+
+      return {
+        ...chapter,
+        contents: chapter.contents,
+        durationPerChapterInMinutes: Math.round(chapterDuration[i]),
+      }
+    })
+    const rawPrice =
+      myCourse.course.coursePrice /
+      (1 - myCourse.course.courseDiscountInPercent / 100)
+
+    const contentTotal = myCourse.course.chapters.flatMap((chapter) => {
+      return chapter.contents.map((content) => {
+        return content.id
+      })
+    }).length
+
+    const courseProgressInPercentage = Math.round(
+      (myCourse.contentFinished / contentTotal) * 100
+    )
+
+    res.status(200).json({
+      status: 'success',
+      course: {
+        courseUserId: myCourse.id,
+        contentFinished: myCourse.contentFinished,
+        contentTotal,
+        courseStatus: myCourse.courseStatus,
+        ...myCourse.course,
+        contentFinished: myCourse.contentFinished,
+        courseProgressInPercentage,
+        courseStatus: myCourse.courseStatus,
+        courseBy: myCourse.course.courseBy.name,
+        category: myCourse.course.category.categoryName,
+        rawPrice,
+        modulePerCourse,
+        chapters: resChapter,
+        durationPerCourseInMinutes: Math.round(totalCourseDuration),
+      },
+    })
+  } catch (err) {
+    next(new ApiError(err.message, 500))
+  }
+}
+
+const addToCourseUser = async (req, res, next) => {
+  const { courseId } = req.params
+  const userId = req.user.id
+
+  const isCourseEnrolled = await CourseUser.findOne({
+    where: { courseId, userId },
+  })
+
+  const transaction = await Transaction.findOne({
+    where: { courseId, userId },
+  })
+
+  const course = await Course.findOne({
+    where: { id: courseId },
+  })
+
+  if (!course) {
+    return next(new ApiError('Kursus tidak ditemukan', 404))
+  }
+
+  const isPurchased = transaction?.paymentStatus == 'paid' ? true : false
+  const isPremium = course.courseType == 'Premium' ? true : false
+
+  if (!isPurchased && isPremium) {
+    return next(new ApiError('Silahkan beli kursus terlebih dahulu', 402))
+  }
+
+  if (isCourseEnrolled) {
+    return next(
+      new ApiError(
+        'Gagal menambahkan kursus karena kursus sudah ditambahkan di kelas berjalan',
+        400
+      )
+    )
+  }
   try {
     const newCourseUser = await CourseUser.create({
-      userId: userId,
       courseId: courseId,
+      userId: userId,
       courseStatus: 'inProgress',
     })
 
-    res.status(200).json({
+    res.status(201).json({
       status: 'Success',
-      data: {
-        newCourseUser,
-      },
-    })
-  } catch (err) {
-    next(new ApiError(err.message, 500))
-  }
-}
-
-const getAllCoursesData = async (req, res, next) => {
-  try {
-    const courses = await CourseUser.findAll({
-      include: [
-        {
-          model: Course,
-          include: [
-            { model: Category, as: 'category' },
-            { model: User, as: 'courseBy' },
-            {
-              model: Chapter,
-              as: 'chapters',
-              include: [{ model: Content, as: 'contents' }],
-            },
-          ],
-        },
-        {
-          model: User,
-        },
-      ],
-    })
-
-    const formattedCourses = courses.map((courseUser) => {
-      const course = courseUser.Course
-      if (!course || !course.chapters) {
-        return null
-      }
-      const modulePerCourse = course.chapters.length
-      const totalDurationPerCourse = course.chapters.reduce(
-        (acc, chapter) =>
-          acc +
-          chapter.contents.reduce(
-            (contentAcc, content) => contentAcc + parseFloat(content.duration),
-            0
-          ),
-        0
-      )
-
-      const formattedCourse = {
-        id: courseUser.id,
-        userId: courseUser.userId,
-        courseId: courseUser.courseId,
-        courseStatus: courseUser.courseStatus,
-        createdAt: courseUser.createdAt,
-        updatedAt: courseUser.updatedAt,
-        courseCode: course.courseCode,
-        categoryId: course.categoryId,
-        userId: course.userId,
-        courseName: course.courseName,
-        image: course.image,
-        courseType: course.courseType,
-        courseLevel: course.courseLevel,
-        rating: course.rating,
-        aboutCourse: course.aboutCourse,
-        intendedFor: course.intendedFor,
-        coursePrice: course.coursePrice,
-        courseCreatedAt: course.createdAt,
-        courseUpdatedAt: course.updatedAt,
-        categoryName: course.category.categoryName,
-        courseBy: {
-          id: course.courseBy.id,
-          name: course.courseBy.name,
-          phoneNumber: course.courseBy.phoneNumber,
-          country: course.courseBy.country,
-          city: course.courseBy.city,
-          role: course.courseBy.role,
-          image: course.courseBy.image,
-          createdAt: course.courseBy.createdAt,
-          updatedAt: course.courseBy.updatedAt,
-        },
-        user: {
-          id: courseUser.User.id, // Assuming you want the user ID from CourseUser
-          name: courseUser.User.name,
-          phoneNumber: courseUser.User.phoneNumber,
-          country: courseUser.User.country,
-          city: courseUser.User.city,
-          role: courseUser.User.role,
-          image: courseUser.User.image,
-          createdAt: courseUser.User.createdAt,
-          updatedAt: courseUser.User.updatedAt,
-        },
-        chapters: course.chapters.map((chapter) => {
-          return {
-            id: chapter.id,
-            chapterTitle: chapter.chapterTitle,
-            courseId: chapter.courseId,
-            createdAt: chapter.createdAt,
-            updatedAt: chapter.updatedAt,
-            contents: (chapter.contents || []).map((content) => {
-              return {
-                id: content.id,
-                contentTitle: content.contentTitle,
-                contentUrl: content.contentUrl,
-                duration: content.duration,
-                status: content.status,
-                chapterId: content.chapterId,
-                createdAt: content.createdAt,
-                updatedAt: content.updatedAt,
-              }
-            }),
-          }
-        }),
-        durationPerCourseInMinutes: Math.round(totalDurationPerCourse),
-        modulePerCourse,
-        Category: course.toJSON().category.categoryName,
-        Level: course.toJSON().courseLevel,
-      }
-
-      return formattedCourse
-    })
-
-    res.status(200).json({
-      data: formattedCourses,
-    })
-  } catch (err) {
-    next(new ApiError(err.message, 500))
-  }
-}
-
-const getDataCourse = async (req, res, next) => {
-  const userId = req.params.userId
-  const user = req.user
-  try {
-    const courses = await CourseUser.findAll({
-      where: { userId },
-      include: [
-        {
-          model: Course,
-          include: [
-            { model: Category, as: 'category' },
-            { model: User, as: 'courseBy' },
-            {
-              model: Chapter,
-              as: 'chapters',
-              include: [{ model: Content, as: 'contents' }],
-            },
-          ],
-        },
-        {
-          model: User,
-        },
-      ],
-    })
-
-    const formattedCourses = courses.map((courseUser) => {
-      const course = courseUser.Course
-      const user = courseUser.User
-      if (!course || !course.chapters) {
-        return null
-      }
-      const modulePerCourse = course.chapters.length
-      const totalDurationPerCourse = course.chapters.reduce(
-        (acc, chapter) =>
-          acc +
-          chapter.contents.reduce(
-            (contentAcc, content) => contentAcc + parseFloat(content.duration),
-            0
-          ),
-        0
-      )
-      const formattedCourse = {
-        id: courseUser.id,
-        userId: courseUser.userId,
-        courseId: courseUser.courseId,
-        courseStatus: courseUser.courseStatus,
-        createdAt: courseUser.createdAt,
-        updatedAt: courseUser.updatedAt,
-        courseCode: course.courseCode,
-        categoryId: course.categoryId,
-        userId: course.userId,
-        courseName: course.courseName,
-        image: course.image,
-        courseType: course.courseType,
-        courseLevel: course.courseLevel,
-        rating: course.rating,
-        aboutCourse: course.aboutCourse,
-        intendedFor: course.intendedFor,
-        coursePrice: course.coursePrice,
-        courseCreatedAt: course.createdAt,
-        courseUpdatedAt: course.updatedAt,
-        categoryName: course.category.categoryName,
-        courseBy: {
-          id: course.courseBy.id,
-          name: course.courseBy.name,
-          phoneNumber: course.courseBy.phoneNumber,
-          country: course.courseBy.country,
-          city: course.courseBy.city,
-          role: course.courseBy.role,
-          image: course.courseBy.image,
-          createdAt: course.courseBy.createdAt,
-          updatedAt: course.courseBy.updatedAt,
-        },
-        chapters: course.chapters.map((chapter) => {
-          return {
-            id: chapter.id,
-            chapterTitle: chapter.chapterTitle,
-            courseId: chapter.courseId,
-            createdAt: chapter.createdAt,
-            updatedAt: chapter.updatedAt,
-            contents: (chapter.contents || []).map((content) => {
-              return {
-                id: content.id,
-                contentTitle: content.contentTitle,
-                contentUrl: content.contentUrl,
-                duration: content.duration,
-                status: content.status,
-                chapterId: content.chapterId,
-                createdAt: content.createdAt,
-                updatedAt: content.updatedAt,
-              }
-            }),
-          }
-        }),
-        durationPerCourseInMinutes: Math.round(totalDurationPerCourse),
-        modulePerCourse,
-        Category: course.toJSON().category.categoryName,
-        Level: course.toJSON().courseLevel,
-      }
-
-      // Menambahkan informasi pengguna ke setiap objek kursus
-      formattedCourse.user = {
-        id: courseUser.User.id,
-        name: courseUser.User.name,
-        phoneNumber: courseUser.User.phoneNumber,
-        country: courseUser.User.country,
-        city: courseUser.User.city,
-        role: courseUser.User.role,
-        image: courseUser.User.image,
-      }
-
-      return formattedCourse
-    })
-
-    const filteredCourses = formattedCourses.filter((course) => course !== null)
-
-    res.status(200).json({
-      data: filteredCourses,
-    })
-  } catch (err) {
-    next(new ApiError(err.message, 500))
-  }
-}
-
-const getCourseById = async (req, res, next) => {
-  const userId = req.params.userId
-  const courseId = req.params.courseId
-
-  try {
-    const courseUser = await CourseUser.findOne({
-      where: {
-        userId: userId,
-        courseId: courseId,
-      },
-      include: [
-        {
-          model: Course,
-          include: [
-            { model: Category, as: 'category' },
-            { model: User, as: 'courseBy' },
-            {
-              model: Chapter,
-              as: 'chapters',
-              include: [{ model: Content, as: 'contents' }],
-            },
-          ],
-        },
-        {
-          model: User,
-        },
-      ],
-    })
-
-    if (!courseUser) {
-      return res.status(404).json({
-        error: 'CourseUser not found',
-      })
-    }
-
-    const course = courseUser.Course
-    const modulePerCourse = course.chapters.length
-    const totalDurationPerCourse = course.chapters.reduce(
-      (acc, chapter) =>
-        acc +
-        chapter.contents.reduce(
-          (contentAcc, content) => contentAcc + parseFloat(content.duration),
-          0
-        ),
-      0
-    )
-
-    const formattedCourse = {
-      id: courseUser.id,
-      userId: courseUser.userId,
-      courseId: courseId,
-      courseStatus: courseUser.courseStatus,
-      createdAt: courseUser.createdAt,
-      updatedAt: courseUser.updatedAt,
-      courseCode: course.courseCode,
-      categoryId: course.categoryId,
-      userId: course.userId,
-      courseName: course.courseName,
-      image: course.image,
-      description: course.description,
-      objectiveCourse: course.objectiveCourse,
-      courseType: course.courseType,
-      courseLevel: course.courseLevel,
-      rating: course.rating,
-      aboutCourse: course.aboutCourse,
-      intendedFor: course.intendedFor,
-      coursePrice: course.coursePrice,
-      courseCreatedAt: course.createdAt,
-      courseUpdatedAt: course.updatedAt,
-      categoryName: course.category.categoryName,
-      contentUrl: course.chapters[0]?.contents.find(
-        (content) => content.id === 1
-      )?.contentUrl,
-      courseBy: {
-        id: course.courseBy.id,
-        name: course.courseBy.name,
-        phoneNumber: course.courseBy.phoneNumber,
-        country: course.courseBy.country,
-        city: course.courseBy.city,
-        role: course.courseBy.role,
-        image: course.courseBy.image,
-        createdAt: course.courseBy.createdAt,
-        updatedAt: course.courseBy.updatedAt,
-      },
-      chapters: course.chapters.map((chapter) => {
-        return {
-          id: chapter.id,
-          chapterTitle: chapter.chapterTitle,
-          courseId: chapter.courseId,
-          createdAt: chapter.createdAt,
-          updatedAt: chapter.updatedAt,
-          contents: chapter.contents.map((content) => {
-            return {
-              id: content.id,
-              contentTitle: content.contentTitle,
-              contentUrl: content.contentUrl,
-              duration: content.duration,
-              status: content.status,
-              chapterId: content.chapterId,
-              createdAt: content.createdAt,
-              updatedAt: content.updatedAt,
-            }
-          }),
-        }
-      }),
-      durationPerCourseInMinutes: Math.round(totalDurationPerCourse),
-      modulePerCourse,
-      Category: course.toJSON().category.categoryName,
-      Level: course.toJSON().courseLevel,
-    }
-
-    res.status(200).json({
-      data: formattedCourse,
+      message: 'Berhasil menambahkan ke kelas berjalan, Selamat belajar!',
+      newCourseUser,
     })
   } catch (err) {
     next(new ApiError(err.message, 500))
@@ -393,49 +305,107 @@ const getCourseById = async (req, res, next) => {
 }
 
 const updateCourseStatus = async (req, res, next) => {
-  const userId = req.params.userId
-  const courseId = req.params.courseId
-
+  const { courseUserId, contentId } = req.params
   try {
-    const courseUser = await CourseUser.findOne({
+    const getCourseUser = await CourseUser.findOne({
       where: {
-        userId: userId,
-        courseId: courseId,
+        id: req.params.courseUserId,
       },
-      include: [
-        {
-          model: Course,
-          include: [
-            {
-              model: Chapter,
-              include: [{ model: Content }],
-            },
-          ],
-        },
-      ],
+      plain: true,
+      include: {
+        model: Course,
+        as: 'course',
+        include: [
+          {
+            model: Chapter,
+            as: 'chapters',
+            include: [
+              {
+                model: Content,
+                as: 'contents',
+              },
+            ],
+          },
+        ],
+      },
     })
 
-    if (!courseUser) {
-      return res.status(404).json({
-        error: 'CourseUser tidak ditemukan',
-      })
+    const courseUser = getCourseUser.toJSON()
+
+    const transaction = await Transaction.findOne({
+      where: { courseId: courseUser.courseId, userId: req.user.id },
+    })
+
+    const isPurchased = transaction?.paymentStatus == 'paid' ? true : false
+    const isPremium = courseUser.course.courseType == 'Premium' ? true : false
+    if (!isPurchased && isPremium) {
+      return next(new ApiError('Silahkan beli kursus terlebih dahulu', 402))
     }
 
-    // Check if all content statuses are true
-    const isCourseCompleted =
-      courseUser.Course && courseUser.Course.Chapters
-        ? courseUser.Course.Chapters.every((chapter) =>
-            chapter.Contents.every((content) => content.status === true)
-          )
-        : false
+    const getContentById = async (contentId) => {
+      const contentsIndex = courseUser.course.chapters.flatMap((chapter) => {
+        return chapter.contents.map((content) => {
+          return content.id
+        })
+      })
 
-    // Update courseStatus based on the check
-    const updatedCourseUser = await courseUser.update({
-      courseStatus: isCourseCompleted ? 'Selesai' : 'inProgress',
-    })
+      const isFinished = contentsIndex.findIndex(
+        (e) => e === parseInt(contentId)
+      )
+
+      let lastContentIndex = courseUser.contentFinished
+
+      if (isFinished === lastContentIndex) {
+        const updateLastContentIndex = (lastContentIndex += 1)
+        const courseStatus =
+          updateLastContentIndex === contentsIndex.length
+            ? 'Selesai'
+            : 'inProgress'
+        await CourseUser.update(
+          { contentFinished: updateLastContentIndex, courseStatus },
+          { where: { id: courseUserId, userId: req.user.id } }
+        )
+        return {
+          contentFinished: updateLastContentIndex,
+        }
+      }
+      if (isFinished > lastContentIndex) {
+        return {
+          message: 'Selesaikan video materi sebelumnya, sebelum lanjut!',
+          contentFinished: lastContentIndex,
+          isError: true,
+          statusCode: 400,
+        }
+      }
+      if (isFinished === -1) {
+        return {
+          message: 'Video ini bukan bagian dari modul ini!',
+          contentFinished: lastContentIndex,
+          isError: true,
+          statusCode: 404,
+        }
+      }
+      if (isFinished < lastContentIndex) {
+        return {
+          message: 'Video telah ditonton, jadi tidak mengupdate progress',
+          contentFinished: lastContentIndex,
+          isError: true,
+          statusCode: 400,
+        }
+      }
+    }
+
+    const updateProgress = await getContentById(contentId)
+
+    if (updateProgress.isError) {
+      return next(
+        new ApiError(updateProgress.message, updateProgress.statusCode)
+      )
+    }
 
     res.status(200).json({
-      data: updatedCourseUser,
+      status: 'success',
+      ...updateProgress,
     })
   } catch (err) {
     next(new ApiError(err.message, 500))
@@ -443,9 +413,8 @@ const updateCourseStatus = async (req, res, next) => {
 }
 
 module.exports = {
-  getAllCoursesData,
-  getCourse,
-  getCourseById,
-  getDataCourse,
+  getAllMyCourse,
+  getOneMyCourse,
+  addToCourseUser,
   updateCourseStatus,
 }
