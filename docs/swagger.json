@@ -1371,8 +1371,8 @@
     "/user/change-password/{userId}": {
       "patch": {
         "tags": ["Users"],
-        "summary": "Return hasil hit api reset password",
-        "description": "ini API untuk verify reset password untuk ganti password",
+        "summary": "Return hasil hit api change password",
+        "description": "ini API untuk change password untuk user",
         "parameters": [
           {
             "name": "userId",
@@ -1415,7 +1415,7 @@
         },
         "responses": {
           "200": {
-            "description": "Sukses reset password",
+            "description": "Sukses change password",
             "content": {
               "application/json": {
                 "schema": {
