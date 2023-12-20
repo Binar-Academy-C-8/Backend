@@ -5336,6 +5336,27 @@
         ],
         "summary": "Return hasil hit API get all transaction untuk ADMIN",
         "description": "API untuk get all transaction",
+        "parameters": [
+          {
+            "name": "search",
+            "in": "query",
+            "description": "Nama pengguna untuk pencarian",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "paymentStatus",
+            "in": "query",
+            "description": "Status pembayaran (paid atau unpaid)",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "enum": ["paid", "unpaid"]
+            }
+          }
+        ],
         "responses": {
           "200": {
             "description": "Sukses get data transaksi",

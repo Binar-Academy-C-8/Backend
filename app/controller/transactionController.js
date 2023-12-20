@@ -4,6 +4,7 @@ const { CLIENT_KEY, SERVER_KEY } = process.env
 const ApiError = require('../../utils/apiError')
 const crypto = require('crypto')
 const mathRandom = require('../../utils/generatedOTP')
+const { Op } = require('sequelize')
 
 const createTransactionSnap = async (req, res, next) => {
   try {
@@ -151,7 +152,7 @@ const paymentCallback = async (req, res, next) => {
     }
 
     res.status(200).json({
-      message: 'success',
+      message: 'Success',
     })
   } catch (err) {
     next(new ApiError(`Gagal melakukan transaksi: ${err.message}`, 500))
@@ -160,10 +161,27 @@ const paymentCallback = async (req, res, next) => {
 
 const getAllTransaction = async (req, res, next) => {
   try {
-    const transactions = await Transaction.findAll({ include: ['User'] })
+    const { search, paymentStatus } = req.query
 
-    if (!transactions) {
-      return next(new ApiError(`Data transaksi kosong`, 404))
+    const filter = {}
+
+    if (search) {
+      filter['$User.name$'] = { [Op.iLike]: `%${search}%` }
+    }
+
+    if (paymentStatus && ['paid', 'unpaid'].includes(paymentStatus)) {
+      filter.paymentStatus = paymentStatus
+    }
+
+    const transactions = await Transaction.findAll({
+      include: ['User'],
+      where: filter,
+    })
+
+    if (!transactions || transactions.length === 0) {
+      return next(
+        new ApiError(`Data transaksi kosong atau tidak ditemukan`, 404)
+      )
     }
 
     res.status(200).json({
