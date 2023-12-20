@@ -54,14 +54,6 @@ module.exports = {
         createdAt: new Date(),
         updatedAt: new Date(),
       },
-      {
-        email: 'memberc8@mail.com',
-        password: hashedPassword,
-        userId: users[1].id,
-        verified: true,
-        createdAt: new Date(),
-        updatedAt: new Date(),
-      },
     ])
   },
 

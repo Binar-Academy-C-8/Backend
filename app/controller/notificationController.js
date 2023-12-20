@@ -36,17 +36,13 @@ const getAllNotification = async (req, res, next) => {
 
 const getNotifByUserId = async (req, res, next) => {
   try {
-    const id = req.params.userId
     const userId = req.user.id
-    if (id != userId) {
-      return next(new ApiError('Anda bukan usernya', 401))
-    }
 
     const notification = await Notification.findAll({
       where: {
         [Op.or]: [
           {
-            userId: id,
+            userId,
           },
           { userId: null },
         ],

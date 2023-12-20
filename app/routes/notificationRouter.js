@@ -9,12 +9,8 @@ router.get(
   checkRole(['admin']),
   Notification.getAllNotification
 )
-router.get('/getNotifByUserId/:userId', authMe, Notification.getNotifByUserId)
-router.get(
-  '/getDetailNotif/:userId/:notifId',
-  authMe,
-  Notification.getDetailNotif
-)
+router.get('/getNotifByUserId', authMe, Notification.getNotifByUserId)
+router.get('/getDetailNotif/:notifId', authMe, Notification.getDetailNotif)
 router.get('/getRead', Notification.getRead)
 
 module.exports = router

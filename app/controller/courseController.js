@@ -307,7 +307,7 @@ const createCourse = async (req, res, next) => {
       titleNotification: 'Kelas',
       typeNotification: 'Promosi',
       courseId: newCourse.id,
-      description: `Kelas ${newCourse.courseName} telah ditambahkan, Ayo daftar kelas!`,
+      description: `Kelas ${newCourse.courseName} telah ditambahkan, Ayo daftar kelas! *Syarat dan ketentuan berlaku`,
     })
     await NotificationRead.create({
       notifId: notif.id,
