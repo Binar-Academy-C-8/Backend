@@ -5,6 +5,7 @@ const {
   Content,
   Category,
   Course,
+  Notification,
 } = require('../models')
 const ApiError = require('../../utils/apiError')
 
@@ -17,6 +18,19 @@ const getCourse = async (req, res, next) => {
       userId: userId,
       courseId: courseId,
       courseStatus: 'inProgress',
+    })
+    const course = await Course.findOne({
+      where: {
+        id: courseId,
+      },
+    })
+
+    await Notification.create({
+      userId: userId,
+      courseId: courseId,
+      titleNotif: 'Kelas',
+      typeNotif: 'Notifikasi',
+      description: `Selamat Anda telah mendaftar di Kelas ${course.courseTitle}. Ayo selesaikan segera!`,
     })
 
     res.status(200).json({
@@ -432,6 +446,21 @@ const updateCourseStatus = async (req, res, next) => {
     // Update courseStatus based on the check
     const updatedCourseUser = await courseUser.update({
       courseStatus: isCourseCompleted ? 'Selesai' : 'inProgress',
+    })
+
+    if (updatedCourseUser.courseStatus.isCourseCompleted === 'Selesai')
+      return await Notification.create({
+        titleNotification: 'Kelas',
+        typeNotification: 'Notifikasi',
+        userId: userId,
+        courseId: courseId,
+        description: `Selamat Anda telah menyelesaikan kelas ${courseUser.Course.courseName}`,
+      })
+
+    await NotificationRead.create({
+      notifId: notif.id,
+      userId: userId,
+      courseId: courseId,
     })
 
     res.status(200).json({

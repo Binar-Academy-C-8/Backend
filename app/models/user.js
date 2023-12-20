@@ -28,6 +28,18 @@ module.exports = (sequelize, DataTypes) => {
           allowNull: false,
         },
       })
+      User.hasMany(models.Notification, {
+        foreignKey: {
+          name: 'userId',
+        },
+        as: 'notification',
+      })
+      User.hasMany(models.NotificationRead, {
+        foreignKey: {
+          name: 'userId',
+        },
+        as: 'notificationRead',
+      })
 
       User.hasMany(models.CourseUser, { foreignKey: 'userId' })
 
