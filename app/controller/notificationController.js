@@ -26,8 +26,8 @@ const getAllNotification = async (req, res, next) => {
 
     res.status(200).json({
       status: 'Success',
-      message: 'Sukses menampilkan data',
-      notification,
+      message: 'Sukses menampilkan data notifikasi',
+      data: notification,
     })
   } catch (err) {
     next(new ApiError(err.message, 500))
@@ -61,7 +61,7 @@ const getNotifByUserId = async (req, res, next) => {
     return res.status(200).json({
       status: 'Success',
       message: 'Sukses menampilkan data notifikasi by user id',
-      notification,
+      data: notification,
     })
   } catch (err) {
     next(new ApiError(err.message, 500))
@@ -87,7 +87,7 @@ const getDetailNotif = async (req, res, next) => {
     })
 
     if (!notification)
-      return next(new ApiError('Data notifikasi tidak ditemukan', 404))
+      return next(new ApiError('Notifikasi tidak ditemukan', 404))
 
     const notificationRead = await NotificationRead.update(
       {
