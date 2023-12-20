@@ -1368,6 +1368,115 @@
         }
       }
     },
+    "/user/change-password/{userId}": {
+      "patch": {
+        "tags": ["Users"],
+        "summary": "Return hasil hit api reset password",
+        "description": "ini API untuk verify reset password untuk ganti password",
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            },
+            "description": "User ID"
+          }
+        ],
+        "security": [
+          {
+            "bearerToken": []
+          }
+        ],
+        "requestBody": {
+          "description": "ini request body untuk sukses reset password",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "oldPassword": {
+                    "type": "string",
+                    "example": "user123"
+                  },
+                  "newPassword": {
+                    "type": "string",
+                    "example": "qwerty123"
+                  },
+                  "confirmPassword": {
+                    "type": "string",
+                    "example": "qwerty123"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Sukses reset password",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "Success"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Pembaruan Kata Sandi berhasil"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Gagal change password",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "Failed"
+                    },
+                    "message": {
+                      "type": "object",
+                      "example": "Password tidak sesuai"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Gagal change password",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "Failed"
+                    },
+                    "message": {
+                      "type": "object",
+                      "example": "Password lama tidak sesuai"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/course": {
       "get": {
         "tags": ["Course"],
