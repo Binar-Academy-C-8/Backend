@@ -19,6 +19,10 @@
       "description": "ini API untuk Courses resources"
     },
     {
+      "name": "CourseUser",
+      "description": "ini API untuk Course User resources"
+    },
+    {
       "name": "Category",
       "description": "ini API untuk Category resources"
     },
@@ -289,6 +293,27 @@
                     "message": {
                       "type": "string",
                       "example": "Verifikasi OTP berhasil"
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "token": {
+                          "type": "string",
+                          "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NCwidXNlcm5hbWUiOiJuaXJ3YW4iLCJyb2xlIjoibWVtYmVyIiwiZW1haWwiOiJuaXJ3YW4uYXJyYWNoQGdtYWlsLmNvbSIsImlhdCI6MTcwMjcxOTg0OX0.PoRgbJfg0OCow2ZZM8KozLQ3FhX0Oe8VNQ163PZ7FvA"
+                        },
+                        "id": {
+                          "type": "integer",
+                          "example": 4
+                        },
+                        "name": {
+                          "type": "string",
+                          "example": "nirwan"
+                        },
+                        "email": {
+                          "type": "string",
+                          "example": "nirwan.arrach@gmail.com"
+                        }
+                      }
                     }
                   }
                 }
@@ -1105,7 +1130,7 @@
         "requestBody": {
           "description": "ini request body untuk sukses update data user",
           "content": {
-            "application/json": {
+            "multipart/form-data": {
               "schema": {
                 "type": "object",
                 "properties": {
@@ -1124,6 +1149,10 @@
                   "city": {
                     "type": "string",
                     "example": "Kuala Lumpur"
+                  },
+                  "image": {
+                    "type": "string",
+                    "format": "binary"
                   }
                 }
               }
@@ -1360,13 +1389,13 @@
           {
             "in": "query",
             "name": "level",
-            "schema": { "type": "string", "example": "beginner" },
+            "schema": { "type": "string", "example": "Beginner" },
             "description": "query ini digunakan untuk mencari course berdasarkan level kesulitan course"
           },
           {
             "in": "query",
             "name": "type",
-            "schema": { "type": "string", "example": "free" },
+            "schema": { "type": "string", "example": "Free" },
             "description": "query ini digunakan untuk mencari course berdasarkan tipe course"
           },
           {
@@ -1415,7 +1444,7 @@
                         },
                         "courseName": {
                           "type": "string",
-                          "example": "UI/UX course for beginner"
+                          "example": "UI/UX course for Beginner"
                         },
                         "image": {
                           "type": "string",
@@ -1423,19 +1452,23 @@
                         },
                         "courseType": {
                           "type": "string",
-                          "example": "free"
+                          "example": "Free"
+                        },
+                        "rating": {
+                          "type": "number",
+                          "example": "9.5"
                         },
                         "courseLevel": {
                           "type": "string",
-                          "example": "beginner"
+                          "example": "Beginner"
                         },
-                        "aboutCourse": {
-                          "type": "string",
-                          "example": "free"
+                        "isDiscount": {
+                          "type": "boolean",
+                          "example": false
                         },
-                        "intendedFor": {
-                          "type": "string",
-                          "example": "Untuk pemula yang ingin menjadi profesional"
+                        "courseDiscountInPercent": {
+                          "type": "number",
+                          "example": 0
                         },
                         "coursePrice": {
                           "type": "number",
@@ -1538,11 +1571,27 @@
                   },
                   "courseName": {
                     "type": "string",
-                    "example": "UI/UX course for beginner"
+                    "example": "UI/UX course for Beginner"
                   },
                   "courseType": {
                     "type": "string",
-                    "example": "free"
+                    "example": "Free"
+                  },
+                  "rating": {
+                    "type": "number",
+                    "example": "9.5"
+                  },
+                  "telegramGroup": {
+                    "type": "string",
+                    "example": "https://t.me/+yplueYmNDRZlZDNl"
+                  },
+                  "isDiscount": {
+                    "type": "boolean",
+                    "example": false
+                  },
+                  "courseDiscountInPercent": {
+                    "type": "number",
+                    "example": 0
                   },
                   "coursePrice": {
                     "type": "number",
@@ -1550,11 +1599,11 @@
                   },
                   "courseLevel": {
                     "type": "string",
-                    "example": "beginner"
+                    "example": "Beginner"
                   },
                   "aboutCourse": {
                     "type": "string",
-                    "example": "UI/UX course for beginner"
+                    "example": "UI/UX course for Beginner"
                   },
                   "intendedFor": {
                     "type": "string",
@@ -1585,11 +1634,27 @@
                   },
                   "courseName": {
                     "type": "string",
-                    "example": "UI/UX course for beginner"
+                    "example": "UI/UX course for Beginner"
                   },
                   "courseType": {
                     "type": "string",
-                    "example": "free"
+                    "example": "Free"
+                  },
+                  "rating": {
+                    "type": "number",
+                    "example": "9.5"
+                  },
+                  "telegramGroup": {
+                    "type": "string",
+                    "example": "https://t.me/+yplueYmNDRZlZDNl"
+                  },
+                  "isDiscount": {
+                    "type": "boolean",
+                    "example": false
+                  },
+                  "courseDiscountInPercent": {
+                    "type": "number",
+                    "example": 0
                   },
                   "coursePrice": {
                     "type": "number",
@@ -1597,11 +1662,11 @@
                   },
                   "courseLevel": {
                     "type": "string",
-                    "example": "beginner"
+                    "example": "Beginner"
                   },
                   "aboutCourse": {
                     "type": "string",
-                    "example": "UI/UX course for beginner"
+                    "example": "UI/UX course for Beginner"
                   },
                   "intendedFor": {
                     "type": "string",
@@ -1657,15 +1722,35 @@
                         },
                         "courseType": {
                           "type": "string",
-                          "example": "free"
+                          "example": "Free"
+                        },
+                        "rating": {
+                          "type": "number",
+                          "example": "9.5"
+                        },
+                        "telegramGroup": {
+                          "type": "string",
+                          "example": "https://t.me/+yplueYmNDRZlZDNl"
+                        },
+                        "isDiscount": {
+                          "type": "boolean",
+                          "example": false
+                        },
+                        "courseDiscountInPercent": {
+                          "type": "number",
+                          "example": 0
+                        },
+                        "coursePrice": {
+                          "type": "number",
+                          "example": "0"
                         },
                         "courseLevel": {
                           "type": "string",
-                          "example": "beginner"
+                          "example": "Beginner"
                         },
                         "aboutCourse": {
                           "type": "string",
-                          "example": "free"
+                          "example": "UI/UX course for Beginner"
                         },
                         "categoryId": {
                           "type": "integer",
@@ -1803,7 +1888,7 @@
                         },
                         "courseName": {
                           "type": "string",
-                          "example": "UI/UX course for beginner"
+                          "example": "UI/UX course for Beginner"
                         },
                         "image": {
                           "type": "string",
@@ -1811,19 +1896,35 @@
                         },
                         "courseType": {
                           "type": "string",
-                          "example": "free"
+                          "example": "Free"
+                        },
+                        "rating": {
+                          "type": "number",
+                          "example": "9.5"
+                        },
+                        "telegramGroup": {
+                          "type": "string",
+                          "example": "https://t.me/+yplueYmNDRZlZDNl"
                         },
                         "courseLevel": {
                           "type": "string",
-                          "example": "beginner"
+                          "example": "Beginner"
                         },
                         "aboutCourse": {
                           "type": "string",
-                          "example": "free"
+                          "example": "Free"
                         },
                         "intendedFor": {
                           "type": "string",
                           "example": "Untuk pemula yang ingin menjadi profesional"
+                        },
+                        "isDiscount": {
+                          "type": "boolean",
+                          "example": false
+                        },
+                        "courseDiscountInPercent": {
+                          "type": "number",
+                          "example": 0
                         },
                         "coursePrice": {
                           "type": "number",
@@ -1891,10 +1992,6 @@
                                       "type": "string",
                                       "example": "1:00"
                                     },
-                                    "status": {
-                                      "type": "boolean",
-                                      "example": true
-                                    },
                                     "chapterId": {
                                       "type": "integer",
                                       "example": 1
@@ -1917,7 +2014,6 @@
                           "type": "integer",
                           "example": 5
                         },
-
                         "modulePerCourse": {
                           "type": "integer",
                           "example": 3
@@ -2006,11 +2102,27 @@
                   },
                   "courseName": {
                     "type": "string",
-                    "example": "UI/UX course for beginner"
+                    "example": "UI/UX course for Beginner"
                   },
                   "courseType": {
                     "type": "string",
-                    "example": "free"
+                    "example": "Free"
+                  },
+                  "telegramGroup": {
+                    "type": "string",
+                    "example": "https://t.me/+yplueYmNDRZlZDNl"
+                  },
+                  "rating": {
+                    "type": "number",
+                    "example": "9.5"
+                  },
+                  "isDiscount": {
+                    "type": "boolean",
+                    "example": false
+                  },
+                  "courseDiscountInPercent": {
+                    "type": "number",
+                    "example": 0
                   },
                   "coursePrice": {
                     "type": "number",
@@ -2018,11 +2130,11 @@
                   },
                   "courseLevel": {
                     "type": "string",
-                    "example": "beginner"
+                    "example": "Beginner"
                   },
                   "aboutCourse": {
                     "type": "string",
-                    "example": "UI/UX course for beginner"
+                    "example": "UI/UX course for Beginner"
                   },
                   "intendedFor": {
                     "type": "string",
@@ -2053,11 +2165,27 @@
                   },
                   "courseName": {
                     "type": "string",
-                    "example": "UI/UX course for beginner"
+                    "example": "UI/UX course for Beginner"
                   },
                   "courseType": {
                     "type": "string",
-                    "example": "free"
+                    "example": "Free"
+                  },
+                  "rating": {
+                    "type": "number",
+                    "example": "9.5"
+                  },
+                  "telegramGroup": {
+                    "type": "string",
+                    "example": "https://t.me/+yplueYmNDRZlZDNl"
+                  },
+                  "isDiscount": {
+                    "type": "boolean",
+                    "example": false
+                  },
+                  "courseDiscountInPercent": {
+                    "type": "number",
+                    "example": 0
                   },
                   "coursePrice": {
                     "type": "number",
@@ -2065,11 +2193,11 @@
                   },
                   "courseLevel": {
                     "type": "string",
-                    "example": "beginner"
+                    "example": "Beginner"
                   },
                   "aboutCourse": {
                     "type": "string",
-                    "example": "UI/UX course for beginner"
+                    "example": "UI/UX course for Beginner"
                   },
                   "intendedFor": {
                     "type": "string",
@@ -2125,15 +2253,35 @@
                         },
                         "courseType": {
                           "type": "string",
-                          "example": "free"
+                          "example": "Free"
+                        },
+                        "rating": {
+                          "type": "number",
+                          "example": "9.5"
+                        },
+                        "telegramGroup": {
+                          "type": "string",
+                          "example": "https://t.me/+yplueYmNDRZlZDNl"
+                        },
+                        "isDiscount": {
+                          "type": "boolean",
+                          "example": false
+                        },
+                        "courseDiscountInPercent": {
+                          "type": "number",
+                          "example": 0
+                        },
+                        "coursePrice": {
+                          "type": "number",
+                          "example": "0"
                         },
                         "courseLevel": {
                           "type": "string",
-                          "example": "beginner"
+                          "example": "Beginner"
                         },
                         "aboutCourse": {
                           "type": "string",
-                          "example": "free"
+                          "example": "UI/UX course for Beginner"
                         },
                         "intendedFor": {
                           "type": "string",
@@ -2346,6 +2494,798 @@
         }
       }
     },
+    "/course-user/my-course": {
+      "get": {
+        "tags": ["CourseUser"],
+        "summary": "Return hasil hit api untuk semua data course yang ada di kelas berjalan bedasarkan user id",
+        "description": "ini API untuk mendapatkan semua course user yang ada di kelas berjalan berdasarkan user id",
+        "security": [
+          {
+            "bearerToken": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "query",
+            "name": "status",
+            "schema": { "type": "string", "example": "inProgress" },
+            "description": "query ini digunakan untuk mencari kelas berjalan berdasarkan status progress kelas"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Sukses menampilkan course yang ada di kursus berjalan",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "Success"
+                    },
+                    "courses": {
+                      "type": "object",
+                      "properties": {
+                        "courseUserId": {
+                          "type": "integer",
+                          "example": 1
+                        },
+                        "contentFinished": {
+                          "type": "integer",
+                          "example": 0
+                        },
+                        "contentTotal": {
+                          "type": "integer",
+                          "example": 9
+                        },
+                        "courseStatus": {
+                          "type": "string",
+                          "example": "inProgress"
+                        },
+                        "courseProgressInPercent": {
+                          "type": "string",
+                          "example": "inProgress"
+                        },
+                        "id": {
+                          "type": "integer",
+                          "example": 1
+                        },
+                        "courseCode": {
+                          "type": "string",
+                          "example": "uiux123"
+                        },
+                        "courseName": {
+                          "type": "string",
+                          "example": "Build REST API with Java Spring"
+                        },
+                        "image": {
+                          "type": "string",
+                          "example": "https://ik.imagekit.io/xphqqd3ms/IMG-1701001286390.__S0maB0Ji.png"
+                        },
+                        "courseType": {
+                          "type": "string",
+                          "example": "Free"
+                        },
+                        "rating": {
+                          "type": "number",
+                          "example": "9.5"
+                        },
+
+                        "isDiscount": {
+                          "type": "boolean",
+                          "example": false
+                        },
+                        "courseDiscountInPercent": {
+                          "type": "number",
+                          "example": 0
+                        },
+                        "coursePrice": {
+                          "type": "number",
+                          "example": "0"
+                        },
+                        "courseLevel": {
+                          "type": "string",
+                          "example": "Beginner"
+                        },
+
+                        "categoryId": {
+                          "type": "integer",
+                          "example": "1"
+                        },
+                        "updatedAt": {
+                          "type": "string",
+                          "example": "2023-11-28T06:25:24.446Z"
+                        },
+                        "createdAt": {
+                          "type": "string",
+                          "example": "2023-11-28T06:25:24.446Z"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Jika belum login",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "Failed"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Anda harus masuk"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Error dari server",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "Failed"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Internal server error"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/course-user/my-course/{courseUserId}": {
+      "get": {
+        "tags": ["CourseUser"],
+        "summary": "Return hasil hit api untuk menampilkan satu data course yang ada di kelas berjalan bedasarkan course user id",
+        "description": "ini API untuk mendapatkan satu data course user yang ada di kelas berjalan berdasarkan user id",
+        "security": [
+          {
+            "bearerToken": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "courseUserId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            },
+            "description": "Course User id"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Sukses menampilkan course yang ada di kursus berjalan",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "Success"
+                    },
+                    "course": {
+                      "type": "object",
+                      "properties": {
+                        "courseUserId": {
+                          "type": "integer",
+                          "example": 1
+                        },
+                        "contentFinished": {
+                          "type": "integer",
+                          "example": 0
+                        },
+                        "contentTotal": {
+                          "type": "integer",
+                          "example": 9
+                        },
+                        "courseStatus": {
+                          "type": "string",
+                          "example": "inProgress"
+                        },
+                        "courseProgressInPercent": {
+                          "type": "string",
+                          "example": "inProgress"
+                        },
+                        "id": {
+                          "type": "integer",
+                          "example": 1
+                        },
+                        "courseCode": {
+                          "type": "string",
+                          "example": "uiux123"
+                        },
+                        "courseName": {
+                          "type": "string",
+                          "example": "Build REST API with Java Spring"
+                        },
+                        "image": {
+                          "type": "string",
+                          "example": "https://ik.imagekit.io/xphqqd3ms/IMG-1701001286390.__S0maB0Ji.png"
+                        },
+                        "courseType": {
+                          "type": "string",
+                          "example": "Free"
+                        },
+                        "rating": {
+                          "type": "number",
+                          "example": "9.5"
+                        },
+                        "telegramGroup": {
+                          "type": "string",
+                          "example": "https://t.me/+yplueYmNDRZlZDNl"
+                        },
+                        "isDiscount": {
+                          "type": "boolean",
+                          "example": false
+                        },
+                        "courseDiscountInPercent": {
+                          "type": "number",
+                          "example": 0
+                        },
+                        "coursePrice": {
+                          "type": "number",
+                          "example": "0"
+                        },
+                        "courseLevel": {
+                          "type": "string",
+                          "example": "Beginner"
+                        },
+                        "aboutCourse": {
+                          "type": "string",
+                          "example": "UI/UX course for Beginner"
+                        },
+                        "intendedFor": {
+                          "type": "string",
+                          "example": "Untuk pemula yang ingin menjadi profesional"
+                        },
+                        "categoryId": {
+                          "type": "integer",
+                          "example": "1"
+                        },
+                        "updatedAt": {
+                          "type": "string",
+                          "example": "2023-11-28T06:25:24.446Z"
+                        },
+                        "createdAt": {
+                          "type": "string",
+                          "example": "2023-11-28T06:25:24.446Z"
+                        },
+                        "chapters": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "id": {
+                                "type": "integer",
+                                "example": 1
+                              },
+                              "chapterTitle": {
+                                "type": "string",
+                                "example": "Pendahuluan"
+                              },
+                              "courseId": {
+                                "type": "integer",
+                                "example": 1
+                              },
+                              "updatedAt": {
+                                "type": "string",
+                                "example": "2023-11-28T06:25:24.446Z"
+                              },
+                              "createdAt": {
+                                "type": "string",
+                                "example": "2023-11-28T06:25:24.446Z"
+                              },
+                              "contents": {
+                                "type": "array",
+                                "items": {
+                                  "type": "object",
+                                  "properties": {
+                                    "id": {
+                                      "type": "integer",
+                                      "example": 1
+                                    },
+                                    "contentTitle": {
+                                      "type": "string",
+                                      "example": "Tujuan Mengikuti Kelas Design System"
+                                    },
+                                    "contentUrl": {
+                                      "type": "string",
+                                      "example": "https://youtu.be/ixOd42SEUF0"
+                                    },
+                                    "duration": {
+                                      "type": "string",
+                                      "example": "1:00"
+                                    },
+                                    "isWatched": {
+                                      "type": "boolean",
+                                      "example": true
+                                    },
+                                    "isLocked": {
+                                      "type": "boolean",
+                                      "example": false
+                                    },
+                                    "chapterId": {
+                                      "type": "integer",
+                                      "example": 1
+                                    },
+                                    "updatedAt": {
+                                      "type": "string",
+                                      "example": "2023-11-28T06:25:24.446Z"
+                                    },
+                                    "createdAt": {
+                                      "type": "string",
+                                      "example": "2023-11-28T06:25:24.446Z"
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        },
+                        "durationPerCourseInMinutes": {
+                          "type": "integer",
+                          "example": 5
+                        },
+
+                        "modulePerCourse": {
+                          "type": "integer",
+                          "example": 3
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Jika belum login",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "Failed"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Anda harus masuk"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Jika id course user tidak ada",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "Failed"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Kursus berjalan tidak ditemukan"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Error dari server",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "Failed"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Internal server error"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/course-user/create/{courseId}": {
+      "post": {
+        "tags": ["CourseUser"],
+        "summary": "Return hasil hit api untuk data course yang akan ditambahkan ke kursus berjalan bedasarkan course id",
+        "description": "ini API untuk menyimpan course ke kelas berjalan berdasarkan course id",
+        "security": [
+          {
+            "bearerToken": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "courseId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            },
+            "description": "Course id"
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Sukses menambahkan course yang ada di kursus berjalan",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "Success"
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "id": {
+                          "type": "integer",
+                          "example": 1
+                        },
+                        "courseCode": {
+                          "type": "string",
+                          "example": "uiux123"
+                        },
+                        "courseName": {
+                          "type": "string",
+                          "example": "Build REST API with Java Spring"
+                        },
+                        "image": {
+                          "type": "string",
+                          "example": "https://ik.imagekit.io/xphqqd3ms/IMG-1701001286390.__S0maB0Ji.png"
+                        },
+                        "courseType": {
+                          "type": "string",
+                          "example": "Free"
+                        },
+                        "rating": {
+                          "type": "number",
+                          "example": "9.5"
+                        },
+                        "telegramGroup": {
+                          "type": "string",
+                          "example": "https://t.me/+yplueYmNDRZlZDNl"
+                        },
+                        "isDiscount": {
+                          "type": "boolean",
+                          "example": false
+                        },
+                        "courseDiscountInPercent": {
+                          "type": "number",
+                          "example": 0
+                        },
+                        "coursePrice": {
+                          "type": "number",
+                          "example": "0"
+                        },
+                        "courseLevel": {
+                          "type": "string",
+                          "example": "Beginner"
+                        },
+                        "aboutCourse": {
+                          "type": "string",
+                          "example": "UI/UX course for Beginner"
+                        },
+                        "intendedFor": {
+                          "type": "string",
+                          "example": "Untuk pemula yang ingin menjadi profesional"
+                        },
+                        "categoryId": {
+                          "type": "integer",
+                          "example": "1"
+                        },
+                        "updatedAt": {
+                          "type": "string",
+                          "example": "2023-11-28T06:25:24.446Z"
+                        },
+                        "createdAt": {
+                          "type": "string",
+                          "example": "2023-11-28T06:25:24.446Z"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Course yang dimasukkan sudah terdaftar di kelas berjalan",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "Failed"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Gagal menambahkan kursus karena kursus sudah ditambahkan di kelas berjalan"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Jika belum login",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "Failed"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Anda harus masuk"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "402": {
+            "description": "Jika kursus premium dan belum dibeli",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "Failed"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Silahkan beli kursus terlebih dahulu"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Jika id course user tidak ada",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "Failed"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Kursus tidak ditemukan"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Error dari server",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "Failed"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Internal server error"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/course-user/update-progress/{courseUserId}/progress/{contentId}": {
+      "patch": {
+        "tags": ["CourseUser"],
+        "summary": "Return hasil hit api untuk data course yang akan ditambahkan ke kursus berjalan bedasarkan course id",
+        "description": "ini API untuk mengupdate progress course user berdasarkan courseUserId dan contentId",
+        "security": [
+          {
+            "bearerToken": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "courseUserId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            },
+            "description": "Course User id"
+          },
+          {
+            "name": "contentId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            },
+            "description": "Content id"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Sukses mengupdate progress satu yang ada di kursus berjalan",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "Success"
+                    },
+                    "courseFinished": {
+                      "type": "integer",
+                      "example": 1
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Jika memaksa mengupdate progress dengan video yang terkunci",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "Failed"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Selesaikan video materi sebelumnya, sebelum lanjut!"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Jika belum login",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "Failed"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Anda harus masuk"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "402": {
+            "description": "Jika course premium dan belum dibeli",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "Failed"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Silahkan beli kursus terlebih dahulu"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Jika id content bukan bagian dari course yang ada pada course user",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "Failed"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Video ini bukan bagian dari modul ini!"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Error dari server",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "Failed"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Internal server error"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/category": {
       "get": {
         "tags": ["Category"],
@@ -2386,7 +3326,7 @@
                           "type": "string",
                           "example": "2023-11-28T06:25:24.446Z"
                         },
-                        "Courses": {
+                        "course": {
                           "type": "object",
                           "properties": {
                             "id": {
@@ -2403,19 +3343,39 @@
                             },
                             "courseType": {
                               "type": "string",
-                              "example": "free"
+                              "example": "Free"
+                            },
+                            "rating": {
+                              "type": "number",
+                              "example": "9.5"
+                            },
+                            "telegramGroup": {
+                              "type": "string",
+                              "example": "https://t.me/+yplueYmNDRZlZDNl"
+                            },
+                            "isDiscount": {
+                              "type": "boolean",
+                              "example": false
+                            },
+                            "courseDiscountInPercent": {
+                              "type": "number",
+                              "example": 0
+                            },
+                            "coursePrice": {
+                              "type": "number",
+                              "example": "0"
                             },
                             "courseLevel": {
                               "type": "string",
-                              "example": "beginner"
+                              "example": "Beginner"
                             },
                             "aboutCourse": {
                               "type": "string",
-                              "example": "UI/UX course for beginner"
+                              "example": "UI/UX course for Beginner"
                             },
                             "intendedFor": {
                               "type": "string",
-                              "example": "For beginner who want to be Profesional"
+                              "example": "For Beginner who want to be Profesional"
                             },
                             "courseStatus": {
                               "type": "string",
@@ -2645,19 +3605,39 @@
                             },
                             "courseType": {
                               "type": "string",
-                              "example": "free"
+                              "example": "Free"
+                            },
+                            "rating": {
+                              "type": "number",
+                              "example": "9.5"
+                            },
+                            "telegramGroup": {
+                              "type": "string",
+                              "example": "https://t.me/+yplueYmNDRZlZDNl"
+                            },
+                            "isDiscount": {
+                              "type": "boolean",
+                              "example": false
+                            },
+                            "courseDiscountInPercent": {
+                              "type": "number",
+                              "example": 0
+                            },
+                            "coursePrice": {
+                              "type": "number",
+                              "example": "0"
                             },
                             "courseLevel": {
                               "type": "string",
-                              "example": "beginner"
+                              "example": "Beginner"
                             },
                             "aboutCourse": {
                               "type": "string",
-                              "example": "UI/UX course for beginner"
+                              "example": "UI/UX course for Beginner"
                             },
                             "intendedFor": {
                               "type": "string",
-                              "example": "For beginner who want to be Profesional"
+                              "example": "For Beginner who want to be Profesional"
                             },
                             "courseStatus": {
                               "type": "string",
@@ -4106,7 +5086,7 @@
         ],
         "responses": {
           "201": {
-            "description": "Sukses membuat chapter",
+            "description": "Sukses membuat transaksi",
             "content": {
               "application/json": {
                 "schema": {
@@ -4114,19 +5094,7 @@
                   "properties": {
                     "status": {
                       "type": "string",
-                      "example": "success"
-                    },
-                    "url": {
-                      "type": "string",
-                      "example": "https://app.sandbox.midtrans.com/snap/v3/redirection/215a8168-b8dc-4ea2-ac8c-f7a215d1169e"
-                    },
-                    "token": {
-                      "type": "string",
-                      "example": "215a8168-b8dc-4ea2-ac8c-f7a215d1169e"
-                    },
-                    "email": {
-                      "type": "string",
-                      "example": "adminc8@mail.com"
+                      "example": "Success"
                     },
                     "createdTransactionData": {
                       "type": "object",
@@ -4137,45 +5105,49 @@
                         },
                         "id": {
                           "type": "integer",
-                          "example": 8
+                          "example": 12
                         },
                         "courseName": {
                           "type": "string",
-                          "example": "Belajar Kotlin Lanjutan"
+                          "example": "Mastery Product Management"
                         },
                         "userId": {
                           "type": "integer",
-                          "example": 1
+                          "example": 3
                         },
                         "courseId": {
                           "type": "integer",
-                          "example": 4
+                          "example": 5
                         },
                         "totalPrice": {
                           "type": "integer",
-                          "example": 220890
+                          "example": 222000
                         },
                         "ppn": {
                           "type": "integer",
-                          "example": 21890
+                          "example": 22000
                         },
                         "price": {
                           "type": "integer",
-                          "example": 199000
+                          "example": 200000
                         },
                         "orderId": {
                           "type": "integer",
-                          "example": 3914
+                          "example": 7050
+                        },
+                        "linkPayment": {
+                          "type": "string",
+                          "example": "https://app.sandbox.midtrans.com/snap/v3/redirection/ce98d7f3-7642-4d3e-81fa-7fef45ac5bf6"
                         },
                         "updatedAt": {
                           "type": "string",
                           "format": "date-time",
-                          "example": "2023-12-09T10:14:11.697Z"
+                          "example": "2023-12-17T13:17:23.650Z"
                         },
                         "createdAt": {
                           "type": "string",
                           "format": "date-time",
-                          "example": "2023-12-09T10:14:11.697Z"
+                          "example": "2023-12-17T13:17:23.650Z"
                         },
                         "paymentMethod": {
                           "type": ["string", "null"],
@@ -4183,62 +5155,66 @@
                         }
                       }
                     },
-                    "data": {
+                    "course": {
                       "type": "object",
                       "properties": {
-                        "item_details": {
-                          "type": "array",
-                          "items": {
-                            "type": "object",
-                            "properties": {
-                              "id": {
-                                "type": "integer",
-                                "example": 4
-                              },
-                              "name": {
-                                "type": "string",
-                                "example": "Belajar Kotlin Lanjutan"
-                              },
-                              "price": {
-                                "type": "integer",
-                                "example": 220890
-                              },
-                              "quantity": {
-                                "type": "integer",
-                                "example": 1
-                              }
-                            }
-                          }
+                        "id": {
+                          "type": "integer",
+                          "example": 5
                         },
-                        "transaction_details": {
-                          "type": "object",
-                          "properties": {
-                            "order_id": {
-                              "type": "string",
-                              "example": "3914"
-                            },
-                            "gross_amount": {
-                              "type": "integer",
-                              "example": 220890
-                            }
-                          }
+                        "courseCode": {
+                          "type": "string",
+                          "example": "PM1"
                         },
-                        "customer_details": {
-                          "type": "object",
-                          "properties": {
-                            "first_name": {
-                              "type": "string",
-                              "example": "adminc8"
-                            },
-                            "email": {
-                              "type": "string",
-                              "example": "adminc8@mail.com"
-                            },
-                            "phone": {
-                              "type": "string",
-                              "example": "+628236576342564"
-                            }
-                          }
+                        "categoryId": {
+                          "type": "integer",
+                          "example": 5
+                        },
+                        "userId": {
+                          "type": "integer",
+                          "example": 1
+                        },
+                        "courseName": {
+                          "type": "string",
+                          "example": "Mastery Product Management"
+                        },
+                        "image": {
+                          "type": "string",
+                          "example": "https://ik.imagekit.io/AliRajab03/IMG-1701735786642._-fTpdTNwR.jpeg?updatedAt=1701735789863"
+                        },
+                        "courseType": {
+                          "type": "string",
+                          "example": "Premium"
+                        },
+                        "courseLevel": {
+                          "type": "string",
+                          "example": "Advanced"
+                        },
+                        "rating": {
+                          "type": "number",
+                          "example": 4.1
+                        },
+                        "aboutCourse": {
+                          "type": "string",
+                          "example": "Mastery Product Management adalah kursus khusus yang dirancang bagi mereka yang sudah memiliki pemahaman dasar tentang manajemen produk dan ingin meningkatkan keterampilan mereka. Dalam kursus ini, peserta akan mendalami konsep-konsep tingkat lanjut seperti analisis pasar, perencanaan strategis, dan pengembangan produk yang adaptif. Kurikulum mencakup studi komprehensif tentang manajemen siklus hidup produk dan pertimbangan etika dalam ranah manajemen produk."
+                        },
+                        "intendedFor": {
+                          "type": "string",
+                          "example": "Dirancang khusus untuk manajer produk berpengalaman"
+                        },
+                        "coursePrice": {
+                          "type": "integer",
+                          "example": 200000
+                        },
+                        "createdAt": {
+                          "type": "string",
+                          "format": "date-time",
+                          "example": "2023-11-28T06:25:24.446Z"
+                        },
+                        "updatedAt": {
+                          "type": "string",
+                          "format": "date-time",
+                          "example": "2023-11-28T06:25:24.446Z"
                         }
                       }
                     }
@@ -4261,6 +5237,26 @@
                     "message": {
                       "type": "string",
                       "example": "Anda sudah membeli kursus ini sebelumnya"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Konflik, pengguna memiliki transaksi yang belum dibayar",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "Failed"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Anda memiliki transaksi yang belum dibayar untuk kursus ini, silahkan cek riwayat transaksi"
                     }
                   }
                 }
@@ -4338,7 +5334,7 @@
             "bearerToken": []
           }
         ],
-        "summary": "Return hasil hit API get all transaction",
+        "summary": "Return hasil hit API get all transaction untuk ADMIN",
         "description": "API untuk get all transaction",
         "responses": {
           "200": {
@@ -4366,7 +5362,7 @@
                               },
                               "orderId": {
                                 "type": "integer",
-                                "example": 5785
+                                "example": 7832
                               },
                               "courseName": {
                                 "type": "string",
@@ -4386,15 +5382,15 @@
                               },
                               "paymentStatus": {
                                 "type": "string",
-                                "example": "paid"
+                                "example": "unpaid"
                               },
                               "paymentMethod": {
                                 "type": ["string", "null"],
-                                "example": "bank_transfer"
+                                "example": null
                               },
                               "userId": {
                                 "type": "integer",
-                                "example": 3
+                                "example": 1
                               },
                               "courseId": {
                                 "type": "integer",
@@ -4403,12 +5399,55 @@
                               "createdAt": {
                                 "type": "string",
                                 "format": "date-time",
-                                "example": "2023-12-09T04:54:43.060Z"
+                                "example": "2023-12-15T09:08:09.018Z"
                               },
                               "updatedAt": {
                                 "type": "string",
                                 "format": "date-time",
-                                "example": "2023-12-09T04:56:45.806Z"
+                                "example": "2023-12-15T09:08:09.018Z"
+                              },
+                              "User": {
+                                "type": "object",
+                                "properties": {
+                                  "id": {
+                                    "type": "integer",
+                                    "example": 1
+                                  },
+                                  "name": {
+                                    "type": "string",
+                                    "example": "adminc8"
+                                  },
+                                  "phoneNumber": {
+                                    "type": "string",
+                                    "example": "+628236576342564"
+                                  },
+                                  "country": {
+                                    "type": "string",
+                                    "example": "Indonesia"
+                                  },
+                                  "city": {
+                                    "type": "string",
+                                    "example": "Jakarta"
+                                  },
+                                  "role": {
+                                    "type": "string",
+                                    "example": "admin"
+                                  },
+                                  "image": {
+                                    "type": "string",
+                                    "example": ""
+                                  },
+                                  "createdAt": {
+                                    "type": "string",
+                                    "format": "date-time",
+                                    "example": "2023-12-15T03:19:49.903Z"
+                                  },
+                                  "updatedAt": {
+                                    "type": "string",
+                                    "format": "date-time",
+                                    "example": "2023-12-15T03:19:49.903Z"
+                                  }
+                                }
                               }
                             }
                           }
@@ -4619,6 +5658,215 @@
                     "message": {
                       "type": "string",
                       "example": "Detail pembayaran dengan ID: 10 tidak ditemukan"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Error from server",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "Failed"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Internal server error"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/transaction/history": {
+      "get": {
+        "tags": ["Payment"],
+        "security": [
+          {
+            "bearerToken": []
+          }
+        ],
+        "summary": "Return hasil hit API riwayat transaksi MEMBER",
+        "description": "API untuk riwayat transaksi MEMBER",
+        "responses": {
+          "200": {
+            "description": "Sukses get data transaksi by order id",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "Success"
+                    },
+                    "userTransactions": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "id": {
+                            "type": "integer",
+                            "example": 1
+                          },
+                          "orderId": {
+                            "type": "integer",
+                            "example": 9598
+                          },
+                          "ppn": {
+                            "type": "integer",
+                            "example": 21890
+                          },
+                          "price": {
+                            "type": "integer",
+                            "example": 199000
+                          },
+                          "totalPrice": {
+                            "type": "integer",
+                            "example": 220890
+                          },
+                          "paymentStatus": {
+                            "type": "string",
+                            "example": "unpaid"
+                          },
+                          "paymentMethod": {
+                            "type": ["string", "null"],
+                            "example": null
+                          },
+                          "userId": {
+                            "type": "integer",
+                            "example": 3
+                          },
+                          "courseId": {
+                            "type": "integer",
+                            "example": 4
+                          },
+                          "linkPayment": {
+                            "type": "string",
+                            "example": "https://app.sandbox.midtrans.com/snap/v3/redirection/86f8cd8e-31ae-479e-8a58-f43c387623a8"
+                          },
+                          "createdAt": {
+                            "type": "string",
+                            "format": "date-time",
+                            "example": "2023-12-16T13:14:36.020Z"
+                          },
+                          "updatedAt": {
+                            "type": "string",
+                            "format": "date-time",
+                            "example": "2023-12-16T13:14:36.020Z"
+                          },
+                          "course": {
+                            "type": "object",
+                            "properties": {
+                              "id": {
+                                "type": "integer",
+                                "example": 4
+                              },
+                              "courseCode": {
+                                "type": "string",
+                                "example": "AD1"
+                              },
+                              "categoryId": {
+                                "type": "integer",
+                                "example": 4
+                              },
+                              "adminId": {
+                                "type": "integer",
+                                "example": 1
+                              },
+                              "courseName": {
+                                "type": "string",
+                                "example": "Belajar Kotlin Lanjutan"
+                              },
+                              "image": {
+                                "type": "string",
+                                "example": "https://ik.imagekit.io/AliRajab03/IMG-1701735564320._8NY5we_7t.jpeg?updatedAt=1701735567581"
+                              },
+                              "courseType": {
+                                "type": "string",
+                                "example": "Premium"
+                              },
+                              "courseLevel": {
+                                "type": "string",
+                                "example": "Advanced"
+                              },
+                              "rating": {
+                                "type": "number",
+                                "example": 4.2
+                              },
+                              "aboutCourse": {
+                                "type": "string",
+                                "example": "Belajar Kotlin Lanjutan adalah kelas yang dirancang khusus bagi mereka yang telah memiliki pemahaman dasar tentang bahasa pemrograman Kotlin dan ingin mengambil langkah lebih jauh. Dalam kelas ini, peserta akan dihadapkan pada konsep-konsep tingkat lanjut seperti generic, extension functions, coroutines, dan fitur-fitur canggih lainnya yang membuat Kotlin menjadi bahasa yang powerful dan ekspresif."
+                              },
+                              "intendedFor": {
+                                "type": "string",
+                                "example": "Android developer Profesional"
+                              },
+                              "coursePrice": {
+                                "type": "integer",
+                                "example": 199000
+                              },
+                              "createdAt": {
+                                "type": "string",
+                                "example": "2023-11-28T06:25:24.446Z"
+                              },
+                              "updatedAt": {
+                                "type": "string",
+                                "example": "2023-11-28T06:25:24.446Z"
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Jika belum login",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "Failed"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Anda harus masuk"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Jika data transaksi kosong",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "Failed"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Data transaksi kosong"
                     }
                   }
                 }

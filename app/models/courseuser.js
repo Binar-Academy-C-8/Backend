@@ -2,14 +2,12 @@
 const { Model } = require('sequelize')
 module.exports = (sequelize, DataTypes) => {
   class CourseUser extends Model {
-    /**
-     * Helper method for defining associations.
-     * This method is not a part of Sequelize lifecycle.
-     * The `models/index` file will call this method automatically.
-     */
     static associate(models) {
-      CourseUser.belongsTo(models.User, { foreignKey: 'userId' })
-      CourseUser.belongsTo(models.Course, { foreignKey: 'courseId' })
+      CourseUser.belongsTo(models.User, { foreignKey: 'userId', as: 'user' })
+      CourseUser.belongsTo(models.Course, {
+        foreignKey: 'courseId',
+        as: 'course',
+      })
       CourseUser.hasMany(models.Notification, {
         foreignKey: {
           name: 'courseUserId',
@@ -20,8 +18,13 @@ module.exports = (sequelize, DataTypes) => {
   }
   CourseUser.init(
     {
-      userId: DataTypes.INTEGER,
-      courseId: DataTypes.INTEGER,
+      userId: { type: DataTypes.INTEGER, allowNull: false },
+      courseId: { type: DataTypes.INTEGER, allowNull: false },
+      contentFinished: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        defaultValue: 0,
+      },
       courseStatus: {
         type: DataTypes.ENUM(['inProgress', 'Selesai']),
         allowNull: false,

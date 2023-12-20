@@ -1,4 +1,5 @@
 'use strict'
+
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
@@ -35,6 +36,9 @@ module.exports = {
       },
       courseId: {
         type: Sequelize.INTEGER,
+      },
+      linkPayment: {
+        type: Sequelize.STRING,
       },
       createdAt: {
         allowNull: false,

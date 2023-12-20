@@ -35,12 +35,17 @@ module.exports = {
         type: Sequelize.ENUM(['Free', 'Premium']),
         allowNull: false,
       },
+      telegramGroup: {
+        type: Sequelize.STRING,
+      },
       courseLevel: {
         type: Sequelize.ENUM(['Beginner', 'Intermediate', 'Advanced']),
         allowNull: false,
       },
       rating: {
         type: Sequelize.FLOAT,
+        allowNull: false,
+        defaultValue: 0.0,
       },
       aboutCourse: {
         type: Sequelize.TEXT,
@@ -48,13 +53,13 @@ module.exports = {
       intendedFor: {
         type: Sequelize.TEXT,
       },
+      courseDiscountInPercent: {
+        type: Sequelize.FLOAT,
+        allowNull: false,
+        default: 0,
+      },
       coursePrice: {
         type: Sequelize.FLOAT,
-      },
-      isPromo: {
-        type: Sequelize.BOOLEAN,
-        allowNull: false,
-        defaultValue: false,
       },
       createdAt: {
         allowNull: false,

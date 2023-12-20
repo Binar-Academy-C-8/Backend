@@ -1,4 +1,4 @@
-const { Op } = require('sequelize')
+const { Op, where } = require('sequelize')
 const path = require('path')
 const {
   Course,
@@ -6,6 +6,9 @@ const {
   Content,
   Category,
   User,
+  CourseUser,
+  Transaction,
+  Sequelize,
   Notification,
   NotificationRead,
 } = require('../models')
@@ -30,7 +33,7 @@ const getAllCourse = async (req, res, next) => {
     if (type) {
       const types = ['Free', 'Premium']
       if (!types.includes(type)) {
-        next(new ApiError('tipe kursus tidak valid', 400))
+        return next(new ApiError('tipe kursus tidak valid', 400))
       }
       filter.courseType = type
     }
@@ -38,51 +41,73 @@ const getAllCourse = async (req, res, next) => {
     if (level) {
       const levels = ['Beginner', 'Intermediate', 'Advanced']
       if (!levels.includes(level)) {
-        next(new ApiError('level tidak valid', 400))
-        return
+        return next(new ApiError('level tidak valid', 400))
       }
       filter.courseLevel = level
     }
 
+    if (sort_by && !order_by) {
+      return next(
+        new ApiError('query parameter order_by tidak boleh kosong', 400)
+      )
+    }
+
+    if (!sort_by && order_by) {
+      return next(
+        new ApiError('query parameter sort_by tidak boleh kosong', 400)
+      )
+    }
+
     if (sort_by && order_by) {
       if (!['asc', 'desc'].includes(order_by.toLowerCase())) {
-        next(
+        return next(
           new ApiError(
             'tolong isi query parameter order_by dengan asc atau desc',
             400
           )
         )
-        return
       }
       order.push([sort_by, order_by.toUpperCase()])
     }
 
-    const getCourse = await Course.findAll({
+    const getCourses = await Course.findAll({
       where: { ...filter },
+      attributes: {
+        exclude: ['aboutCourse', 'intendedFor', 'telegramGroup'],
+      },
       include: [
         { model: Category, as: 'category' },
         { model: User, as: 'courseBy' },
+        {
+          model: Chapter,
+          as: 'chapters',
+          attributes: {
+            exclude: ['createdAt', 'updatedAt'],
+          },
+          include: [
+            {
+              model: Content,
+              as: 'contents',
+              attributes: {
+                exclude: ['createdAt', 'updatedAt'],
+              },
+            },
+          ],
+        },
       ],
       order,
     })
 
     const mapCourse = Promise.all(
-      getCourse.map(async (course) => {
-        const chaptersByCourseId = await Chapter.findAll({
-          where: { courseId: course.id },
-          raw: true,
-        })
-        const contentsByChapterId = Promise.all(
-          chaptersByCourseId.map(async (chapter) => {
-            const contents = await Content.findAll({
-              where: { chapterId: chapter.id },
-              raw: true,
-            })
-            return contents
+      getCourses.map(async (course) => {
+        const chaptersByCourseId = course.toJSON().chapters
+        const contents = chaptersByCourseId.map((chapter) => {
+          const contents = chapter.contents.map((content) => {
+            return content
           })
-        )
+          return contents
+        })
 
-        const contents = await contentsByChapterId
         const totalDurationPerChapter = contents.map((content) => {
           const sumDuration = content.reduce((acc, curr) => {
             const duration = curr.duration.split(':')
@@ -104,16 +129,29 @@ const getAllCourse = async (req, res, next) => {
             courseId: course.id,
           },
         })
+
+        const isDiscount = course.courseDiscountInPercent > 0 ? true : false
+        const rawPrice =
+          course.coursePrice / (1 - course.courseDiscountInPercent / 100)
+
         return {
           ...course.toJSON(),
-          courseBy: course.toJSON().courseBy.name,
-          category: course.toJSON().category.categoryName,
+          courseBy: course.courseBy.name,
+          category: course.category.categoryName,
+          rawPrice,
           durationPerCourseInMinutes: Math.round(totalDurationPerCourse),
+          isDiscount,
           modulePerCourse,
         }
       })
     )
-    const courses = await mapCourse
+
+    const formatedCourses = await mapCourse
+    const courses = formatedCourses.map((course) => {
+      delete course.chapters
+      return course
+    })
+
     res.status(200).json({
       status: 'success',
       data: courses,
@@ -125,33 +163,53 @@ const getAllCourse = async (req, res, next) => {
 
 const getOneCourse = async (req, res, next) => {
   try {
-    const course = await Course.findByPk(req.params.id, {
+    const isCourseEnrolled = await CourseUser.findOne({
+      where: { courseId: req.params.id, userId: req.user.id },
+    })
+
+    const getCourse = await Course.findByPk(req.params.id, {
       include: [
         { model: Category, as: 'category' },
         { model: User, as: 'courseBy' },
         {
           model: Chapter,
           as: 'chapters',
-          include: [{ model: Content, as: 'contents' }],
+          attributes: {
+            exclude: ['createdAt', 'updatedAt'],
+          },
+          include: [
+            {
+              model: Content,
+              as: 'contents',
+              attributes: {
+                exclude: ['createdAt', 'updatedAt'],
+              },
+            },
+          ],
         },
       ],
     })
+
+    const course = getCourse.toJSON()
+
     const modulePerCourse = await Chapter.count({
       where: {
         courseId: req.params.id,
       },
     })
-    const chapters = await Chapter.findAll({
-      where: { courseId: req.params.id },
+
+    const contentIndex = course.chapters.flatMap((chapter) => {
+      return chapter.contents.map((content) => {
+        return content.id
+      })
     })
 
     const getChapterDuration = Promise.all(
-      chapters.map(async (chapter) => {
+      course.chapters.map(async (chapter) => {
         const contents = await Content.findAll({
           where: { chapterId: chapter.id },
           raw: true,
         })
-
         const totalDuration = contents.reduce((acc, curr) => {
           const duration = curr.duration.split(':')
           const minutes = parseInt(duration[0])
@@ -166,22 +224,49 @@ const getOneCourse = async (req, res, next) => {
     const totalCourseDuration = chapterDuration.reduce((acc, curr) => {
       return acc + curr
     }, 0)
-    const objCourse = course.toJSON()
-    const resChapter = objCourse.chapters.map((chapter, i) => {
+
+    const resChapter = course.chapters.map((chapter, i) => {
+      chapter.contents = chapter.contents.map((content) => {
+        content.isLocked = false
+        content.isWatched = false
+        if (
+          isCourseEnrolled &&
+          content.id < contentIndex[isCourseEnrolled.contentFinished]
+        ) {
+          content.isWatched = true
+        }
+        if (
+          (!isCourseEnrolled && content.id >= contentIndex[1]) ||
+          (isCourseEnrolled &&
+            content.id > contentIndex[isCourseEnrolled.contentFinished])
+        ) {
+          content.isLocked = true
+          content.message = !isCourseEnrolled
+            ? 'Silahkan tambahkan ke kelas berjalan untuk bisa mengakses semua video'
+            : 'Silahkan tonton video sebelumnya, untuk mengakses video selanjutnya'
+        }
+        return content
+      })
+
       return {
         ...chapter,
+        contents: chapter.contents,
         durationPerChapterInMinutes: Math.round(chapterDuration[i]),
       }
     })
 
+    const rawPrice =
+      course.coursePrice / (1 - course.courseDiscountInPercent / 100)
+
     res.status(200).json({
       status: 'success',
       data: {
-        ...course.toJSON(),
-        courseBy: course.toJSON().courseBy.name,
-        category: course.toJSON().category.categoryName,
-        modulePerCourse,
+        ...course,
+        courseBy: course.courseBy.name,
+        category: course.category.categoryName,
         chapters: resChapter,
+        rawPrice,
+        modulePerCourse,
         durationPerCourseInMinutes: Math.round(totalCourseDuration),
       },
     })
@@ -206,12 +291,18 @@ const createCourse = async (req, res, next) => {
       image = uploadedImage.url
     }
 
+    const { coursePrice, courseDiscountInPercent } = courseBody
+
+    if (courseDiscountInPercent) {
+      courseBody.coursePrice =
+        coursePrice - (coursePrice * courseDiscountInPercent) / 100
+    }
+
     const newCourse = await Course.create({
       ...courseBody,
       userId: req.user.id,
       image,
     })
-
     const notif = await Notification.create({
       titleNotification: 'Kelas',
       typeNotification: 'Promosi',
@@ -224,13 +315,12 @@ const createCourse = async (req, res, next) => {
 
     res.status(201).json({
       status: 'success',
-      data: newCourse,
+      data: { ...newCourse.toJSON(), rawCoursePrice: coursePrice },
     })
   } catch (err) {
-    if (err.message.split(':')[0] == 'notNull Violation') {
-      const errorMessage = err.message.split(':')[1].split('.')[1].split(',')[0]
-      next(new ApiError(errorMessage, 400))
-      return
+    if (err instanceof Sequelize.ValidationError) {
+      const field = err.errors[0].path
+      return next(new ApiError(`${field} tidak boleh kosong`, 400))
     }
     next(new ApiError(err.message, 500))
   }
@@ -254,6 +344,13 @@ const updateCourse = async (req, res, next) => {
       image = uploadedImage.url
     }
 
+    const { coursePrice, courseDiscountInPercent } = courseBody
+
+    if (courseDiscountInPercent) {
+      courseBody.coursePrice =
+        coursePrice - (coursePrice * courseDiscountInPercent) / 100
+    }
+
     const updatedCourse = await Course.update(
       { ...courseBody, userId: req.user.id, image },
       condition
@@ -261,14 +358,13 @@ const updateCourse = async (req, res, next) => {
 
     res.status(200).json({
       status: 'success',
-      message: `berhasil memperbarui data kursus dengan id ${id}`,
-      data: updatedCourse[1],
+      message: `Berhasil memperbarui data kursus dengan id ${id}`,
+      data: { ...updatedCourse[1][0].toJSON(), rawPrice: coursePrice },
     })
   } catch (err) {
-    if (err.message.split(':')[0] == 'notNull Violation') {
-      const errorMessage = err.message.split(':')[1].split('.')[1].split(',')[0]
-      next(new ApiError(errorMessage, 400))
-      return
+    if (err instanceof Sequelize.ValidationError) {
+      const field = err.errors[0].path
+      return next(new ApiError(`${field} tidak boleh kosong`, 400))
     }
     next(new ApiError(err.message, 500))
   }
@@ -278,11 +374,30 @@ const deleteCourse = async (req, res, next) => {
   const id = req.params.id
   const condition = { where: { id } }
   try {
+    const chapters = await Chapter.findAll({
+      where: {
+        courseId: id,
+      },
+      include: [
+        {
+          model: Content,
+          as: 'contents',
+        },
+      ],
+    })
+
+    Promise.all(
+      chapters.flatMap(async (chapter) => {
+        await Content.destroy({ where: { chapterId: chapter.id } })
+      })
+    )
+
+    await Chapter.destroy({ where: { courseId: id } })
     await Course.destroy(condition)
 
-    res.status(201).json({
+    res.status(200).json({
       status: 'success',
-      message: `berhasil menghapus course dengan id ${id}`,
+      message: `Berhasil menghapus course dengan id ${id}`,
     })
   } catch (err) {
     next(new ApiError(err.message, 500))

@@ -1,9 +1,9 @@
-const bcrypt = require('bcrypt')
-const jwt = require('jsonwebtoken')
-const { Auth, User, OTP, Notification, NotificationRead } = require('../models')
-const generatedOTP = require('../../utils/generatedOTP')
-const { AUTH_EMAIL } = process.env
-const sendEmail = require('../../utils/sendEmail')
+const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
+const { Auth, User, OTP, , Notification, NotificationRead } = require('../models');
+const generatedOTP = require('../../utils/generatedOTP');
+const { AUTH_EMAIL } = process.env;
+const sendEmail = require('../../utils/sendEmail');
 
 const ApiError = require('../../utils/apiError')
 const scheduleOtpDeletion = require('../../utils/scheduleDeletion')
@@ -221,7 +221,6 @@ const updateNewPassword = async (req, res, next) => {
     const { userId } = req.params
     const { password } = req.body
 
-    // Cari data pengguna berdasarkan ID
     const users = await Auth.findOne({
       where: {
         userId,
@@ -234,10 +233,9 @@ const updateNewPassword = async (req, res, next) => {
     }
 
     // Hash password baru
-    const saltRounds = 10
-    const hashedPassword = await bcrypt.hash(password, saltRounds)
+    const saltRounds = 10;
+    const hashedPassword = await bcrypt.hash(password, saltRounds);
 
-    // Update password di database Auth
     await Auth.update(
       {
         password: hashedPassword,
@@ -247,7 +245,7 @@ const updateNewPassword = async (req, res, next) => {
           userId,
         },
       }
-    )
+    );
 
     const notif = await Notification.create({
       titleNotification: 'Login',
