@@ -380,7 +380,7 @@ const deleteCourse = async (req, res, next) => {
         await Content.destroy({ where: { chapterId: chapter.id } })
       })
     )
-
+    await CourseUser.destroy({ where: { courseId: id } })
     await Chapter.destroy({ where: { courseId: id } })
     await Course.destroy(condition)
 
