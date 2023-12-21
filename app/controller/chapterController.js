@@ -31,7 +31,7 @@ const createChapter = async (req, res, next) => {
 const findAllChapter = async (req, res, next) => {
   try {
     const chapters = await Chapter.findAll({
-      include: ['contents'],
+      include: ['contents', 'Course'],
     })
 
     res.status(200).json({
@@ -52,7 +52,7 @@ const findChapter = async (req, res, next) => {
       where: {
         id: req.params.id,
       },
-      include: ['contents '],
+      include: ['contents', 'Course'],
     })
 
     if (!chapter) return next(new ApiError('Data chapter tidak ditemukan'), 404)
@@ -117,7 +117,7 @@ const deleteChapter = async (req, res, next) => {
     if (!chapterId)
       return next(new ApiError('Data chapter tidak ditemukan'), 404)
 
-    const chapter = await Chapter.destroy({
+    await Chapter.destroy({
       where: { id: req.params.id },
     })
 
