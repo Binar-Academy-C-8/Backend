@@ -6,6 +6,9 @@ const {
   Category,
   Course,
   Transaction,
+
+  Notification,
+  NotificationRead,
 } = require('../models')
 const ApiError = require('../../utils/apiError')
 
@@ -292,6 +295,20 @@ const addToCourseUser = async (req, res, next) => {
       courseId: courseId,
       userId: userId,
       courseStatus: 'inProgress',
+    })
+    const notif = await Notification.create({
+      userId: userId,
+      courseId: courseId,
+      courseUserId: newCourseUser.id,
+      titleNotification: 'Kelas',
+      typeNotification: 'Notifikasi',
+      description: `Selamat Anda telah mendaftar di Kelas ${course.courseName}. Ayo selesaikan segera!`,
+    })
+
+    await NotificationRead.create({
+      notifId: notif.id,
+      userId: userId,
+      courseId: courseId,
     })
 
     res.status(201).json({

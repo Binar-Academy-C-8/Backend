@@ -9,6 +9,8 @@ const {
   CourseUser,
   Transaction,
   Sequelize,
+  Notification,
+  NotificationRead,
 } = require('../models')
 const ApiError = require('../../utils/apiError')
 const imagekit = require('../libs/imagekit')
@@ -300,6 +302,15 @@ const createCourse = async (req, res, next) => {
       ...courseBody,
       userId: req.user.id,
       image,
+    })
+    const notif = await Notification.create({
+      titleNotification: 'Kelas',
+      typeNotification: 'Promosi',
+      courseId: newCourse.id,
+      description: `Kelas ${newCourse.courseName} telah ditambahkan, Ayo daftar kelas! *Syarat dan ketentuan berlaku`,
+    })
+    await NotificationRead.create({
+      notifId: notif.id,
     })
 
     res.status(201).json({
