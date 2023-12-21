@@ -256,41 +256,41 @@ const getOneMyCourse = async (req, res, next) => {
 }
 
 const addToCourseUser = async (req, res, next) => {
-  const { courseId } = req.params
-  const userId = req.user.id
-
-  const isCourseEnrolled = await CourseUser.findOne({
-    where: { courseId, userId },
-  })
-
-  const transaction = await Transaction.findOne({
-    where: { courseId, userId },
-  })
-
-  const course = await Course.findOne({
-    where: { id: courseId },
-  })
-
-  if (!course) {
-    return next(new ApiError('Kursus tidak ditemukan', 404))
-  }
-
-  const isPurchased = transaction?.paymentStatus == 'paid' ? true : false
-  const isPremium = course.courseType == 'Premium' ? true : false
-
-  if (!isPurchased && isPremium) {
-    return next(new ApiError('Silahkan beli kursus terlebih dahulu', 402))
-  }
-
-  if (isCourseEnrolled) {
-    return next(
-      new ApiError(
-        'Gagal menambahkan kursus karena kursus sudah ditambahkan di kelas berjalan',
-        400
-      )
-    )
-  }
   try {
+    const { courseId } = req.params
+    const userId = req.user.id
+
+    const isCourseEnrolled = await CourseUser.findOne({
+      where: { courseId, userId },
+    })
+
+    const transaction = await Transaction.findOne({
+      where: { courseId, userId },
+    })
+
+    const course = await Course.findOne({
+      where: { id: courseId },
+    })
+
+    if (!course) {
+      return next(new ApiError('Kursus tidak ditemukan', 404))
+    }
+
+    const isPurchased = transaction?.paymentStatus == 'paid' ? true : false
+    const isPremium = course.courseType == 'Premium' ? true : false
+
+    if (!isPurchased && isPremium) {
+      return next(new ApiError('Silahkan beli kursus terlebih dahulu', 402))
+    }
+
+    if (isCourseEnrolled) {
+      return next(
+        new ApiError(
+          'Gagal menambahkan kursus karena kursus sudah ditambahkan di kelas berjalan',
+          400
+        )
+      )
+    }
     const newCourseUser = await CourseUser.create({
       courseId: courseId,
       userId: userId,
@@ -347,6 +347,10 @@ const updateCourseStatus = async (req, res, next) => {
       },
     })
 
+    if (!getCourseUser) {
+      return next(new ApiError('Kursus berjalan tidak ditemukan', 404))
+    }
+
     const courseUser = getCourseUser.toJSON()
 
     const transaction = await Transaction.findOne({
@@ -355,6 +359,7 @@ const updateCourseStatus = async (req, res, next) => {
 
     const isPurchased = transaction?.paymentStatus == 'paid' ? true : false
     const isPremium = courseUser.course.courseType == 'Premium' ? true : false
+
     if (!isPurchased && isPremium) {
       return next(new ApiError('Silahkan beli kursus terlebih dahulu', 402))
     }

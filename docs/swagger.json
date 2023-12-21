@@ -37,6 +37,10 @@
     {
       "name": "Payment",
       "description": "ini API untuk Payment resources"
+    },
+    {
+      "name": "Notifications",
+      "description": "API untuk Notifikasi resources"
     }
   ],
   "servers": [
@@ -1359,6 +1363,115 @@
                     "message": {
                       "type": "object",
                       "example": "Invalid signature"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/user/change-password/{userId}": {
+      "patch": {
+        "tags": ["Users"],
+        "summary": "Return hasil hit api change password",
+        "description": "ini API untuk change password untuk user",
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            },
+            "description": "User ID"
+          }
+        ],
+        "security": [
+          {
+            "bearerToken": []
+          }
+        ],
+        "requestBody": {
+          "description": "ini request body untuk sukses reset password",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "oldPassword": {
+                    "type": "string",
+                    "example": "user123"
+                  },
+                  "newPassword": {
+                    "type": "string",
+                    "example": "qwerty123"
+                  },
+                  "confirmPassword": {
+                    "type": "string",
+                    "example": "qwerty123"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Sukses change password",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "Success"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Pembaruan Kata Sandi berhasil"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Gagal change password",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "Failed"
+                    },
+                    "message": {
+                      "type": "object",
+                      "example": "Password tidak sesuai"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Gagal change password",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "Failed"
+                    },
+                    "message": {
+                      "type": "object",
+                      "example": "Password lama tidak sesuai"
                     }
                   }
                 }
@@ -5336,6 +5449,27 @@
         ],
         "summary": "Return hasil hit API get all transaction untuk ADMIN",
         "description": "API untuk get all transaction",
+        "parameters": [
+          {
+            "name": "search",
+            "in": "query",
+            "description": "Nama pengguna untuk pencarian",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "paymentStatus",
+            "in": "query",
+            "description": "Status pembayaran (paid atau unpaid)",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "enum": ["paid", "unpaid"]
+            }
+          }
+        ],
         "responses": {
           "200": {
             "description": "Sukses get data transaksi",
@@ -5887,6 +6021,374 @@
                     "message": {
                       "type": "string",
                       "example": "Internal server error"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/notification/getAllNotif": {
+      "get": {
+        "tags": ["Notifications"],
+        "security": [
+          {
+            "bearerToken": []
+          }
+        ],
+        "summary": "Return hasil hit API get All Notifikasi (Admin)",
+        "description": "API untuk melihat semua Notifikasi yang ada",
+        "responses": {
+          "200": {
+            "description": "Sukses mengambil data notifikasi",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "Success"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Sukses menampilkan data notifikasi"
+                    },
+                    "data": {
+                      "type": "object",
+                      "example": {
+                        "id": 9,
+                        "titleNotification": "Login",
+                        "typeNotification": "Notifikasi",
+                        "description": "Selamat datang di Ascent",
+                        "userId": 3,
+                        "courseId": null,
+                        "courseUserId": null,
+                        "createdAt": "2023-12-20T11:22:29.843Z",
+                        "updatedAt": "2023-12-20T11:22:29.843Z",
+                        "User": {
+                          "id": 3,
+                          "name": "anca",
+                          "phoneNumber": "03285729859",
+                          "country": "Indonesia",
+                          "city": "Jakarta",
+                          "role": "member",
+                          "image": "https://tse2.mm.bing.net/th?id=OIP.U2iQ7wNK6ZzTW_traW_-PQHaHa&pid=Api&P=0&h=180",
+                          "createdAt": "2023-12-20T10:40:20.758Z",
+                          "updatedAt": "2023-12-20T10:40:20.758Z"
+                        },
+                        "Course": null,
+                        "CourseUser": null,
+                        "notificationRead": [
+                          {
+                            "id": 9,
+                            "isRead": false,
+                            "notifId": 9,
+                            "userId": 3,
+                            "createdAt": "2023-12-20T11:22:29.857Z",
+                            "updatedAt": "2023-12-20T11:22:29.857Z"
+                          }
+                        ]
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Tidak ada token",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "Failed"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Anda harus masuk"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "Failed"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Internal Server Error"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/notification/getNotifByUserId": {
+      "get": {
+        "tags": ["Notifications"],
+        "security": [
+          {
+            "bearerToken": []
+          }
+        ],
+        "summary": "Return hasil hit API get Notifikasi berdasarkan data user (member)",
+        "description": "Menampilkan data Notifikasi berdasarkan data user",
+
+        "responses": {
+          "200": {
+            "description": "Sukses mendapatkan data notification berdasarkan data user",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "Success"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Sukses menampilkan data notifikasi by user id"
+                    },
+                    "data": {
+                      "type": "object",
+                      "example": {
+                        "id": 9,
+                        "titleNotification": "Login",
+                        "typeNotification": "Notifikasi",
+                        "description": "Selamat datang di Ascent",
+                        "userId": 3,
+                        "courseId": null,
+                        "courseUserId": null,
+                        "createdAt": "2023-12-20T11:22:29.843Z",
+                        "updatedAt": "2023-12-20T11:22:29.843Z",
+                        "User": {
+                          "id": 3,
+                          "name": "anca",
+                          "phoneNumber": "03285729859",
+                          "country": "Indonesia",
+                          "city": "Jakarta",
+                          "role": "member",
+                          "image": "https://tse2.mm.bing.net/th?id=OIP.U2iQ7wNK6ZzTW_traW_-PQHaHa&pid=Api&P=0&h=180",
+                          "createdAt": "2023-12-20T10:40:20.758Z",
+                          "updatedAt": "2023-12-20T10:40:20.758Z"
+                        },
+                        "Course": null,
+                        "CourseUser": null,
+                        "notificationRead": [
+                          {
+                            "id": 9,
+                            "isRead": false,
+                            "notifId": 9,
+                            "userId": 3,
+                            "createdAt": "2023-12-20T11:22:29.857Z",
+                            "updatedAt": "2023-12-20T11:22:29.857Z"
+                          }
+                        ]
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Tidak ada token",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "Failed"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Anda harus masuk"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "Failed"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Internal Server Error"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/notification/getDetailNotif/{notifId}": {
+      "get": {
+        "tags": ["Notifications"],
+        "security": [
+          {
+            "bearerToken": []
+          }
+        ],
+        "summary": "Return hasil hit API get detail Notifikasi (member)",
+        "description": "Menampilkan detail Notifikasi berdasarkan data user yang memiliki notifikasi, lalu mengembalikan nilai isRead: true. \n\n Key isRead adalah untuk menunjukkan apakah notifikasi sudah dibaca atau belum",
+        "parameters": [
+          {
+            "name": "notifId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "example": 1
+            },
+            "description": "Notifikasi ID"
+          }
+        ],
+
+        "responses": {
+          "200": {
+            "description": "Sukses mendapatkan detail notification berdasarkan data user",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "Success"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Sukses menampilkan data by notifikasi id"
+                    },
+                    "data": {
+                      "type": "object",
+                      "example": {
+                        "notification": {
+                          "id": 8,
+                          "titleNotification": "Login",
+                          "typeNotification": "Notifikasi",
+                          "description": "Password Anda telah terubah",
+                          "userId": 3,
+                          "courseId": null,
+                          "courseUserId": null,
+                          "createdAt": "2023-12-20T11:19:42.735Z",
+                          "updatedAt": "2023-12-20T11:19:42.735Z",
+                          "User": {
+                            "id": 3,
+                            "name": "anca",
+                            "phoneNumber": "03285729859",
+                            "country": "Indonesia",
+                            "city": "Jakarta",
+                            "role": "member",
+                            "image": "https://tse2.mm.bing.net/th?id=OIP.U2iQ7wNK6ZzTW_traW_-PQHaHa&pid=Api&P=0&h=180",
+                            "createdAt": "2023-12-20T10:40:20.758Z",
+                            "updatedAt": "2023-12-20T10:40:20.758Z"
+                          },
+                          "Course": null,
+                          "CourseUser": null
+                        },
+                        "notificationRead": {
+                          "id": 8,
+                          "isRead": true,
+                          "notifId": 8,
+                          "userId": 3,
+                          "createdAt": "2023-12-20T11:19:42.746Z",
+                          "updatedAt": "2023-12-20T16:40:48.566Z"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Tidak ada token",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "Failed"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Anda harus masuk"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Tidak ada notifikasi berdasarkan notifikasi id",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "Failed"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Notifikasi tidak ditemukan"
+                    }
+                  }
+                }
+              }
+            }
+          },
+
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "Failed"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Internal Server Error"
                     }
                   }
                 }

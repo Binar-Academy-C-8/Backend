@@ -19,5 +19,11 @@ router.delete(
   checkRole(['admin']),
   User.deleteUser
 )
+router.patch(
+  '/change-password/:userId',
+  authenticate,
+  checkRole(['member']),
+  User.newPassword
+)
 
 module.exports = router
