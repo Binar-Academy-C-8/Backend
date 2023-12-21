@@ -40,12 +40,6 @@ const createTransactionSnap = async (req, res, next) => {
     }
 
     const course = await Course.findByPk(courseId)
-    const authData = await Auth.findOne({
-      where: {
-        userId: req.user.id,
-      },
-      include: ['User'],
-    })
 
     if (!course) {
       return next(
@@ -87,9 +81,9 @@ const createTransactionSnap = async (req, res, next) => {
         gross_amount: totalPrice * quantity,
       },
       customer_details: {
-        first_name: authData.User.name,
-        email: authData.email,
-        phone: authData.User.phoneNumber,
+        first_name: req.user.name,
+        email: req.user.Auth.email,
+        phone: req.user.phoneNumber,
       },
     }
 
@@ -97,7 +91,7 @@ const createTransactionSnap = async (req, res, next) => {
 
     const createdTransactionData = await Transaction.create({
       courseName: course.courseName,
-      userId: authData.id,
+      userId: req.user.id,
       courseId: course.id,
       totalPrice: data.transaction_details.gross_amount,
       ppn: ppn,
