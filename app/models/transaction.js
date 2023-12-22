@@ -18,7 +18,7 @@ module.exports = (sequelize, DataTypes) => {
       this.belongsTo(models.User, {
         foreignKey: {
           name: 'userId',
-          // allowNull: false,
+          allowNull: false,
         },
       })
     }
@@ -37,6 +37,7 @@ module.exports = (sequelize, DataTypes) => {
       paymentMethod: DataTypes.STRING,
       userId: DataTypes.INTEGER,
       courseId: DataTypes.INTEGER,
+      linkPayment: DataTypes.STRING,
     },
     {
       sequelize,

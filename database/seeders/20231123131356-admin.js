@@ -41,7 +41,15 @@ module.exports = {
       {
         email: 'adminc8@mail.com',
         password: hashedPassword,
-        userId: users[0].id,
+        userId: 1,
+        verified: true,
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      },
+      {
+        email: 'memberc8@mail.com',
+        password: hashedPassword,
+        userId: users[1].id,
         verified: true,
         createdAt: new Date(),
         updatedAt: new Date(),

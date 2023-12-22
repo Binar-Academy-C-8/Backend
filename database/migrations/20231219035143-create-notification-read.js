@@ -2,29 +2,22 @@
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.createTable('CourseUsers', {
+    await queryInterface.createTable('NotificationReads', {
       id: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
         type: Sequelize.INTEGER,
       },
+      isRead: {
+        type: Sequelize.BOOLEAN,
+        defaultValue: false,
+      },
+      notifId: {
+        type: Sequelize.INTEGER,
+      },
       userId: {
         type: Sequelize.INTEGER,
-        allowNull: false,
-      },
-      courseId: {
-        type: Sequelize.INTEGER,
-        allowNull: false,
-      },
-      contentFinished: {
-        type: Sequelize.INTEGER,
-        allowNull: false,
-        defaultValue: 0,
-      },
-      courseStatus: {
-        type: Sequelize.ENUM(['inProgress', 'Selesai']),
-        allowNull: false,
       },
       createdAt: {
         allowNull: false,
@@ -37,6 +30,6 @@ module.exports = {
     })
   },
   async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable('CourseUsers')
+    await queryInterface.dropTable('NotificationReads')
   },
 }

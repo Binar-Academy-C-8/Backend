@@ -13,7 +13,6 @@ const verifyOTP = async (req, res, next) => {
     const { userId } = req.params
     const { code } = req.body
 
-    // Cari data pengguna berdasarkan ID
     const userOtp = await OTP.findOne({
       where: {
         userId,
@@ -21,7 +20,6 @@ const verifyOTP = async (req, res, next) => {
       include: ['User'],
     })
 
-    // Cek apakah pengguna ditemukan dan OTP sesuai
     if (!userOtp) {
       return next(new ApiError('Kode OTP telah kedaluwarsa', 401))
     }
@@ -29,7 +27,6 @@ const verifyOTP = async (req, res, next) => {
     if (!bcrypt.compareSync(String(code), String(userOtp.code))) {
       return next(new ApiError('OTP tidak valid', 403))
     }
-    //dwadawda
 
     await Auth.update(
       {
@@ -58,7 +55,6 @@ const verifyOTP = async (req, res, next) => {
       process.env.JWT_SECRET
     )
 
-    // Verifikasi berhasil, hapus data OTP dari database
     await OTP.destroy({
       where: {
         userId: userOtp.User.id,

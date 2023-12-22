@@ -2,30 +2,37 @@
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.createTable('CourseUsers', {
+    await queryInterface.createTable('Notifications', {
       id: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
         type: Sequelize.INTEGER,
       },
+      titleNotification: {
+        type: Sequelize.STRING,
+        allowNull: false,
+      },
+
+      typeNotification: {
+        type: Sequelize.ENUM(['Notifikasi', 'Promosi']),
+        allowNull: false,
+      },
+
+      description: {
+        type: Sequelize.STRING,
+        allowNull: false,
+      },
       userId: {
         type: Sequelize.INTEGER,
-        allowNull: false,
       },
       courseId: {
         type: Sequelize.INTEGER,
-        allowNull: false,
       },
-      contentFinished: {
+      courseUserId: {
         type: Sequelize.INTEGER,
-        allowNull: false,
-        defaultValue: 0,
       },
-      courseStatus: {
-        type: Sequelize.ENUM(['inProgress', 'Selesai']),
-        allowNull: false,
-      },
+
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE,
@@ -37,6 +44,6 @@ module.exports = {
     })
   },
   async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable('CourseUsers')
+    await queryInterface.dropTable('Notifications')
   },
 }

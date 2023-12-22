@@ -1,6 +1,6 @@
 const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken')
-const { Auth, User, OTP } = require('../models')
+const { Auth, User, OTP, Notification, NotificationRead } = require('../models')
 const generatedOTP = require('../../utils/generatedOTP')
 const { AUTH_EMAIL } = process.env
 const sendEmail = require('../../utils/sendEmail')
@@ -118,6 +118,18 @@ const login = async (req, res, next) => {
       if (user.verified !== true) {
         return next(new ApiError('Pengguna belum diverifikasi', 401))
       }
+
+      const notif = await Notification.create({
+        titleNotification: 'Login',
+        typeNotification: 'Notifikasi',
+        description: 'Selamat datang di Ascent',
+        userId: user.id,
+      })
+      await NotificationRead.create({
+        userId: user.id,
+        notifId: notif.id,
+      })
+
       res.status(200).json({
         status: 'Success',
         message: 'Login berhasil',
@@ -209,7 +221,6 @@ const updateNewPassword = async (req, res, next) => {
     const { userId } = req.params
     const { password } = req.body
 
-    // Cari data pengguna berdasarkan ID
     const users = await Auth.findOne({
       where: {
         userId,
@@ -225,7 +236,6 @@ const updateNewPassword = async (req, res, next) => {
     const saltRounds = 10
     const hashedPassword = await bcrypt.hash(password, saltRounds)
 
-    // Update password di database Auth
     await Auth.update(
       {
         password: hashedPassword,

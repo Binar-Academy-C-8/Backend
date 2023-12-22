@@ -1,9 +1,10 @@
 const Midtrans = require('midtrans-client')
-const { Transaction, Course, Auth } = require('../models')
+const { Transaction, Course, Auth, User } = require('../models')
 const { CLIENT_KEY, SERVER_KEY } = process.env
 const ApiError = require('../../utils/apiError')
 const crypto = require('crypto')
 const mathRandom = require('../../utils/generatedOTP')
+const { Op } = require('sequelize')
 
 const createTransactionSnap = async (req, res, next) => {
   try {
@@ -13,21 +14,32 @@ const createTransactionSnap = async (req, res, next) => {
       where: {
         userId: req.user.id,
         courseId: courseId,
+        paymentStatus: 'unpaid',
+      },
+    })
+
+    const hasPurchasedBefore = await Transaction.findOne({
+      where: {
+        userId: req.user.id,
+        courseId: courseId,
         paymentStatus: 'paid',
       },
     })
 
-    if (existingTransaction) {
+    if (hasPurchasedBefore) {
       return next(new ApiError('Anda sudah membeli kursus ini sebelumnya', 400))
     }
 
+    if (existingTransaction) {
+      return next(
+        new ApiError(
+          'Anda memiliki transaksi yang belum dibayar untuk kursus ini, silahkan cek riwayat transaksi',
+          409
+        )
+      )
+    }
+
     const course = await Course.findByPk(courseId)
-    const authData = await Auth.findOne({
-      where: {
-        userId: req.user.id,
-      },
-      include: ['User'],
-    })
 
     if (!course) {
       return next(
@@ -37,7 +49,7 @@ const createTransactionSnap = async (req, res, next) => {
 
     if (course.coursePrice === 0) {
       return res.status(200).json({
-        status: 'success',
+        status: 'Success',
         message: 'Kursus ini gratis',
       })
     }
@@ -69,9 +81,9 @@ const createTransactionSnap = async (req, res, next) => {
         gross_amount: totalPrice * quantity,
       },
       customer_details: {
-        first_name: authData.User.name,
-        email: authData.email,
-        phone: authData.User.phoneNumber,
+        first_name: req.user.name,
+        email: req.user.Auth.email,
+        phone: req.user.phoneNumber,
       },
     }
 
@@ -79,21 +91,19 @@ const createTransactionSnap = async (req, res, next) => {
 
     const createdTransactionData = await Transaction.create({
       courseName: course.courseName,
-      userId: authData.id,
+      userId: req.user.id,
       courseId: course.id,
       totalPrice: data.transaction_details.gross_amount,
       ppn: ppn,
       price: course.coursePrice,
       orderId: data.transaction_details.order_id,
+      linkPayment: transaction.redirect_url,
     })
 
     res.status(201).json({
-      status: 'success',
-      url: transaction.redirect_url,
-      token: transaction.token,
-      email: authData.email,
+      status: 'Success',
       createdTransactionData,
-      data,
+      course,
     })
   } catch (err) {
     next(new ApiError(err.message, 500))
@@ -136,7 +146,7 @@ const paymentCallback = async (req, res, next) => {
     }
 
     res.status(200).json({
-      message: 'success',
+      message: 'Success',
     })
   } catch (err) {
     next(new ApiError(`Gagal melakukan transaksi: ${err.message}`, 500))
@@ -145,17 +155,87 @@ const paymentCallback = async (req, res, next) => {
 
 const getAllTransaction = async (req, res, next) => {
   try {
-    const transactions = await Transaction.findAll()
+    const { search, paymentStatus } = req.query
 
-    if (!transactions) {
-      return next(new ApiError(`Data transaksi kosong`, 404))
+    const filter = {}
+
+    if (search) {
+      filter['$User.name$'] = { [Op.iLike]: `%${search}%` }
+    }
+
+    if (paymentStatus && ['paid', 'unpaid'].includes(paymentStatus)) {
+      filter.paymentStatus = paymentStatus
+    }
+
+    const transactions = await Transaction.findAll({
+      include: ['User'],
+      where: filter,
+    })
+
+    if (!transactions || transactions.length === 0) {
+      return next(
+        new ApiError(`Data transaksi kosong atau tidak ditemukan`, 404)
+      )
     }
 
     res.status(200).json({
       status: 'Success',
-      data: {
-        transactions,
+      transactions,
+    })
+  } catch (err) {
+    next(new ApiError(err.message, 500))
+  }
+}
+
+const getUserTransaction = async (req, res, next) => {
+  try {
+    const userTransactions = await Transaction.findAll({
+      where: {
+        userId: req.user.id,
       },
+      include: ['Course'],
+    })
+
+    if (userTransactions.length === 0) {
+      return next(new ApiError(`Data transaksi kosong`, 404))
+    }
+
+    const formattedTransactions = userTransactions.map((transaction) => {
+      return {
+        id: transaction.id,
+        orderId: transaction.orderId,
+        ppn: transaction.ppn,
+        price: transaction.price,
+        totalPrice: transaction.totalPrice,
+        paymentStatus: transaction.paymentStatus,
+        paymentMethod: transaction.paymentMethod,
+        userId: transaction.userId,
+        courseId: transaction.courseId,
+        linkPayment: transaction.linkPayment,
+        createdAt: transaction.createdAt,
+        updatedAt: transaction.updatedAt,
+        course: {
+          id: transaction.Course.id,
+          courseCode: transaction.Course.courseCode,
+          categoryId: transaction.Course.categoryId,
+          adminId: transaction.Course.userId,
+          courseName: transaction.Course.courseName,
+          image: transaction.Course.image,
+          courseType: transaction.Course.courseType,
+          courseLevel: transaction.Course.courseLevel,
+          rating: transaction.Course.rating,
+          aboutCourse: transaction.Course.aboutCourse,
+          intendedFor: transaction.Course.intendedFor,
+          coursePrice: transaction.Course.coursePrice,
+          createdAt: transaction.Course.createdAt,
+          updatedAt: transaction.Course.updatedAt,
+        },
+      }
+    })
+
+    res.status(200).json({
+      status: 'Success',
+      userTransactions: formattedTransactions,
     })
   } catch (err) {
     next(new ApiError(err.message, 500))
@@ -167,6 +247,7 @@ const getPaymentDetail = async (req, res, next) => {
     const { order_id } = req.params
     const detailTransaction = await Transaction.findOne({
       where: { orderId: order_id },
+      include: ['User'],
     })
     if (!detailTransaction) {
       return next(
@@ -178,6 +259,7 @@ const getPaymentDetail = async (req, res, next) => {
     }
 
     res.status(200).json({
+      status: 'Success',
       detailTransaction,
     })
   } catch (err) {
@@ -190,4 +272,5 @@ module.exports = {
   paymentCallback,
   getAllTransaction,
   getPaymentDetail,
+  getUserTransaction,
 }

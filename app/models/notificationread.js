@@ -1,32 +1,31 @@
 'use strict'
 const { Model } = require('sequelize')
 module.exports = (sequelize, DataTypes) => {
-  class Auth extends Model {
+  class NotificationRead extends Model {
     /**
      * Helper method for defining associations.
      * This method is not a part of Sequelize lifecycle.
      * The `models/index` file will call this method automatically.
      */
     static associate(models) {
-      // define association here
-      Auth.belongsTo(models.User, {
-        foreignKey: {
-          name: 'userId',
-        },
+      NotificationRead.belongsTo(models.Notification, {
+        foreignKey: 'notifId',
+      })
+      NotificationRead.belongsTo(models.User, {
+        foreignKey: 'userId',
       })
     }
   }
-  Auth.init(
+  NotificationRead.init(
     {
-      email: { type: DataTypes.STRING, unique: true },
-      password: DataTypes.STRING,
+      isRead: { type: DataTypes.BOOLEAN, defaultValue: false },
+      notifId: DataTypes.INTEGER,
       userId: DataTypes.INTEGER,
-      verified: { type: DataTypes.BOOLEAN, defaultValue: false },
     },
     {
       sequelize,
-      modelName: 'Auth',
+      modelName: 'NotificationRead',
     }
   )
-  return Auth
+  return NotificationRead
 }
