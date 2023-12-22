@@ -11,8 +11,8 @@ router.post(
   '/create',
   authMe,
   checkRole(['admin']),
-  couseValidation,
   multer.single('image'),
+  couseValidation,
   courseController.createCourse
 )
 router.get('/:id', authMe, checkCourseId, courseController.getOneCourse)
@@ -21,8 +21,8 @@ router.patch(
   authMe,
   checkRole(['admin']),
   checkCourseId,
-  couseValidation,
   multer.single('image'),
+  couseValidation,
   courseController.updateCourse
 )
 router.delete(
