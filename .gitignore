@@ -5,3 +5,4 @@ chapter.json
 yarn.lock
 tests
 coverage
+.prettierignore

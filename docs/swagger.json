@@ -1682,10 +1682,7 @@
                     "type": "string",
                     "example": "UI/UX course for Beginner"
                   },
-                  "courseType": {
-                    "type": "string",
-                    "example": "Free"
-                  },
+
                   "rating": {
                     "type": "number",
                     "example": "9.5"
@@ -1693,10 +1690,6 @@
                   "telegramGroup": {
                     "type": "string",
                     "example": "https://t.me/+yplueYmNDRZlZDNl"
-                  },
-                  "isDiscount": {
-                    "type": "boolean",
-                    "example": false
                   },
                   "courseDiscountInPercent": {
                     "type": "number",
@@ -1745,10 +1738,6 @@
                     "type": "string",
                     "example": "UI/UX course for Beginner"
                   },
-                  "courseType": {
-                    "type": "string",
-                    "example": "Free"
-                  },
                   "rating": {
                     "type": "number",
                     "example": "9.5"
@@ -1756,10 +1745,6 @@
                   "telegramGroup": {
                     "type": "string",
                     "example": "https://t.me/+yplueYmNDRZlZDNl"
-                  },
-                  "isDiscount": {
-                    "type": "boolean",
-                    "example": false
                   },
                   "courseDiscountInPercent": {
                     "type": "number",
@@ -2047,7 +2032,7 @@
                           "type": "string",
                           "example": "2023-11-28T06:25:24.446Z"
                         },
-                        "Category": {
+                        "category": {
                           "type": "string",
                           "example": "UI/UX Design"
                         },
@@ -2213,10 +2198,6 @@
                     "type": "string",
                     "example": "UI/UX course for Beginner"
                   },
-                  "courseType": {
-                    "type": "string",
-                    "example": "Free"
-                  },
                   "telegramGroup": {
                     "type": "string",
                     "example": "https://t.me/+yplueYmNDRZlZDNl"
@@ -2224,10 +2205,6 @@
                   "rating": {
                     "type": "number",
                     "example": "9.5"
-                  },
-                  "isDiscount": {
-                    "type": "boolean",
-                    "example": false
                   },
                   "courseDiscountInPercent": {
                     "type": "number",
@@ -2276,10 +2253,6 @@
                     "type": "string",
                     "example": "UI/UX course for Beginner"
                   },
-                  "courseType": {
-                    "type": "string",
-                    "example": "Free"
-                  },
                   "rating": {
                     "type": "number",
                     "example": "9.5"
@@ -2287,10 +2260,6 @@
                   "telegramGroup": {
                     "type": "string",
                     "example": "https://t.me/+yplueYmNDRZlZDNl"
-                  },
-                  "isDiscount": {
-                    "type": "boolean",
-                    "example": false
                   },
                   "courseDiscountInPercent": {
                     "type": "number",
