@@ -104,7 +104,7 @@ const getAllCourse = async (req, res, next) => {
         const totalDurationPerChapter = contents.map((content) => {
           const sumDuration = content.reduce((acc, curr) => {
             const duration = curr.duration.split(':');
-            const minutes = parseInt(duration[0], 36);
+            const minutes = parseInt(duration[0], 10);
             const second = duration[1] !== '00' ? parseFloat(duration[1] / 60) : 0;
             const total = acc + minutes + second;
             return total;
@@ -200,7 +200,7 @@ const getOneCourse = async (req, res, next) => {
         });
         const totalDuration = contents.reduce((acc, curr) => {
           const duration = curr.duration.split(':');
-          const minutes = parseInt(duration[0], 32);
+          const minutes = parseInt(duration[0], 10);
           const seconds = parseFloat(duration[1] / 60);
           const total = acc + minutes + seconds;
           return total;
@@ -265,6 +265,12 @@ const createCourse = async (req, res, next) => {
 
   try {
     if (file) {
+      const fileSize = req.headers['content-length'];
+
+      if (fileSize > 10000000) {
+        return next(new ApiError('Ukuran gambar kursus tidak boleh lebih dari 10mb', 413));
+      }
+
       const filename = file.originalname;
       const extension = path.extname(filename);
       const uploadedImage = await imagekit.upload({
@@ -307,6 +313,12 @@ const updateCourse = async (req, res, next) => {
 
   try {
     if (file) {
+      const fileSize = req.headers['content-length'];
+
+      if (fileSize > 10000000) {
+        return next(new ApiError('Ukuran gambar kursus tidak boleh lebih dari 10mb', 413));
+      }
+
       const filename = file.originalname;
       const extension = path.extname(filename);
       const uploadedImage = await imagekit.upload({

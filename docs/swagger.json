@@ -1909,6 +1909,26 @@
               }
             }
           },
+          "413": {
+            "description": "Course tidak ada",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "Failed"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Ukuran gambar kursus tidak boleh lebih dari 10mb"
+                    }
+                  }
+                }
+              }
+            }
+          },
           "500": {
             "description": "Kesalahan dari server",
             "content": {
@@ -2442,6 +2462,26 @@
                     "message": {
                       "type": "string",
                       "example": "kursus dengan id n tidak ditemukan"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "413": {
+            "description": "Course tidak ada",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "Failed"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Ukuran gambar kursus tidak boleh lebih dari 10mb"
                     }
                   }
                 }
