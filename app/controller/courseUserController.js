@@ -396,24 +396,6 @@ const updateCourseStatus = async (req, res, next) => {
       );
     }
 
-    // notifikasi
-    const cekStatusUser = await CourseUser.findOne({
-      where: { id: courseUserId, userId: req.user.id },
-    })
-    if (cekStatusUser.courseStatus === 'Selesai') {
-      const notif = await Notification.create({
-        userId: cekStatusUser.userId,
-        courseUserId: cekStatusUser.id,
-        titleNotification: 'Kelas',
-        typeNotification: 'Notifikasi',
-        description: `Selamat Anda telah menyelesaikan Kelas ${getCourseUser.course.courseName}. Ayo daftar kelas lainnya!`,
-        courseId: cekStatusUser.courseId,
-      })
-      await NotificationRead.create({
-        notifId: notif.id,
-        userId: notif.userId,
-      })
-    }
 
     // notifikasi
     const cekStatusUser = await CourseUser.findOne({
