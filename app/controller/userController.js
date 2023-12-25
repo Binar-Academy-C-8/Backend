@@ -150,6 +150,8 @@ const newPassword = async (req, res, next) => {
       }
     )
 
+    // const notif = await Notification.create
+
     const notif = await Notification.create({
       titleNotification: 'Password',
       typeNotification: 'Notifikasi',

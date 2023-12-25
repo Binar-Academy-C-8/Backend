@@ -297,8 +297,8 @@ const addToCourseUser = async (req, res, next) => {
       courseStatus: 'inProgress',
     })
     const notif = await Notification.create({
-      userId: userId,
-      courseId: courseId,
+      userId: newCourseUser.userId,
+      courseId: newCourseUser.courseId,
       courseUserId: newCourseUser.id,
       titleNotification: 'Kelas',
       typeNotification: 'Notifikasi',
@@ -307,8 +307,7 @@ const addToCourseUser = async (req, res, next) => {
 
     await NotificationRead.create({
       notifId: notif.id,
-      userId: userId,
-      courseId: courseId,
+      userId: notif.userId,
     })
 
     res.status(201).json({
@@ -423,6 +422,25 @@ const updateCourseStatus = async (req, res, next) => {
       return next(
         new ApiError(updateProgress.message, updateProgress.statusCode)
       )
+    }
+
+    // notifikasi
+    const cekStatusUser = await CourseUser.findOne({
+      where: { id: courseUserId, userId: req.user.id },
+    })
+    if (cekStatusUser.courseStatus === 'Selesai') {
+      const notif = await Notification.create({
+        userId: cekStatusUser.userId,
+        courseUserId: cekStatusUser.id,
+        titleNotification: 'Kelas',
+        typeNotification: 'Notifikasi',
+        description: `Selamat Anda telah menyelesaikan Kelas ${getCourseUser.course.courseName}. Ayo daftar kelas lainnya!`,
+        courseId: cekStatusUser.courseId,
+      })
+      await NotificationRead.create({
+        notifId: notif.id,
+        userId: notif.userId,
+      })
     }
 
     res.status(200).json({

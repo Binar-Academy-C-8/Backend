@@ -21,7 +21,6 @@ module.exports = (sequelize, DataTypes) => {
       })
       Notification.hasMany(models.NotificationRead, {
         foreignKey: { name: 'notifId' },
-        as: 'notificationRead',
       })
     }
   }
