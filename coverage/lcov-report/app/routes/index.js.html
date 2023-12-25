@@ -91,62 +91,62 @@
 <a name='L26'></a><a href='#L26'>26</a>
 <a name='L27'></a><a href='#L27'>27</a>
 <a name='L28'></a><a href='#L28'>28</a>
-<a name='L29'></a><a href='#L29'>29</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">6x</span>
-<span class="cline-any cline-yes">6x</span>
-<span class="cline-any cline-yes">6x</span>
+<a name='L29'></a><a href='#L29'>29</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">6x</span>
-<span class="cline-any cline-yes">6x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">6x</span>
-<span class="cline-any cline-yes">6x</span>
-<span class="cline-any cline-yes">6x</span>
-<span class="cline-any cline-yes">6x</span>
-<span class="cline-any cline-yes">6x</span>
-<span class="cline-any cline-yes">6x</span>
-<span class="cline-any cline-yes">6x</span>
-<span class="cline-any cline-yes">6x</span>
-<span class="cline-any cline-yes">6x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">6x</span>
-<span class="cline-any cline-yes">6x</span>
-<span class="cline-any cline-yes">6x</span>
-<span class="cline-any cline-yes">6x</span>
-<span class="cline-any cline-yes">6x</span>
-<span class="cline-any cline-yes">6x</span>
-<span class="cline-any cline-yes">6x</span>
-<span class="cline-any cline-yes">6x</span>
-<span class="cline-any cline-yes">6x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">6x</span>
-<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">const router = require('express').Router()
-const swaggerUI = require('swagger-ui-express')
-const swaggerDocument = require('../../docs/swagger.json')
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">const router = require('express').Router();
+const swaggerUI = require('swagger-ui-express');
+const swaggerDocument = require('../../docs/swagger.json');
 &nbsp;
-router.use('/api-docs', swaggerUI.serve)
-router.use('/api-docs', swaggerUI.setup(swaggerDocument))
+router.use('/api-docs', swaggerUI.serve);
+router.use('/api-docs', swaggerUI.setup(swaggerDocument));
 &nbsp;
-const Auth = require('./authRouter')
-const User = require('./userRouter')
-const CourseUser = require('./courseUserRouter')
-const Courses = require('./courseRouter')
-const Chapter = require('./chapterRouter')
-const Content = require('./contentRouter')
-const Category = require('./categoryRouter')
-const Welcome = require('../controller/welcomController')
-const transaction = require('./transactionRouter')
+const Auth = require('./authRouter');
+const User = require('./userRouter');
+const CourseUser = require('./courseUserRouter');
+const Courses = require('./courseRouter');
+const Chapter = require('./chapterRouter');
+const Content = require('./contentRouter');
+const Category = require('./categoryRouter');
+const transaction = require('./transactionRouter');
+const notification = require('./notificationRouter');
 &nbsp;
-router.use('/api/v1/auth', Auth)
-router.use('/api/v1/user', User)
-router.use('/api/v1/course-user', CourseUser)
-router.use('/api/v1/course', Courses)
-router.use('/api/v1/chapter', Chapter)
-router.use('/api/v1/content', Content)
-router.use('/api/v1/category', Category)
-router.use('/api/v1/transaction', transaction)
-router.use('/', Welcome.welcome)
+router.use('/api/v1/auth', Auth);
+router.use('/api/v1/user', User);
+router.use('/api/v1/course-user', CourseUser);
+router.use('/api/v1/course', Courses);
+router.use('/api/v1/chapter', Chapter);
+router.use('/api/v1/content', Content);
+router.use('/api/v1/category', Category);
+router.use('/api/v1/transaction', transaction);
+router.use('/api/v1/notification', notification);
 &nbsp;
-module.exports = router
+module.exports = router;
 &nbsp;</pre></td></tr></table></pre>
 
                 <div class='push'></div><!-- for sticky footer -->
@@ -154,7 +154,7 @@ module.exports = router
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2023-12-15T13:27:41.253Z
+                at 2023-12-22T16:03:29.459Z
             </div>
         <script src="../../prettify.js"></script>
         <script>
