@@ -272,7 +272,20 @@ const addToCourseUser = async (req, res, next) => {
       courseId,
       userId,
       courseStatus: 'inProgress',
-    });
+    })
+    const notif = await Notification.create({
+      userId: newCourseUser.userId,
+      courseId: newCourseUser.courseId,
+      courseUserId: newCourseUser.id,
+      titleNotification: 'Kelas',
+      typeNotification: 'Notifikasi',
+      description: `Selamat Anda telah mendaftar di Kelas ${course.courseName}. Ayo selesaikan segera!`,
+    })
+
+    await NotificationRead.create({
+      notifId: notif.id,
+      userId: notif.userId,
+    })
 
     res.status(201).json({
       status: 'Success',
@@ -381,6 +394,44 @@ const updateCourseStatus = async (req, res, next) => {
       return next(
         new ApiError(updateProgress.message, updateProgress.statusCode),
       );
+    }
+
+    // notifikasi
+    const cekStatusUser = await CourseUser.findOne({
+      where: { id: courseUserId, userId: req.user.id },
+    })
+    if (cekStatusUser.courseStatus === 'Selesai') {
+      const notif = await Notification.create({
+        userId: cekStatusUser.userId,
+        courseUserId: cekStatusUser.id,
+        titleNotification: 'Kelas',
+        typeNotification: 'Notifikasi',
+        description: `Selamat Anda telah menyelesaikan Kelas ${getCourseUser.course.courseName}. Ayo daftar kelas lainnya!`,
+        courseId: cekStatusUser.courseId,
+      })
+      await NotificationRead.create({
+        notifId: notif.id,
+        userId: notif.userId,
+      })
+    }
+
+    // notifikasi
+    const cekStatusUser = await CourseUser.findOne({
+      where: { id: courseUserId, userId: req.user.id },
+    })
+    if (cekStatusUser.courseStatus === 'Selesai') {
+      const notif = await Notification.create({
+        userId: cekStatusUser.userId,
+        courseUserId: cekStatusUser.id,
+        titleNotification: 'Kelas',
+        typeNotification: 'Notifikasi',
+        description: `Selamat Anda telah menyelesaikan Kelas ${getCourseUser.course.courseName}. Ayo daftar kelas lainnya!`,
+        courseId: cekStatusUser.courseId,
+      })
+      await NotificationRead.create({
+        notifId: notif.id,
+        userId: notif.userId,
+      })
     }
 
     res.status(200).json({

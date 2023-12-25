@@ -1,4 +1,4 @@
-const { User, Auth } = require('../models')
+const { User, Auth, Notification, NotificationRead } = require('../models')
 const bcrypt = require('bcrypt')
 const ApiError = require('../../utils/apiError')
 const Sequelize = require('sequelize')
@@ -149,6 +149,20 @@ const newPassword = async (req, res, next) => {
         },
       }
     )
+
+    // const notif = await Notification.create
+
+    const notif = await Notification.create({
+      titleNotification: 'Password',
+      typeNotification: 'Notifikasi',
+      description: 'Password anda telah diperbarui',
+      userId,
+    })
+
+    await NotificationRead.create({
+      notifId: notif.id,
+      userId,
+    })
 
     res.status(200).json({
       status: 'Success',
