@@ -104,6 +104,7 @@ const createTransactionSnap = async (req, res, next) => {
       status: 'Success',
       createdTransactionData,
       course,
+      data,
     })
   } catch (err) {
     next(new ApiError(err.message, 500))

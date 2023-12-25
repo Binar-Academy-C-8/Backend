@@ -137,7 +137,7 @@ const getAllCourse = async (req, res, next) => {
 
     const formatedCourses = await mapCourse;
     const courses = formatedCourses.map((course) => {
-      const courseItem = course;delete courseItem.chapters;
+      const courseItem = course; delete courseItem.chapters;
       return course;
     });
 
@@ -274,7 +274,7 @@ const createCourse = async (req, res, next) => {
       image = uploadedImage.url;
     }
 
-    const { coursePrice, courseDiscountInPercent } = courseBody;
+    const { coursePrice, courseDiscountInPercent, isDiscount } = courseBody;
 
     if (courseDiscountInPercent) {
       courseBody.coursePrice = coursePrice - (coursePrice * courseDiscountInPercent) / 100;
@@ -288,7 +288,7 @@ const createCourse = async (req, res, next) => {
 
     res.status(201).json({
       status: 'success',
-      data: { ...newCourse.toJSON(), rawCoursePrice: coursePrice },
+      data: { ...newCourse.toJSON(), isDiscount, rawCoursePrice: coursePrice },
     });
   } catch (err) {
     if (err instanceof Sequelize.ValidationError) {
@@ -316,7 +316,7 @@ const updateCourse = async (req, res, next) => {
       image = uploadedImage.url;
     }
 
-    const { coursePrice, courseDiscountInPercent } = courseBody;
+    const { coursePrice, isDiscount, courseDiscountInPercent } = courseBody;
 
     if (courseDiscountInPercent) {
       courseBody.coursePrice = coursePrice - (coursePrice * courseDiscountInPercent) / 100;
@@ -329,7 +329,7 @@ const updateCourse = async (req, res, next) => {
     res.status(200).json({
       status: 'success',
       message: `Berhasil memperbarui data kursus dengan id ${id}`,
-      data: { ...updatedCourse[1][0].toJSON(), rawPrice: coursePrice },
+      data: { ...updatedCourse[1][0].toJSON(), isDiscount, rawPrice: coursePrice },
     });
   } catch (err) {
     if (err instanceof Sequelize.ValidationError) {

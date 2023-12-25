@@ -1,17 +1,20 @@
 const router = require('express').Router()
 
 const Content = require('../controller/contentController')
+const authMe = require('../middlewares/authMe')
 
-// const upload = require('../middlewares/uploadVideoFile');
-const checkContentBody = require('../middlewares/checkContentBody')
+// const checkContentBody = require('../middlewares/checkContentBody')
 
-router.get('/', Content.getContent)
+router.get('/', authMe, Content.getContent)
+router.get('/:contentId', authMe, Content.getContentByid)
+router.delete('/deleted/:contentId', authMe, Content.deleteContentByid)
+router.post('/insert-bylink/:chapterId', authMe, Content.insertContentByLink)
+router.patch(
+  '/update-bylink/:chapterId/:contentId',
+  authMe,
+  Content.updateContentByLink
+)
 
-router.get('/:contentId', Content.getContentByid)
-
-router.delete('/deleted/:contentId', Content.deleteContentByid)
-
-router.post('/insert/:chapterId', Content.insertContentByLink)
 // router.post(
 //   '/insert-byfile/:chapterId',
 //   upload.single('fileVideo'),
@@ -25,6 +28,5 @@ router.post('/insert/:chapterId', Content.insertContentByLink)
 //   Content.updateContentByFile
 // );
 // test
-router.patch('/update/:chapterId/:contentId', Content.updateContentByLink)
 
 module.exports = router
