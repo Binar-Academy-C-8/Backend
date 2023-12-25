@@ -4,7 +4,7 @@ const bcrypt = require('bcrypt');
 const dotenv = require('dotenv');
 const { User } = require('../../app/models');
 
-dotenv.config()
+dotenv.config();
 
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
