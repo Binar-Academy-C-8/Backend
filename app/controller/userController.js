@@ -155,7 +155,7 @@ const newPassword = async (req, res, next) => {
     const notif = await Notification.create({
       titleNotification: 'Password',
       typeNotification: 'Notifikasi',
-      description: 'Password anda telah diperbarui',
+      description: 'Password Anda telah diperbarui',
       userId,
     })
 
