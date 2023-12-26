@@ -223,15 +223,16 @@ const getOneMyCourse = async (req, res, next) => {
     const courseProgressInPercentage = Math.round(
       (myCourse.contentFinished / contentTotal) * 100,
     );
+    myCourse.course.courseId = myCourse.course.id;
+    myCourse.course.id = myCourse.id;
 
     res.status(200).json({
       status: 'success',
       course: {
-        courseUserId: myCourse.id,
+        ...myCourse.course,
         contentFinished: myCourse.contentFinished,
         contentTotal,
         courseStatus: myCourse.courseStatus,
-        ...myCourse.course,
         courseProgressInPercentage,
         courseBy: myCourse.course.courseBy.name,
         category: myCourse.course.category.categoryName,

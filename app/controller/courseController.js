@@ -31,7 +31,7 @@ const getAllCourse = async (req, res, next) => {
     }
 
     if (category) {
-      filter.categoryId = category;
+      filter.categoryId = { [Op.or]: JSON.parse(category) };
     }
 
     if (type) {
@@ -92,6 +92,10 @@ const getAllCourse = async (req, res, next) => {
       ],
       order,
     });
+
+    if (!getCourses) {
+      return next(new ApiError('Kursus kosong', 404));
+    }
 
     const mapCourse = Promise.all(
       getCourses.map(async (course) => {
@@ -241,6 +245,10 @@ const getOneCourse = async (req, res, next) => {
     });
 
     const rawPrice = course.coursePrice / (1 - course.courseDiscountInPercent / 100);
+
+    if (isCourseEnrolled) {
+      course.courseUserId = isCourseEnrolled.id;
+    }
 
     res.status(200).json({
       status: 'success',
