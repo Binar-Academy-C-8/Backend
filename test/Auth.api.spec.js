@@ -310,7 +310,7 @@ describe('API reset Password', () => {
     const user = {
       password: 'admin1234',
     };
-    const unverifiedUserId = 3;
+    const unverifiedUserId = 4;
     const response = await request(app)
       .patch(`/api/v1/auth/reset-password/${unverifiedUserId}`)
       .send(user);

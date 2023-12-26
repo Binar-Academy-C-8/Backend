@@ -68,7 +68,7 @@ describe('API content by id', () => {
     const userToken = responseUser.body;
 
     const responseData = await request(app)
-      .get('/api/v1/content/1')
+      .get('/api/v1/content/20')
       .set('Authorization', `Bearer ${userToken.data}`);
 
     expect(responseData.statusCode).toBe(200);
@@ -122,7 +122,7 @@ describe('API delete content by id', () => {
     const userToken = responseUser.body;
     jest.spyOn(Content, 'destroy').mockResolvedValueOnce(1);
 
-    const contentId = 1;
+    const contentId = 16;
     const responseData = await request(app)
       .delete(`/api/v1/content/deleted/${contentId}`)
       .set('Authorization', `Bearer ${userToken.data}`);
@@ -215,8 +215,8 @@ describe('API update content by link', () => {
       email: 'adminc8@mail.com',
       password: 'admin1234',
     };
-    const chapterId = 1;
-    const contentId = 1;
+    const chapterId = 6;
+    const contentId = 20;
     const contentTitle = 'Sample Content Update';
     const contentUrl = 'https://youtu.be/ixOd42SEUF0';
     const videoDuration = '02:36';

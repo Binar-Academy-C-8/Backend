@@ -55,7 +55,7 @@ const findChapter = async (req, res, next) => {
       include: ['contents', 'Course'],
     });
 
-    if (!chapter) return next(new ApiError('Data chapter tidak ditemukan'), 404);
+    if (!chapter) return next(new ApiError('Data chapter tidak ditemukan', 404));
 
     res.status(200).json({
       status: 'Sukses',

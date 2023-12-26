@@ -27,11 +27,13 @@ describe('API Get One Chapter', () => {
       email: 'adminc8@mail.com',
       password: 'admin1234',
     };
+
     const login = await request(app)
       .post('/api/v1/auth/admin/login')
       .send(admin);
     const token = login.body.data;
-    const idChapter = 1;
+    const idChapter = 10;
+
     const response = await request(app)
       .get(`/api/v1/chapter/${idChapter}`)
       .set('Authorization', `Bearer ${token}`);

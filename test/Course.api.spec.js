@@ -414,7 +414,7 @@ describe('API delete course', () => {
     const token = login.body.data;
 
     const course = await request(app).get('/api/v1/course');
-    const { id } = course.body.data[0];
+    const { id } = course.body.data[6];
 
     const response = await request(app)
       .delete(`/api/v1/course/delete/${id}`)

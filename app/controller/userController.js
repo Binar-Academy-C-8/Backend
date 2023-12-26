@@ -1,10 +1,10 @@
 /* eslint-disable consistent-return */
 const bcrypt = require('bcrypt');
 const path = require('path');
+// const { where } = require('sequelize');
 const { User, Auth } = require('../models');
 const ApiError = require('../../utils/apiError');
 const imagekit = require('../libs/imagekit');
-const { where } = require('sequelize');
 
 const getUsers = async (req, res, next) => {
   try {

@@ -20,7 +20,7 @@ describe('API Get User By Email', () => {
   });
 
   it('failed get user by email because email not found', async () => {
-    const userEmail = 'rajab39ali27@gmail.com';
+    const userEmail = 'fsnefies@gmail.com';
     const response = await request(app).get(
       `/api/v1/user/get?email=${userEmail}`,
     );
@@ -79,6 +79,21 @@ describe('API update user', () => {
 
 describe('API delete user', () => {
   it('success delete data user', async () => {
+    const userToRegister = {
+      name: 'John Doe',
+      email: 'john.doe@example.com',
+      password: 'password123',
+      phoneNumber: '1234567890',
+      country: 'USA',
+      city: 'New York',
+    };
+
+    const registerResponse = await request(app)
+      .post('/api/v1/auth/member/register')
+      .send(userToRegister);
+
+    const userIdToDelete = registerResponse.body.data.dataValues.id;
+
     const admin = {
       email: 'adminc8@mail.com',
       password: 'admin1234',
@@ -88,8 +103,9 @@ describe('API delete user', () => {
       .send(admin);
     const res = JSON.parse(check.text);
     const token = res.data;
+
     const response = await request(app)
-      .delete('/api/v1/user/delete/3')
+      .delete(`/api/v1/user/delete/${userIdToDelete}`)
       .set('Authorization', `Bearer ${token}`);
     expect(response.statusCode).toBe(200);
     expect(response.body.message).toBe('Berhasil dihapus');
