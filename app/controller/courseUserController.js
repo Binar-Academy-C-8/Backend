@@ -5,6 +5,8 @@ const {
   Content,
   Category,
   Course,
+  Notification,
+  NotificationRead,
   Transaction,
 } = require('../models');
 const ApiError = require('../../utils/apiError');
