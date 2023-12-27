@@ -1,1 +1,5 @@
-*
+database/
+app/models
+config/database.js
+docs/
+node_modules/

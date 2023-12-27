@@ -1,21 +1,21 @@
-const router = require('express').Router()
-const multer = require('../middlewares/multer')
-const courseController = require('../controller/courseController')
-const checkCourseId = require('../middlewares/checkCourseId')
-const authMe = require('../middlewares/authMe')
-const checkRole = require('../middlewares/checkRole')
-const couseValidation = require('../middlewares/courseValidation')
+const router = require('express').Router();
+const multer = require('../middlewares/multer');
+const courseController = require('../controller/courseController');
+const checkCourseId = require('../middlewares/checkCourseId');
+const authMe = require('../middlewares/authMe');
+const checkRole = require('../middlewares/checkRole');
+const couseValidation = require('../middlewares/courseValidation');
 
-router.get('/', courseController.getAllCourse)
+router.get('/', courseController.getAllCourse);
 router.post(
   '/create',
   authMe,
   checkRole(['admin']),
   multer.single('image'),
   couseValidation,
-  courseController.createCourse
-)
-router.get('/:id', authMe, checkCourseId, courseController.getOneCourse)
+  courseController.createCourse,
+);
+router.get('/:id', authMe, checkCourseId, courseController.getOneCourse);
 router.patch(
   '/update/:id',
   authMe,
@@ -23,14 +23,14 @@ router.patch(
   checkCourseId,
   multer.single('image'),
   couseValidation,
-  courseController.updateCourse
-)
+  courseController.updateCourse,
+);
 router.delete(
   '/delete/:id',
   authMe,
   checkRole(['admin']),
   checkCourseId,
-  courseController.deleteCourse
-)
+  courseController.deleteCourse,
+);
 
-module.exports = router
+module.exports = router;

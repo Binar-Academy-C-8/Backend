@@ -48,7 +48,7 @@
       "url": "https://backend-production-f9e7.up.railway.app/api/v1"
     },
     {
-      "url": "http://localhost:3000/api/v1"
+      "url": "http://localhost:9000/api/v1"
     }
   ],
   "paths": {
@@ -1496,7 +1496,7 @@
           {
             "in": "query",
             "name": "category",
-            "schema": { "type": "integer", "example": 1 },
+            "schema": { "type": "string", "example": "[1]" },
             "description": "query ini digunakan untuk mencari course berdasarkan kode kategori course, untuk keterangan nama kategori bedasarkan id bisa dilihat pada endpoint category"
           },
           {
@@ -1903,6 +1903,26 @@
                     "message": {
                       "type": "object",
                       "example": "Token tidak ada"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "413": {
+            "description": "Course tidak ada",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "Failed"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Ukuran gambar kursus tidak boleh lebih dari 10mb"
                     }
                   }
                 }
@@ -2442,6 +2462,26 @@
                     "message": {
                       "type": "string",
                       "example": "kursus dengan id n tidak ditemukan"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "413": {
+            "description": "Course tidak ada",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "Failed"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Ukuran gambar kursus tidak boleh lebih dari 10mb"
                     }
                   }
                 }

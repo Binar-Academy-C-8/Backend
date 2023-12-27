@@ -5,6 +5,8 @@ const {
   Content,
   Category,
   Course,
+  Notification,
+  NotificationRead,
   Transaction,
 } = require('../models');
 const ApiError = require('../../utils/apiError');
@@ -45,16 +47,17 @@ const getAllMyCourse = async (req, res, next) => {
         const { course } = courseUser;
         const chaptersByCourseId = course.toJSON().chapters;
         const contents = chaptersByCourseId.map((chapter) => {
-          const contents = chapter.contents.map((content) => content);
-          return contents;
+          const contentPerChapter = chapter.contents.map((content) => content);
+          return contentPerChapter;
         });
 
         const totalDurationPerChapter = contents.map((content) => {
           const sumDuration = content.reduce((acc, curr) => {
             const duration = curr.duration.split(':');
-            const minutes = parseInt(duration[0]);
+            const minutes = parseInt(duration[0], 10);
             const second = duration[1] !== '00' ? parseFloat(duration[1] / 60) : 0;
-            return (acc += minutes + second);
+            const total = acc + minutes + second;
+            return total;
           }, 0);
           return sumDuration;
         });
@@ -69,11 +72,16 @@ const getAllMyCourse = async (req, res, next) => {
             courseId: course.id,
           },
         });
-        const contentTotal = course.chapters.flatMap((chapter) => chapter.contents.map((content) => content.id)).length;
+
+        const contentTotal = course.chapters.flatMap((chapter) => {
+          const contentId = chapter.contents.map((content) => content.id);
+          return contentId;
+        }).length;
 
         const courseProgressInPercentage = Math.round(
           (courseUser.contentFinished / contentTotal) * 100,
         );
+
         const isDiscount = course.courseDiscountInPercent > 0;
         const rawPrice = course.coursePrice / (1 - course.courseDiscountInPercent / 100);
 
@@ -97,8 +105,9 @@ const getAllMyCourse = async (req, res, next) => {
 
     const formatedCourses = await mapCourse;
     const courses = formatedCourses.map((course) => {
-      delete course.chapters;
-      return course;
+      const courseObj = course;
+      delete courseObj.chapters;
+      return courseObj;
     });
 
     res.status(200).json({
@@ -158,7 +167,10 @@ const getOneMyCourse = async (req, res, next) => {
       },
     });
 
-    const contentIndex = myCourse.course.chapters.flatMap((chapter) => chapter.contents.map((content) => content.id));
+    const contentIndex = myCourse.course.chapters.flatMap((chapter) => {
+      const chapterId = chapter.contents.map((content) => content.id);
+      return chapterId;
+    });
 
     const getChapterDuration = Promise.all(
       myCourse.course.chapters.map(async (chapter) => {
@@ -168,9 +180,10 @@ const getOneMyCourse = async (req, res, next) => {
         });
         const totalDuration = contents.reduce((acc, curr) => {
           const duration = curr.duration.split(':');
-          const minutes = parseInt(duration[0]);
+          const minutes = parseInt(duration[0], 10);
           const seconds = parseFloat(duration[1] / 60);
-          return (acc += minutes + seconds);
+          const total = acc + minutes + seconds;
+          return total;
         }, 0);
         return totalDuration;
       }),
@@ -180,15 +193,17 @@ const getOneMyCourse = async (req, res, next) => {
     const totalCourseDuration = chapterDuration.reduce((acc, curr) => acc + curr, 0);
 
     const resChapter = myCourse.course.chapters.map((chapter, i) => {
-      chapter.contents = chapter.contents.map((content) => {
-        content.isWatched = false;
-        content.isLocked = false;
-        if (content.id < contentIndex[myCourse.contentFinished]) {
-          content.isWatched = true;
+      const chapterPerCourse = chapter;
+      chapterPerCourse.contents = chapter.contents.map((content) => {
+        const contentPerChapter = content;
+        contentPerChapter.isWatched = false;
+        contentPerChapter.isLocked = false;
+        if (contentPerChapter.id < contentIndex[myCourse.contentFinished]) {
+          contentPerChapter.isWatched = true;
         }
-        if (content.id > contentIndex[myCourse.contentFinished]) {
-          content.isLocked = true;
-          content.message = 'Silahkan tonton video sebelumnya, untuk mengakses video selanjutnya';
+        if (contentPerChapter.id > contentIndex[myCourse.contentFinished]) {
+          contentPerChapter.isLocked = true;
+          contentPerChapter.message = 'Silahkan tonton video sebelumnya, untuk mengakses video selanjutnya';
         }
         return content;
       });
@@ -202,23 +217,25 @@ const getOneMyCourse = async (req, res, next) => {
     const rawPrice = myCourse.course.coursePrice
       / (1 - myCourse.course.courseDiscountInPercent / 100);
 
-    const contentTotal = myCourse.course.chapters.flatMap((chapter) => chapter.contents.map((content) => content.id)).length;
+    const contentTotal = myCourse.course.chapters.flatMap((chapter) => {
+      const contentId = chapter.contents.map((content) => content.id);
+      return contentId;
+    }).length;
 
     const courseProgressInPercentage = Math.round(
       (myCourse.contentFinished / contentTotal) * 100,
     );
+    myCourse.course.courseId = myCourse.course.id;
+    myCourse.course.id = myCourse.id;
 
     res.status(200).json({
       status: 'success',
       course: {
-        courseUserId: myCourse.id,
+        ...myCourse.course,
         contentFinished: myCourse.contentFinished,
         contentTotal,
         courseStatus: myCourse.courseStatus,
-        ...myCourse.course,
-        contentFinished: myCourse.contentFinished,
         courseProgressInPercentage,
-        courseStatus: myCourse.courseStatus,
         courseBy: myCourse.course.courseBy.name,
         category: myCourse.course.category.categoryName,
         rawPrice,
@@ -253,8 +270,8 @@ const addToCourseUser = async (req, res, next) => {
       return next(new ApiError('Kursus tidak ditemukan', 404));
     }
 
-    const isPurchased = transaction?.paymentStatus == 'paid';
-    const isPremium = course.courseType == 'Premium';
+    const isPurchased = transaction?.paymentStatus === 'paid';
+    const isPremium = course.courseType === 'Premium';
 
     if (!isPurchased && isPremium) {
       return next(new ApiError('Silahkan beli kursus terlebih dahulu', 402));
@@ -333,24 +350,25 @@ const updateCourseStatus = async (req, res, next) => {
       where: { courseId: courseUser.courseId, userId: req.user.id },
     });
 
-    const isPurchased = transaction?.paymentStatus == 'paid';
-    const isPremium = courseUser.course.courseType == 'Premium';
+    const isPurchased = transaction?.paymentStatus === 'paid';
+    const isPremium = courseUser.course.courseType === 'Premium';
 
     if (!isPurchased && isPremium) {
       return next(new ApiError('Silahkan beli kursus terlebih dahulu', 402));
     }
 
-    const getContentById = async (contentId) => {
-      const contentsIndex = courseUser.course.chapters.flatMap((chapter) => chapter.contents.map((content) => content.id));
+    const getContentById = async (id) => {
+      const contentsIndex = courseUser.course.chapters.flatMap((chapter) => {
+        const getContentId = chapter.contents.map((content) => content.id);
+        return getContentId;
+      });
 
-      const isFinished = contentsIndex.findIndex(
-        (e) => e === parseInt(contentId),
-      );
+      const isFinished = contentsIndex.findIndex((e) => e === parseInt(id, 10));
 
-      let lastContentIndex = courseUser.contentFinished;
+      const lastContentIndex = courseUser.contentFinished;
 
       if (isFinished === lastContentIndex) {
-        const updateLastContentIndex = (lastContentIndex += 1);
+        const updateLastContentIndex = lastContentIndex + 1;
         const courseStatus = updateLastContentIndex === contentsIndex.length
           ? 'Selesai'
           : 'inProgress';
