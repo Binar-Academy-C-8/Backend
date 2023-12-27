@@ -1,3 +1,4 @@
+/* eslint-disable consistent-return */
 const {
   User,
   CourseUser,
@@ -289,7 +290,7 @@ const addToCourseUser = async (req, res, next) => {
       courseId,
       userId,
       courseStatus: 'inProgress',
-    })
+    });
     const notif = await Notification.create({
       userId: newCourseUser.userId,
       courseId: newCourseUser.courseId,
@@ -297,12 +298,12 @@ const addToCourseUser = async (req, res, next) => {
       titleNotification: 'Kelas',
       typeNotification: 'Notifikasi',
       description: `Selamat Anda telah mendaftar di Kelas ${course.courseName}. Ayo selesaikan segera!`,
-    })
+    });
 
     await NotificationRead.create({
       notifId: notif.id,
       userId: notif.userId,
-    })
+    });
 
     res.status(201).json({
       status: 'Success',
@@ -414,11 +415,10 @@ const updateCourseStatus = async (req, res, next) => {
       );
     }
 
-
     // notifikasi
     const cekStatusUser = await CourseUser.findOne({
       where: { id: courseUserId, userId: req.user.id },
-    })
+    });
     if (cekStatusUser.courseStatus === 'Selesai') {
       const notif = await Notification.create({
         userId: cekStatusUser.userId,
@@ -427,11 +427,11 @@ const updateCourseStatus = async (req, res, next) => {
         typeNotification: 'Notifikasi',
         description: `Selamat Anda telah menyelesaikan Kelas ${getCourseUser.course.courseName}. Ayo daftar kelas lainnya!`,
         courseId: cekStatusUser.courseId,
-      })
+      });
       await NotificationRead.create({
         notifId: notif.id,
         userId: notif.userId,
-      })
+      });
     }
 
     res.status(200).json({
