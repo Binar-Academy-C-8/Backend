@@ -6,7 +6,6 @@ const {
   Category,
   Course,
   Transaction,
-
   Notification,
   NotificationRead,
 } = require('../models')
