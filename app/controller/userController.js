@@ -155,8 +155,22 @@ const newPassword = async (req, res, next) => {
         where: {
           userId,
         },
-      },
-    );
+      }
+    )
+
+    // const notif = await Notification.create
+
+    const notif = await Notification.create({
+      titleNotification: 'Password',
+      typeNotification: 'Notifikasi',
+      description: 'Password Anda telah diperbarui',
+      userId,
+    })
+
+    await NotificationRead.create({
+      notifId: notif.id,
+      userId,
+    })
 
     res.status(200).json({
       status: 'Success',

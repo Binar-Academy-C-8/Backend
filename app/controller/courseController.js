@@ -32,7 +32,7 @@ const getAllCourse = async (req, res, next) => {
     }
 
     if (category) {
-      filter.categoryId = category;
+      filter.categoryId = { [Op.or]: JSON.parse(category) };
     }
 
     if (type) {
@@ -94,6 +94,10 @@ const getAllCourse = async (req, res, next) => {
       order,
     });
 
+    if (!getCourses) {
+      return next(new ApiError('Kursus kosong', 404));
+    }
+
     const mapCourse = Promise.all(
       getCourses.map(async (course) => {
         const chaptersByCourseId = course.toJSON().chapters;
@@ -105,7 +109,7 @@ const getAllCourse = async (req, res, next) => {
         const totalDurationPerChapter = contents.map((content) => {
           const sumDuration = content.reduce((acc, curr) => {
             const duration = curr.duration.split(':');
-            const minutes = parseInt(duration[0], 36);
+            const minutes = parseInt(duration[0], 10);
             const second = duration[1] !== '00' ? parseFloat(duration[1] / 60) : 0;
             const total = acc + minutes + second;
             return total;
@@ -202,7 +206,7 @@ const getOneCourse = async (req, res, next) => {
         });
         const totalDuration = contents.reduce((acc, curr) => {
           const duration = curr.duration.split(':');
-          const minutes = parseInt(duration[0], 32);
+          const minutes = parseInt(duration[0], 10);
           const seconds = parseFloat(duration[1] / 60);
           const total = acc + minutes + seconds;
           return total;
@@ -244,6 +248,10 @@ const getOneCourse = async (req, res, next) => {
 
     const rawPrice = course.coursePrice / (1 - course.courseDiscountInPercent / 100);
 
+    if (isCourseEnrolled) {
+      course.courseUserId = isCourseEnrolled.id;
+    }
+
     res.status(200).json({
       status: 'success',
       data: {
@@ -267,6 +275,12 @@ const createCourse = async (req, res, next) => {
 
   try {
     if (file) {
+      const fileSize = req.headers['content-length'];
+
+      if (fileSize > 10000000) {
+        return next(new ApiError('Ukuran gambar kursus tidak boleh lebih dari 10mb', 413));
+      }
+
       const filename = file.originalname;
       const extension = path.extname(filename);
       const uploadedImage = await imagekit.upload({
@@ -276,7 +290,7 @@ const createCourse = async (req, res, next) => {
       image = uploadedImage.url;
     }
 
-    const { coursePrice, courseDiscountInPercent } = courseBody;
+    const { coursePrice, courseDiscountInPercent, isDiscount } = courseBody;
 
     if (courseDiscountInPercent) {
       courseBody.coursePrice = coursePrice - (coursePrice * courseDiscountInPercent) / 100;
@@ -290,7 +304,7 @@ const createCourse = async (req, res, next) => {
 
     res.status(201).json({
       status: 'success',
-      data: { ...newCourse.toJSON(), rawCoursePrice: coursePrice },
+      data: { ...newCourse.toJSON(), isDiscount, rawCoursePrice: coursePrice },
     });
   } catch (err) {
     if (err instanceof Sequelize.ValidationError) {
@@ -309,6 +323,12 @@ const updateCourse = async (req, res, next) => {
 
   try {
     if (file) {
+      const fileSize = req.headers['content-length'];
+
+      if (fileSize > 10000000) {
+        return next(new ApiError('Ukuran gambar kursus tidak boleh lebih dari 10mb', 413));
+      }
+
       const filename = file.originalname;
       const extension = path.extname(filename);
       const uploadedImage = await imagekit.upload({
@@ -318,7 +338,7 @@ const updateCourse = async (req, res, next) => {
       image = uploadedImage.url;
     }
 
-    const { coursePrice, courseDiscountInPercent } = courseBody;
+    const { coursePrice, isDiscount, courseDiscountInPercent } = courseBody;
 
     if (courseDiscountInPercent) {
       courseBody.coursePrice = coursePrice - (coursePrice * courseDiscountInPercent) / 100;
@@ -331,7 +351,7 @@ const updateCourse = async (req, res, next) => {
     res.status(200).json({
       status: 'success',
       message: `Berhasil memperbarui data kursus dengan id ${id}`,
-      data: { ...updatedCourse[1][0].toJSON(), rawPrice: coursePrice },
+      data: { ...updatedCourse[1][0].toJSON(), isDiscount, rawPrice: coursePrice },
     });
   } catch (err) {
     if (err instanceof Sequelize.ValidationError) {

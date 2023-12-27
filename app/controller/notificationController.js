@@ -9,16 +9,78 @@ const {
 const { Op } = require('sequelize')
 require('dotenv').config()
 
+// const getAllNotification = async (req, res, next) => {
+//   try {
+//     const notification = await Notification.findAll({
+//       include: [
+//         {
+//           model: User,
+//           attributes: {
+//             exclude: ['createdAt', 'updatedAt'],
+//           },
+//         },
+//         {
+//           model: Course,
+//           attributes: {
+//             exclude: ['createdAt', 'updatedAt'],
+//           },
+//         },
+//         {
+//           model: CourseUser,
+//           attributes: {
+//             exclude: ['createdAt', 'updatedAt'],
+//           },
+//         },
+//         {
+//           model: NotificationRead,
+//           attributes: {
+//             exclude: ['createdAt', 'updatedAt'],
+//           },
+//           separate: true,
+//           nest: true,
+//         },
+//       ],
+//       separate: true,
+//       order: [['createdAt', 'DESC']],
+//     })
+
+//     res.status(200).json({
+//       status: 'Success',
+//       message: 'Sukses menampilkan data notifikasi',
+//       data: notification,
+//     })
+//   } catch (err) {
+//     next(new ApiError(err.message, 500))
+//   }
+// }
+
 const getAllNotification = async (req, res, next) => {
   try {
     const notification = await Notification.findAll({
       include: [
-        'User',
-        'Course',
-        'CourseUser',
+        {
+          model: User,
+          attributes: {
+            exclude: ['createdAt', 'updatedAt'],
+          },
+        },
+        {
+          model: Course,
+          attributes: {
+            exclude: ['createdAt', 'updatedAt'],
+          },
+        },
+        {
+          model: CourseUser,
+          attributes: {
+            exclude: ['createdAt', 'updatedAt'],
+          },
+        },
         {
           model: NotificationRead,
-          as: 'notificationRead',
+          attributes: {
+            exclude: ['createdAt', 'updatedAt'],
+          },
         },
       ],
       order: [['createdAt', 'DESC']],
@@ -47,17 +109,35 @@ const getNotifByUserId = async (req, res, next) => {
           { userId: null },
         ],
       },
-      order: [['createdAt', 'DESC']],
       include: [
-        'User',
-        'Course',
-        'CourseUser',
+        {
+          model: User,
+          attributes: {
+            exclude: ['createdAt', 'updatedAt'],
+          },
+        },
+        {
+          model: Course,
+          attributes: {
+            exclude: ['createdAt', 'updatedAt'],
+          },
+        },
+        {
+          model: CourseUser,
+          attributes: {
+            exclude: ['createdAt', 'updatedAt'],
+          },
+        },
         {
           model: NotificationRead,
-          as: 'notificationRead',
+          attributes: {
+            exclude: ['createdAt', 'updatedAt'],
+          },
         },
       ],
+      order: [['createdAt', 'DESC']],
     })
+
     return res.status(200).json({
       status: 'Success',
       message: 'Sukses menampilkan data notifikasi by user id',
@@ -82,8 +162,6 @@ const getDetailNotif = async (req, res, next) => {
         ],
         id: notifId,
       },
-      order: [['createdAt', 'DESC']],
-      include: ['User', 'Course', 'CourseUser'],
     })
 
     if (!notification)
@@ -114,23 +192,15 @@ const getDetailNotif = async (req, res, next) => {
   }
 }
 
-const getRead = async (req, res, next) => {
-  try {
-    const read = await NotificationRead.findAll()
 
-    res.status(200).json({
-      status: 'Success',
-      message: 'Sukses menampilkan data notifikasi read',
-      read,
-    })
-  } catch (err) {
-    next(new ApiError(err.message, 500))
-  }
-}
+// Notifikasi Login Member
+// Notifikasi create course
+// Notifikasi join course
+// Notifikasi selesai menonton seluruh course
+// Notifikasi mengubah password
 
 module.exports = {
   getAllNotification,
   getNotifByUserId,
   getDetailNotif,
-  getRead,
 }

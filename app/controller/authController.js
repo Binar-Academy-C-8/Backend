@@ -129,10 +129,10 @@ const login = async (req, res, next) => {
         titleNotification: 'Login',
         typeNotification: 'Notifikasi',
         description: 'Selamat datang di Ascent',
-        userId: user.id,
-      });
+        userId: user.userId,
+      })
       await NotificationRead.create({
-        userId: user.id,
+        userId: notif.userId,
         notifId: notif.id,
       });
 
@@ -250,8 +250,20 @@ const updateNewPassword = async (req, res, next) => {
         where: {
           userId,
         },
-      },
-    );
+      }
+    )
+
+    // notifikasi
+    const notif = await Notification.create({
+      titleNotification: 'Login',
+      typeNotification: 'Notifikasi',
+      description: 'Password Anda telah diperbarui',
+      userId: userId,
+    })
+    await NotificationRead.create({
+      userId: userId,
+      notifId: notif.id,
+    })
 
     res.status(200).json({
       status: 'Success',

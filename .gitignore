@@ -5,4 +5,4 @@ chapter.json
 yarn.lock
 tests
 coverage
-notifikasi.json
+.prettierignore
