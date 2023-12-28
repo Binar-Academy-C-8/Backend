@@ -1,4 +1,3 @@
-/* eslint-disable consistent-return */
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const {
@@ -44,7 +43,7 @@ const register = async (req, res, next) => {
       country,
       city,
     });
-    await Auth.create({
+    const test = await Auth.create({
       email,
       password: hashedPassword,
       userId: newUser.id,
@@ -130,7 +129,7 @@ const login = async (req, res, next) => {
         typeNotification: 'Notifikasi',
         description: 'Selamat datang di Ascent',
         userId: user.userId,
-      })
+      });
       await NotificationRead.create({
         userId: notif.userId,
         notifId: notif.id,
@@ -234,7 +233,7 @@ const updateNewPassword = async (req, res, next) => {
       include: ['User'],
     });
 
-    if (users.verified === false) {
+    if (users.verified !== true) {
       return next(new ApiError('Pengguna belum diverifikasi', 401));
     }
 
@@ -250,20 +249,20 @@ const updateNewPassword = async (req, res, next) => {
         where: {
           userId,
         },
-      }
-    )
+      },
+    );
 
     // notifikasi
     const notif = await Notification.create({
       titleNotification: 'Login',
       typeNotification: 'Notifikasi',
       description: 'Password Anda telah diperbarui',
-      userId: userId,
-    })
+      userId,
+    });
     await NotificationRead.create({
-      userId: userId,
+      userId,
       notifId: notif.id,
-    })
+    });
 
     res.status(200).json({
       status: 'Success',

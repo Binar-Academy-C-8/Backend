@@ -1,7 +1,8 @@
 const compressVideo = (data, newSize) => {
+  const newData = data;
   const resizedBuffer = data.buffer.slice(0, newSize);
-  data.size = newSize;
-  data.buffer = resizedBuffer;
+  newData.size = newSize;
+  newData.buffer = resizedBuffer;
 
   return data;
 };
