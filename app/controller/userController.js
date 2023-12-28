@@ -41,12 +41,20 @@ const getUserByEmail = async (req, res, next) => {
 // update User
 const updateUser = async (req, res, next) => {
   const { id } = req.params;
+  const user = await User.findOne({
+    where: {
+      id,
+    },
+  });
   const userBody = req.body;
   const { file } = req;
   const condition = { where: { id }, returning: true };
   let image;
 
   try {
+    if (!user) {
+      return next(new ApiError('Pengguna tidak ditemukan', 404));
+    }
     if (file) {
       const filename = file.originalname;
       const extension = path.extname(filename);
@@ -62,7 +70,7 @@ const updateUser = async (req, res, next) => {
     res.status(200).json({
       status: 'success',
       message: `Pembaruan course sukses dengan id ${id}`,
-      updatedUser,
+      data: updatedUser[1][0],
     });
   } catch (err) {
     if (err.message.split(':')[0] === 'notNull Violation') {
