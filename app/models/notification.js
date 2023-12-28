@@ -19,7 +19,7 @@ module.exports = (sequelize, DataTypes) => {
       Notification.belongsTo(models.CourseUser, {
         foreignKey: 'courseUserId',
       })
-      Notification.hasMany(models.NotificationRead, {
+      Notification.hasOne(models.NotificationRead, {
         foreignKey: { name: 'notifId' },
       })
     }
