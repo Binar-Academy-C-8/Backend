@@ -3,7 +3,7 @@ const request = require('supertest');
 const app = require('../app/index');
 require('dotenv').config();
 
-describe('API get all course', () => {
+describe('API get all course just', () => {
   it('success get all course', async () => {
     const response = await request(app).get('/api/v1/course');
     expect(response.statusCode).toBe(200);
@@ -12,8 +12,8 @@ describe('API get all course', () => {
 
   it('success filter course', async () => {
     const filters = {
-      search: 'binar',
-      category: '1',
+      // search: 'binar',
+      category: [1],
       level: 'Beginner',
       type: 'Free',
       sort_by: 'createdAt',
@@ -28,7 +28,7 @@ describe('API get all course', () => {
   it('failed filter course, when level and type course is invalid', async () => {
     const filters = {
       search: 'binar',
-      category: '1',
+      category: [1],
       level: 'Master',
       type: 'Trial',
       sort_by: 'createdAt',

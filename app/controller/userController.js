@@ -2,7 +2,9 @@
 const bcrypt = require('bcrypt');
 const path = require('path');
 // const { where } = require('sequelize');
-const { User, Auth } = require('../models');
+const {
+  User, Auth, Notification, NotificationRead,
+} = require('../models');
 const ApiError = require('../../utils/apiError');
 const imagekit = require('../libs/imagekit');
 
@@ -135,6 +137,7 @@ const newPassword = async (req, res, next) => {
     });
 
     const isOldPasswordValid = await bcrypt.compare(oldPassword, user.password);
+    console.log(isOldPasswordValid);
 
     if (!isOldPasswordValid) {
       return res.status(401).json({
@@ -167,7 +170,7 @@ const newPassword = async (req, res, next) => {
       userId,
     });
 
-    await Notification.create({
+    await NotificationRead.create({
       notifId: notif.id,
       userId,
     });

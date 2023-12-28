@@ -117,7 +117,7 @@ describe('API Update Chapter', () => {
     };
 
     const response = await request(app)
-      .patch(`/api/v1/chapter/update/${idChapter}`)
+      .put(`/api/v1/chapter/update/${idChapter}`)
       .set('Authorization', `Bearer ${token}`)
       .send(newChapter);
     expect(response.statusCode).toBe(200);

@@ -47,7 +47,7 @@ describe('API Get Notification User by notif id', () => {
       .send(user);
     const { token } = login.body.data;
 
-    const notifId = 39;
+    const notifId = 1;
 
     const response = await request(app)
       .get(`/api/v1/notification/getDetailNotif/${notifId}`)

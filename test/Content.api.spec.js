@@ -145,12 +145,12 @@ describe('API delete content by id', () => {
     expect(responseUser.statusCode).toBe(200);
     expect(responseUser.body.status).toBe('Success');
     expect(responseUser.body.message).toBe('Berhasil login');
-    const userToken = responseUser.body;
+    const userToken = responseUser.body.data;
 
     const contentId = 100;
     const responseData = await request(app)
       .delete(`/api/v1/content/deleted/${contentId}`)
-      .set('Authorization', `Bearer ${userToken.data}`);
+      .set('Authorization', `Bearer ${userToken}`);
 
     expect(responseData.statusCode).toBe(404);
     expect(responseData.body.status).toBe('Failed');

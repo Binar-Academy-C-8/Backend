@@ -67,7 +67,7 @@ describe('API create one course user from current user login', () => {
       .get('/api/v1/course')
       .set('Authorization', `Bearer ${token}`);
 
-    const course = courses.body.data[0];
+    const course = courses.body.data[1];
     const { id } = course;
 
     const response = await request(app)
@@ -116,7 +116,7 @@ describe('API create one course user from current user login', () => {
       .get('/api/v1/course')
       .set('Authorization', `Bearer ${token}`);
 
-    const course = courses.body.data[0];
+    const course = courses.body.data[1];
     const { id } = course;
 
     const response = await request(app)
@@ -219,7 +219,7 @@ describe('API update one course user from current user login', () => {
       .get(`/api/v1/course-user/my-course/${courseId}`)
       .set('Authorization', `Bearer ${token}`);
 
-    // console.log(course.body.course);
+    console.log(course.body.course);
     const { id } = course.body.course;
     const content = course.body.course.chapters[0].contents[0];
     const { id: contentId } = content;
@@ -229,7 +229,7 @@ describe('API update one course user from current user login', () => {
       .set('Authorization', `Bearer ${token}`);
 
     expect(response.status).toBe(200);
-    // console.log(response.body);
+    console.log(response.body);
     expect(response.body.status).toBe('success');
   });
   it('failed update one course user because user role not member', async () => {
