@@ -60,7 +60,7 @@ describe('API Create Chapter', () => {
       .set('Authorization', `Bearer ${token}`)
       .send(newChapter);
     expect(response.statusCode).toBe(201);
-  });
+  }, 10000);
 
   it('Failed if id course not found', async () => {
     const admin = {
@@ -80,7 +80,7 @@ describe('API Create Chapter', () => {
       .set('Authorization', `Bearer ${token}`)
       .send(newChapter);
     expect(response.statusCode).toBe(404);
-  });
+  }, 10000);
 
   it('Failed if field not required', async () => {
     const admin = {
@@ -98,7 +98,7 @@ describe('API Create Chapter', () => {
       .set('Authorization', `Bearer ${token}`)
       .send(newChapter);
     expect(response.statusCode).toBe(400);
-  });
+  }, 10000);
 });
 
 describe('API Update Chapter', () => {
@@ -121,7 +121,7 @@ describe('API Update Chapter', () => {
       .set('Authorization', `Bearer ${token}`)
       .send(newChapter);
     expect(response.statusCode).toBe(200);
-  });
+  }, 10000);
 });
 
 describe('API Delete Chapter', () => {

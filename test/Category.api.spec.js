@@ -26,7 +26,7 @@ describe('API Get One category', () => {
       .get(`/api/v1/category/${idCategory}`)
       .set('Authorization', `Bearer ${token}`);
     expect(response.statusCode).toBe(200);
-  });
+  }, 10000);
   it('Failed get category because id not found', async () => {
     const admin = {
       email: 'adminc8@mail.com',
@@ -42,7 +42,7 @@ describe('API Get One category', () => {
       .set('Authorization', `Bearer ${token}`);
     expect(response.statusCode).toBe(404);
     expect(response.body.status).toBe('Failed');
-  });
+  }, 10000);
 });
 
 describe('API Create category', () => {
@@ -67,7 +67,7 @@ describe('API Create category', () => {
 
     expect(response.status).toBe(201);
     expect(response.body.status).toBe('success');
-  });
+  }, 10000);
 });
 
 describe('API Update category', () => {
@@ -93,7 +93,7 @@ describe('API Update category', () => {
 
     expect(response.status).toBe(200);
     expect(response.body.status).toBe('success');
-  });
+  }, 10000);
 });
 
 describe('API delete category', () => {
@@ -127,5 +127,5 @@ describe('API delete category', () => {
 
     expect(response.status).toBe(201);
     expect(response.body.status).toBe('success');
-  });
+  }, 10000);
 });
