@@ -131,7 +131,7 @@ describe('API create one course user from current user login', () => {
     const { token } = login.body.data;
 
     const response = await request(app)
-      .post(`/api/v1/course-user/create/9999999`)
+      .post('/api/v1/course-user/create/9999999')
       .set('Authorization', `Bearer ${token}`);
 
     expect(response.status).toBe(404);
@@ -176,7 +176,7 @@ describe('API get one course user from current user login', () => {
     expect(response.body.status).toBe('success');
   });
   it('failed get one course user because user not login', async () => {
-    const response = await request(app).get(`/api/v1/course-user/my-course/99999999`);
+    const response = await request(app).get('/api/v1/course-user/my-course/99999999');
 
     expect(response.status).toBe(401);
     expect(response.body.status).toBe('Failed');
@@ -186,7 +186,7 @@ describe('API get one course user from current user login', () => {
     const { token } = login.body.data;
 
     const response = await request(app)
-      .get(`/api/v1/course-user/my-course/99999999`)
+      .get('/api/v1/course-user/my-course/99999999')
       .set('Authorization', `Bearer ${token}`);
 
     expect(response.status).toBe(401);
@@ -197,7 +197,7 @@ describe('API get one course user from current user login', () => {
     const { token } = login.body.data;
 
     const response = await request(app)
-      .get(`/api/v1/course-user/my-course/99999999`)
+      .get('/api/v1/course-user/my-course/99999999')
       .set('Authorization', `Bearer ${token}`);
 
     expect(response.status).toBe(404);
@@ -214,22 +214,22 @@ describe('API update one course user from current user login', () => {
       .set('Authorization', `Bearer ${token}`);
 
     const coursesResponse = courses.body.courses[0];
-
     const { id: courseId } = coursesResponse;
-
     const course = await request(app)
       .get(`/api/v1/course-user/my-course/${courseId}`)
       .set('Authorization', `Bearer ${token}`);
 
-    const { courseUserId } = course.body.course;
+    // console.log(course.body.course);
+    const { id } = course.body.course;
     const content = course.body.course.chapters[0].contents[0];
     const { id: contentId } = content;
 
     const response = await request(app)
-      .patch(`/api/v1/course-user/update-progress/${courseUserId}/progress/${contentId}`)
+      .patch(`/api/v1/course-user/update-progress/${id}/progress/${contentId}`)
       .set('Authorization', `Bearer ${token}`);
 
     expect(response.status).toBe(200);
+    // console.log(response.body);
     expect(response.body.status).toBe('success');
   });
   it('failed update one course user because user role not member', async () => {
@@ -237,7 +237,7 @@ describe('API update one course user from current user login', () => {
     const { token } = login.body.data;
 
     const response = await request(app)
-      .patch(`/api/v1/course-user/update-progress/1/progress/1`)
+      .patch('/api/v1/course-user/update-progress/1/progress/1')
       .set('Authorization', `Bearer ${token}`);
 
     expect(response.status).toBe(401);
@@ -260,12 +260,12 @@ describe('API update one course user from current user login', () => {
       .get(`/api/v1/course-user/my-course/${courseId}`)
       .set('Authorization', `Bearer ${token}`);
 
-    const { courseUserId } = course.body.course;
+    const { id } = course.body.course;
     const content = course.body.course.chapters[1].contents[0];
     const { id: contentId } = content;
 
     const response = await request(app)
-      .patch(`/api/v1/course-user/update-progress/${courseUserId}/progress/${contentId}`)
+      .patch(`/api/v1/course-user/update-progress/${id}/progress/${contentId}`)
       .set('Authorization', `Bearer ${token}`);
 
     expect(response.status).toBe(400);
@@ -276,7 +276,7 @@ describe('API update one course user from current user login', () => {
     const { token } = login.body.data;
 
     const response = await request(app)
-      .patch(`/api/v1/course-user/update-progress/99999999/progress/999999999`)
+      .patch('/api/v1/course-user/update-progress/99999999/progress/999999999')
       .set('Authorization', `Bearer ${token}`);
 
     expect(response.status).toBe(404);
@@ -284,7 +284,7 @@ describe('API update one course user from current user login', () => {
   });
 
   it('failed get one course user because user not login', async () => {
-    const response = await request(app).patch(`/api/v1/course-user/update-progress/1/progress/1`);
+    const response = await request(app).patch('/api/v1/course-user/update-progress/1/progress/1');
 
     expect(response.status).toBe(401);
     expect(response.body.status).toBe('Failed');
