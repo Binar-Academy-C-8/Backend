@@ -2,7 +2,7 @@ const Midtrans = require('midtrans-client');
 const crypto = require('crypto');
 const { Op } = require('sequelize');
 const {
-  Transaction, Course,
+  Transaction, Course, CourseUser, Notification, NotificationRead,
 } = require('../models');
 const ApiError = require('../../utils/apiError');
 const mathRandom = require('../../utils/generatedOTP');
@@ -107,7 +107,6 @@ const createTransactionSnap = async (req, res, next) => {
       status: 'Success',
       createdTransactionData,
       course,
-      data,
     });
   } catch (err) {
     next(new ApiError(err.message, 500));
@@ -145,6 +144,26 @@ const paymentCallback = async (req, res, next) => {
         await payment.update({
           paymentStatus: 'paid',
           paymentMethod: paymentType,
+        });
+
+        const newCourseUser = await CourseUser.create({
+          courseId: payment.courseId,
+          userId: payment.userId,
+          courseStatus: 'inProgress',
+        });
+
+        const notif = await Notification.create({
+          userId: payment.userId,
+          courseId: payment.courseId,
+          courseUserId: newCourseUser.id,
+          titleNotification: 'Kelas',
+          typeNotification: 'Notifikasi',
+          description: `Selamat pembayaran Anda berhasil, sekarang anda telah terdaftar di Kelas ${payment.courseName}. Ayo selesaikan segera!`,
+        });
+
+        await NotificationRead.create({
+          notifId: notif.id,
+          userId: notif.userId,
         });
       }
     }

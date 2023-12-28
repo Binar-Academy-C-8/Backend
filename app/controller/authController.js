@@ -1,3 +1,4 @@
+/* eslint-disable consistent-return */
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const {
@@ -43,7 +44,7 @@ const register = async (req, res, next) => {
       country,
       city,
     });
-    const test = await Auth.create({
+    await Auth.create({
       email,
       password: hashedPassword,
       userId: newUser.id,
