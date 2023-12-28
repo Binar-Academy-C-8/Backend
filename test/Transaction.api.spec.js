@@ -23,7 +23,7 @@ describe('API create transaction', () => {
 
     const userToken = loginResponse.body.data.token;
 
-    const courseId = 5;
+    const courseId = 6;
     const responseTransaction = await request(app)
       .post(`/api/v1/transaction/${courseId}`)
       .set('Authorization', `Bearer ${userToken}`)
