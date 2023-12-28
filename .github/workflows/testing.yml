@@ -25,6 +25,11 @@ jobs:
       JWT_SECRET: ${{secrets.JWT_SECRET}}
       JWT_EXPIREDIN: 1d
       PASSWORD_HASH: ${{secrets.PASSWORD_HASH}}
+      CLIENT_KEY: ${{secrets.CLIENT_KEY}}
+      SERVER_KEY: ${{secrets.SERVER_KEY}}
+      PUBLIC_API: ${{secrets.PUBLIC_API}}
+
+
     steps:
       - name: Get code
         uses: actions/checkout@v3

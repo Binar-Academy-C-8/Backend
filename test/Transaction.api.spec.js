@@ -23,11 +23,10 @@ describe('API create transaction', () => {
 
     const userToken = loginResponse.body.data.token;
 
-    const courseId = 6;
+    const courseId = 5;
     const responseTransaction = await request(app)
       .post(`/api/v1/transaction/${courseId}`)
       .set('Authorization', `Bearer ${userToken}`)
-      .send({});
 
     expect(responseTransaction.statusCode).toBe(201);
     expect(responseTransaction.body.status).toBe('Success');
