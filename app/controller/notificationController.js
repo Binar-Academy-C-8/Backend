@@ -1,13 +1,13 @@
-const ApiError = require('../../utils/apiError')
+const { Op } = require('sequelize');
+const ApiError = require('../../utils/apiError');
 const {
   Course,
   User,
   Notification,
   CourseUser,
   NotificationRead,
-} = require('../models')
-const { Op } = require('sequelize')
-require('dotenv').config()
+} = require('../models');
+require('dotenv').config();
 
 // const getAllNotification = async (req, res, next) => {
 //   try {
@@ -84,21 +84,21 @@ const getAllNotification = async (req, res, next) => {
         },
       ],
       order: [['createdAt', 'DESC']],
-    })
+    });
 
     res.status(200).json({
       status: 'Success',
       message: 'Sukses menampilkan data notifikasi',
       data: notification,
-    })
+    });
   } catch (err) {
-    next(new ApiError(err.message, 500))
+    next(new ApiError(err.message, 500));
   }
-}
+};
 
 const getNotifByUserId = async (req, res, next) => {
   try {
-    const userId = req.user.id
+    const userId = req.user.id;
 
     const notification = await Notification.findAll({
       where: {
@@ -136,36 +136,35 @@ const getNotifByUserId = async (req, res, next) => {
         },
       ],
       order: [['createdAt', 'DESC']],
-    })
+    });
 
     return res.status(200).json({
       status: 'Success',
       message: 'Sukses menampilkan data notifikasi by user id',
       data: notification,
-    })
+    });
   } catch (err) {
-    next(new ApiError(err.message, 500))
+    next(new ApiError(err.message, 500));
   }
-}
+};
 const getDetailNotif = async (req, res, next) => {
   try {
-    const userId = req.user.id
-    const notifId = req.params.notifId
+    const userId = req.user.id;
+    const { notifId } = req.params;
 
     const notification = await Notification.findOne({
       where: {
         [Op.or]: [
           {
-            userId: userId,
+            userId,
           },
           { userId: null },
         ],
         id: notifId,
       },
-    })
+    });
 
-    if (!notification)
-      return next(new ApiError('Notifikasi tidak ditemukan', 404))
+    if (!notification) { return next(new ApiError('Notifikasi tidak ditemukan', 404)); }
 
     const notificationRead = await NotificationRead.update(
       {
@@ -173,11 +172,11 @@ const getDetailNotif = async (req, res, next) => {
       },
       {
         where: {
-          notifId: notifId,
+          notifId,
         },
         returning: true,
-      }
-    )
+      },
+    );
 
     res.status(200).json({
       status: 'Success',
@@ -186,12 +185,11 @@ const getDetailNotif = async (req, res, next) => {
         notification,
         notificationRead: notificationRead[1][0],
       },
-    })
+    });
   } catch (err) {
-    next(new ApiError(err.message, 500))
+    next(new ApiError(err.message, 500));
   }
-}
-
+};
 
 // Notifikasi Login Member
 // Notifikasi create course
@@ -203,4 +201,4 @@ module.exports = {
   getAllNotification,
   getNotifByUserId,
   getDetailNotif,
-}
+};

@@ -1,12 +1,12 @@
+const jwt = require('jsonwebtoken');
+const bcrypt = require('bcrypt');
 const generatedOTP = require('../../utils/generatedOTP');
 const sendEmail = require('../../utils/sendEmail');
-const jwt = require('jsonwebtoken');
-
-const { Auth, User, OTP } = require('../models');
-const { AUTH_EMAIL } = process.env;
+const { Auth, OTP } = require('../models');
 const ApiError = require('../../utils/apiError');
 const scheduleOtpDeletion = require('../../utils/scheduleDeletion');
-const bcrypt = require('bcrypt');
+
+const { AUTH_EMAIL } = process.env;
 
 const verifyOTP = async (req, res, next) => {
   try {
@@ -36,7 +36,7 @@ const verifyOTP = async (req, res, next) => {
         where: {
           userId,
         },
-      }
+      },
     );
 
     const userAuth = await Auth.findOne({
@@ -52,7 +52,7 @@ const verifyOTP = async (req, res, next) => {
         role: userOtp.User.role,
         email: userAuth.email,
       },
-      process.env.JWT_SECRET
+      process.env.JWT_SECRET,
     );
 
     await OTP.destroy({
@@ -101,10 +101,10 @@ const sendOtp = async (req, res, next) => {
     const expirationTime = new Date();
     const expirationInMinutes = 3;
     expirationTime.setMinutes(
-      expirationTime.getMinutes() + expirationInMinutes
+      expirationTime.getMinutes() + expirationInMinutes,
     );
     const expirationInMinutesSinceNow = Math.floor(
-      (expirationTime - new Date()) / (1000 * 60)
+      (expirationTime - new Date()) / (1000 * 60),
     );
 
     const saltRounds = 10;

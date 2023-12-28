@@ -1,5 +1,5 @@
-const { Content, Chapter } = require('../models')
-const ApiError = require('../../utils/apiError')
+const { Content, Chapter } = require('../models');
+const ApiError = require('../../utils/apiError');
 // const compressVideo = require('../../helper/compressVideo')
 // const imagekit = require('../libs/imagekit')
 
@@ -7,71 +7,71 @@ const getContent = async (req, res, next) => {
   try {
     const dataContent = await Content.findAll({
       include: Chapter,
-    })
+    });
 
     if (dataContent.length < 1) {
-      return next(new ApiError('Konten data kosong', 404))
+      return next(new ApiError('Konten data kosong', 404));
     }
 
     res.status(200).json({
       status: 'Success',
       message: 'Konten data berhasil ditampilkan',
       dataContent,
-    })
+    });
   } catch (err) {
-    next(new ApiError(err.message, 500))
+    next(new ApiError(err.message, 500));
   }
-}
+};
 
 const getContentByid = async (req, res, next) => {
   try {
-    const { contentId } = req.params
+    const { contentId } = req.params;
     const dataContent = await Content.findOne({
       where: {
         id: contentId,
       },
       include: Chapter,
-    })
+    });
 
     if (dataContent === null) {
       return next(
-        new ApiError(`Data konten dengan id: ${contentId} kosong`, 404)
-      )
+        new ApiError(`Data konten dengan id: ${contentId} kosong`, 404),
+      );
     }
 
     res.status(200).json({
       status: 'Success',
       message: 'Konten data berhasil ditampilkan',
       dataContent,
-    })
+    });
   } catch (err) {
-    next(new ApiError(err.message, 500))
+    next(new ApiError(err.message, 500));
   }
-}
+};
 
 const insertContentByLink = async (req, res, next) => {
   try {
-    const { contentTitle, contentUrl, videoDuration } = req.body
-    const { chapterId } = req.params
+    const { contentTitle, contentUrl, videoDuration } = req.body;
+    const { chapterId } = req.params;
 
     const dataContent = await Content.create({
-      chapterId: chapterId,
-      contentTitle: contentTitle,
+      chapterId,
+      contentTitle,
 
-      contentUrl: contentUrl,
+      contentUrl,
       youtubeId: contentUrl.match(/youtu\.be\/([^?]+)/)[1],
       duration: videoDuration,
-    })
+    });
 
     res.status(200).json({
       status: 'Success',
       message: 'Sukses menambahkan data konten',
       dataContent,
-    })
+    });
   } catch (err) {
-    next(new ApiError(err.message, 500))
+    next(new ApiError(err.message, 500));
   }
-}
+};
 
 // const insertContentByFile = async (req, res, next) => {
 //   try {
@@ -275,10 +275,10 @@ const insertContentByLink = async (req, res, next) => {
 
 const updateContentByLink = async (req, res, next) => {
   try {
-    const { chapterId, contentId } = req.params
-    const { contentTitle, contentUrl, videoDuration } = req.body
+    const { chapterId, contentId } = req.params;
+    const { contentTitle, contentUrl, videoDuration } = req.body;
 
-    console.log(contentTitle)
+    console.log(contentTitle);
 
     // const chapterData = await Chapter.findOne({
     //   where: {
@@ -290,50 +290,50 @@ const updateContentByLink = async (req, res, next) => {
       where: {
         id: contentId,
       },
-    })
+    });
 
     // if (chapterData === null) {
     //   return next(new ApiError('Chapter data is not found!', 400));
     // }
     if (contentData === null) {
-      return next(new ApiError('Data konten tidak ditemukan!', 404))
+      return next(new ApiError('Data konten tidak ditemukan!', 404));
     }
 
     const updateContent = await Content.update(
       {
-        contentTitle: contentTitle,
-        contentUrl: contentUrl,
+        contentTitle,
+        contentUrl,
         duration: videoDuration,
       },
       {
         where: {
-          chapterId: chapterId,
+          chapterId,
           id: contentId,
         },
         returning: true,
-      }
-    )
+      },
+    );
 
     res.status(200).json({
       status: 'success',
       data: updateContent[1],
-    })
+    });
   } catch (err) {
-    next(new ApiError(err.message, 500))
+    next(new ApiError(err.message, 500));
   }
-}
+};
 
 const deleteContentByid = async (req, res, next) => {
   try {
-    const { contentId } = req.params
+    const { contentId } = req.params;
     const contentData = await Content.findOne({
       where: {
         id: contentId,
       },
-    })
+    });
 
     if (contentData === null) {
-      return next(new ApiError('Data konten tidak ditemukan!', 404))
+      return next(new ApiError('Data konten tidak ditemukan!', 404));
     }
 
     const deletedContent = await Content.destroy({
@@ -341,17 +341,17 @@ const deleteContentByid = async (req, res, next) => {
         id: contentId,
       },
       returning: true,
-    })
+    });
 
     res.status(200).json({
       status: 'success',
-      message: `Sukses menghapus konten data`,
+      message: 'Sukses menghapus konten data',
       data: deletedContent,
-    })
+    });
   } catch (err) {
-    next(new ApiError(err.message, 500))
+    next(new ApiError(err.message, 500));
   }
-}
+};
 module.exports = {
   getContent,
   getContentByid,
@@ -360,4 +360,4 @@ module.exports = {
   // updateContentByFile,
   updateContentByLink,
   deleteContentByid,
-}
+};
