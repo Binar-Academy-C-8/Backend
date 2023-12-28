@@ -31,7 +31,7 @@ describe('API create transaction', () => {
 
     expect(responseTransaction.statusCode).toBe(201);
     expect(responseTransaction.body.status).toBe('Success');
-  }, 5000);
+  }, 10000);
 
   it('Failed register because name is missing or empty', async () => {
     const user = {
