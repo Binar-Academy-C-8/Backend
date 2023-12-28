@@ -1,15 +1,12 @@
 const ApiError = require('../../utils/apiError');
-const { Category } = require('../models');
 
 const couseValidation = async (req, res, next) => {
-  const { coursePrice, courseDiscountInPercent, categoryId } = req.body;
+  const {
+    coursePrice,
+    courseDiscountInPercent,
+  } = req.body;
 
   try {
-    const category = await Category.findByPk(categoryId);
-    if (!category) {
-      return next(new ApiError('Kategori tidak ditemukan', 404));
-    }
-
     if (coursePrice < 0) {
       return next(new ApiError('Harga kursus tidak boleh kurang dari 0', 400));
     }
@@ -36,7 +33,6 @@ const couseValidation = async (req, res, next) => {
 
     next();
   } catch (err) {
-    console.log(err);
     next(new ApiError(err.message, 500));
   }
 };
