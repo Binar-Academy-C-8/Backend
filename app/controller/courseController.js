@@ -320,19 +320,11 @@ const updateCourse = async (req, res, next) => {
   let image;
 
   try {
-    const course = await Course.findByPk(id);
-
-    if (!courseBody.categoryId) {
-      courseBody.categoryId = course.categoryId;
-    }
-
-    if (!courseBody.courseLevel) {
-      courseBody.courseLevel = course.courseLevel;
-    }
-
-    if (!courseBody.rating) {
-      courseBody.rating = course.rating;
-    }
+    Object.entries(courseBody).forEach((key) => {
+      if (!courseBody[key[0]]) {
+        delete courseBody[key[0]];
+      }
+    });
 
     if (courseBody.categoryId) {
       const isCategoryExists = await Category.findByPk(courseBody.categoryId);
@@ -373,7 +365,6 @@ const updateCourse = async (req, res, next) => {
       data: { ...updatedCourse[1][0].toJSON(), isDiscount, rawPrice: coursePrice },
     });
   } catch (err) {
-    console.log(err);
     if (err instanceof Sequelize.ValidationError) {
       const field = err.errors[0].path;
       return next(new ApiError(`${field} tidak boleh kosong`, 400));
