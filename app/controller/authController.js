@@ -17,6 +17,10 @@ const register = async (req, res, next) => {
       name, email, password, phoneNumber, country, city,
     } = req.body;
 
+    if (!name || name.trim() === '') {
+      return next(new ApiError('Nama tidak boleh kosong', 400));
+    }
+
     const user = await Auth.findOne({
       where: {
         email,
@@ -35,12 +39,18 @@ const register = async (req, res, next) => {
     }
 
     const saltRounds = 10;
+    const hashedPassword = bcrypt.hashSync(password, saltRounds);
 
     const newUser = await User.create({
       name,
       phoneNumber,
       country,
       city,
+    });
+    await Auth.create({
+      email,
+      password: hashedPassword,
+      userId: newUser.id,
     });
 
     const newCode = await generatedOTP();
