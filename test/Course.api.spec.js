@@ -12,8 +12,12 @@ describe('API get all course just', () => {
 
   it('success filter course', async () => {
     const filters = {
+<<<<<<< HEAD
       // search: 'binar',
       category: [1],
+=======
+      category: '[1]',
+>>>>>>> c75fa04eb271b292ba7a93f2908e470c68079c74
       level: 'Beginner',
       type: 'Free',
       sort_by: 'createdAt',
@@ -28,7 +32,11 @@ describe('API get all course just', () => {
   it('failed filter course, when level and type course is invalid', async () => {
     const filters = {
       search: 'binar',
+<<<<<<< HEAD
       category: [1],
+=======
+      category: '[1]',
+>>>>>>> c75fa04eb271b292ba7a93f2908e470c68079c74
       level: 'Master',
       type: 'Trial',
       sort_by: 'createdAt',
@@ -68,6 +76,10 @@ describe('API create course', () => {
       courseName: 'UI/UX course for beginner',
       courseType: 'Free',
       coursePrice: 0,
+<<<<<<< HEAD
+=======
+      rating: 9.5,
+>>>>>>> c75fa04eb271b292ba7a93f2908e470c68079c74
       courseLevel: 'Beginner',
       aboutCourse: 'UI/UX course for beginner',
       intendedFor: 'Untuk pemula yang ingin menjadi profesional',
@@ -80,7 +92,12 @@ describe('API create course', () => {
       .post('/api/v1/course/create')
       .send(reqBody)
       .set('Authorization', `Bearer ${token}`);
+<<<<<<< HEAD
 
+=======
+    console.log(response.body.data);
+    console.log(response.body);
+>>>>>>> c75fa04eb271b292ba7a93f2908e470c68079c74
     expect(response.status).toBe(201);
     expect(response.body.status).toBe('success');
   });
