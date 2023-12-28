@@ -23,7 +23,7 @@ router.patch(
   '/change-password/:userId',
   authenticate,
   checkRole(['member']),
-  User.newPassword,
+  User.changePassword,
 );
 
 module.exports = router;

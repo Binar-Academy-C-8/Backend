@@ -116,7 +116,7 @@ const deleteUser = async (req, res, next) => {
   }
 };
 
-const newPassword = async (req, res, next) => {
+const changePassword = async (req, res, next) => {
   try {
     const { userId } = req.params;
     const { oldPassword, newPassword, confirmPassword } = req.body;
@@ -189,5 +189,5 @@ module.exports = {
   getUserByEmail,
   updateUser,
   deleteUser,
-  newPassword,
+  changePassword,
 };
