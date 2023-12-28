@@ -230,6 +230,10 @@
                       "oneOf": [
                         {
                           "type": "object",
+                          "example": "Nama tidak boleh kosong"
+                        },
+                        {
+                          "type": "object",
                           "example": "Nama pengguna sudah digunakan"
                         },
                         {

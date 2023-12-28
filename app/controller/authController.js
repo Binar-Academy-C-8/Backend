@@ -18,6 +18,10 @@ const register = async (req, res, next) => {
       name, email, password, phoneNumber, country, city,
     } = req.body;
 
+    if (!name || name.trim() === '') {
+      return next(new ApiError('Nama tidak boleh kosong', 400));
+    }
+
     const user = await Auth.findOne({
       where: {
         email,
