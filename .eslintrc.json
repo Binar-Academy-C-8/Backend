@@ -9,6 +9,14 @@
     "ecmaVersion": "latest"
   },
   "rules": {
-    "linebreak-style": "off"
+    "linebreak-style": "off",
+    "max-len": [
+      "error",
+      {
+        "code": 90,
+        "tabWidth": 2,
+        "ignoreUrls": true
+      }
+    ]
   }
 }
