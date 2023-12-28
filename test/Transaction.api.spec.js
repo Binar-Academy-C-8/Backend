@@ -22,7 +22,7 @@ describe('API create transaction', () => {
     expect(loginResponse.body.message).toBe('Login berhasil');
 
     const userToken = loginResponse.body.data.token;
-
+// 
     const courseId = 6;
     const responseTransaction = await request(app)
       .post(`/api/v1/transaction/${courseId}`)
