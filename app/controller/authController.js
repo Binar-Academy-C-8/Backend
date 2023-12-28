@@ -44,7 +44,7 @@ const register = async (req, res, next) => {
       country,
       city,
     });
-    const test = await Auth.create({
+    await Auth.create({
       email,
       password: hashedPassword,
       userId: newUser.id,
