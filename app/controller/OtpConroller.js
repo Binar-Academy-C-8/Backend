@@ -2,11 +2,12 @@ const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
 const generatedOTP = require('../../utils/generatedOTP');
 const sendEmail = require('../../utils/sendEmail');
+
 const { Auth, OTP } = require('../models');
-const ApiError = require('../../utils/apiError');
-const scheduleOtpDeletion = require('../../utils/scheduleDeletion');
 
 const { AUTH_EMAIL } = process.env;
+const ApiError = require('../../utils/apiError');
+const scheduleOtpDeletion = require('../../utils/scheduleDeletion');
 
 const verifyOTP = async (req, res, next) => {
   try {

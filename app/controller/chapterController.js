@@ -1,3 +1,4 @@
+/* eslint-disable consistent-return */
 const ApiError = require('../../utils/apiError');
 const { Chapter, Course } = require('../models');
 require('dotenv').config();
@@ -54,7 +55,7 @@ const findChapter = async (req, res, next) => {
       include: ['contents', 'Course'],
     });
 
-    if (!chapter) return next(new ApiError('Data chapter tidak ditemukan'), 404);
+    if (!chapter) return next(new ApiError('Data chapter tidak ditemukan', 404));
 
     res.status(200).json({
       status: 'Sukses',
@@ -93,7 +94,7 @@ const updateChapter = async (req, res, next) => {
       },
     );
 
-    res.status(201).json({
+    res.status(200).json({
       status: 'Sukses',
       message: 'Sukses memperbarui data',
       data: chapter[1],

@@ -1,5 +1,7 @@
+/* eslint-disable consistent-return */
 const bcrypt = require('bcrypt');
 const path = require('path');
+// const { where } = require('sequelize');
 const {
   User, Auth, Notification, NotificationRead,
 } = require('../models');
@@ -114,12 +116,12 @@ const deleteUser = async (req, res, next) => {
   }
 };
 
-const newPassword = async (req, res, next) => {
+const changePassword = async (req, res, next) => {
   try {
     const { userId } = req.params;
-    const { oldPassword, newUserPassword, confirmPassword } = req.body;
+    const { oldPassword, newPassword, confirmPassword } = req.body;
 
-    if (newUserPassword !== confirmPassword) {
+    if (newPassword !== confirmPassword) {
       return res.status(400).json({
         status: 'Failed',
         message: 'Password tidak sesuai',
@@ -186,5 +188,5 @@ module.exports = {
   getUserByEmail,
   updateUser,
   deleteUser,
-  newPassword,
+  changePassword,
 };

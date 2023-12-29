@@ -1,3 +1,4 @@
+/* eslint-disable consistent-return */
 const { Op } = require('sequelize');
 const path = require('path');
 const {
@@ -141,7 +142,8 @@ const getAllCourse = async (req, res, next) => {
 
     const formatedCourses = await mapCourse;
     const courses = formatedCourses.map((course) => {
-      const courseItem = course; delete courseItem.chapters;
+      const courseItem = course;
+      delete courseItem.chapters;
       return course;
     });
 

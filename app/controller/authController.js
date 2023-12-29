@@ -236,7 +236,6 @@ const updateNewPassword = async (req, res, next) => {
       return next(new ApiError('Pengguna belum diverifikasi', 401));
     }
 
-    // Hash password baru
     const saltRounds = 10;
     const hashedPassword = await bcrypt.hash(password, saltRounds);
 
