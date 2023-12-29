@@ -198,12 +198,6 @@ const authenticateAdmin = async (req, res, next) => {
 };
 
 const authenticate = async (req, res, next) => {
-  const authData = await Auth.findOne({
-    where: {
-      userId: req.user.id,
-    },
-    include: ['User'],
-  });
   try {
     res.status(200).json({
       status: 'Success',
@@ -214,7 +208,7 @@ const authenticate = async (req, res, next) => {
         phoneNumber: req.user.phoneNumber,
         country: req.user.country,
         city: req.user.city,
-        email: authData.email,
+        email: req.user.Auth.email,
       },
     });
   } catch (err) {
