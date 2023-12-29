@@ -1,10 +1,9 @@
-const router = require('express').Router()
-const authMe = require('../middlewares/authMe')
-const checkRole = require('../middlewares/checkRole')
-const Notification = require('../controller/notificationController')
+const router = require('express').Router();
+const authMe = require('../middlewares/authMe');
+const Notification = require('../controller/notificationController');
 
-router.get('/getAllNotif', Notification.getAllNotification)
-router.get('/getNotifByUserId', authMe, Notification.getNotifByUserId)
-router.get('/getDetailNotif/:notifId', authMe, Notification.getDetailNotif)
+router.get('/', Notification.getAllNotification);
+router.get('/user', authMe, Notification.getNotifByUserId);
+router.get('/:notifId', authMe, Notification.getDetailNotif);
 
-module.exports = router
+module.exports = router;
