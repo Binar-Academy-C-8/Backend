@@ -303,6 +303,7 @@ const updateContentByLink = async (req, res, next) => {
       {
         contentTitle,
         contentUrl,
+        youtubeId: contentUrl.match(/youtu\.be\/([^?]+)/)[1],
         duration: videoDuration,
       },
       {
