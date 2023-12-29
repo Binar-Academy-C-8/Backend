@@ -17,6 +17,10 @@ module.exports = async (req, res, next) => {
       include: ['Auth'],
     });
 
+    if (!user) {
+      throw new ApiError('Pengguna tidak ditemukan', 401);
+    }
+
     req.user = user;
     next();
   } catch (err) {
