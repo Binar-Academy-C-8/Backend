@@ -296,27 +296,46 @@ const updateContentByLink = async (req, res, next) => {
     //   return next(new ApiError('Chapter data is not found!', 400));
     // }
     if (contentData === null) {
-      return next(new ApiError('Data konten tidak ditemukan!', 404));
+      return next(new ApiError("Data konten tidak ditemukan!", 404));
     }
 
-    const updateContent = await Content.update(
-      {
-        contentTitle,
-        contentUrl,
-        youtubeId: contentUrl.match(/youtu\.be\/([^?]+)/)[1],
-        duration: videoDuration,
-      },
-      {
-        where: {
-          chapterId,
-          id: contentId,
+    let updateContent;
+
+    if (contentUrl) {
+      updateContent = await Content.update(
+        {
+          contentTitle,
+          contentUrl,
+          youtubeId: contentUrl.match(/youtu\.be\/([^?]+)/)[1],
+          duration: videoDuration,
         },
-        returning: true,
-      },
-    );
+        {
+          where: {
+            chapterId,
+            id: contentId,
+          },
+          returning: true,
+        }
+      );
+    } else if (!contentUrl) {
+      updateContent = await Content.update(
+        {
+          contentTitle,
+          contentUrl,
+          duration: videoDuration,
+        },
+        {
+          where: {
+            chapterId,
+            id: contentId,
+          },
+          returning: true,
+        }
+      );
+    }
 
     res.status(200).json({
-      status: 'success',
+      status: "success",
       data: updateContent[1],
     });
   } catch (err) {
