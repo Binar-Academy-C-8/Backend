@@ -22,33 +22,15 @@ describe('API create transaction', () => {
     expect(loginResponse.body.message).toBe('Login berhasil');
 
     const userToken = loginResponse.body.data.token;
-// 
+
     const courseId = 6;
     const responseTransaction = await request(app)
       .post(`/api/v1/transaction/${courseId}`)
       .set('Authorization', `Bearer ${userToken}`)
-      .send({});
 
     expect(responseTransaction.statusCode).toBe(201);
     expect(responseTransaction.body.status).toBe('Success');
   }, 10000);
-
-  it('Failed register because name is missing or empty', async () => {
-    const user = {
-      email: 'member_test@gmail.com',
-      password: '12345678',
-      phoneNumber: '01234567',
-      country: 'Indonesia',
-      city: 'Tangerang',
-    };
-
-    const response = await request(app)
-      .post('/api/v1/auth/member/register')
-      .send(user);
-
-    expect(response.statusCode).toBe(400);
-    expect(response.body.message).toBe('Nama tidak boleh kosong');
-  });
 
   it('Failed create transaction, order Id not found', async () => {
     const loginCredentials = {

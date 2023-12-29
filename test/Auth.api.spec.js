@@ -23,6 +23,23 @@ describe('API Register', () => {
     expect(response.body.status).toBe('Registrasi berhasil');
   }, 10000);
 
+  it('Failed register because name is missing or empty', async () => {
+    const user = {
+      email: 'member_test@gmail.com',
+      password: '12345678',
+      phoneNumber: '01234567',
+      country: 'Indonesia',
+      city: 'Tangerang',
+    };
+
+    const response = await request(app)
+      .post('/api/v1/auth/member/register')
+      .send(user);
+
+    expect(response.statusCode).toBe(400);
+    expect(response.body.message).toBe('Nama tidak boleh kosong');
+  });
+
   it('Failed register because user password minimum not match', async () => {
     const user = {
       email: 'member02@gmail.com',
