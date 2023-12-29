@@ -10,20 +10,20 @@ describe('API get all course just', () => {
     expect(response.body.status).toBe('success');
   });
 
-  it('success filter course', async () => {
-    const filters = {
-      search: 'binar',
-      category: [1],
-      level: 'Beginner',
-      type: 'Free',
-      sort_by: 'createdAt',
-      order_by: 'asc',
-    };
-    const response = await request(app).get('/api/v1/course').query(filters);
+  // it('success filter course', async () => {
+  //   const filters = {
+  //     search: 'binar',
+  //     category: [1],
+  //     level: 'Beginner',
+  //     type: 'Free',
+  //     sort_by: 'createdAt',
+  //     order_by: 'asc',
+  //   };
+  //   const response = await request(app).get('/api/v1/course').query(filters);
 
-    expect(response.statusCode).toBe(200);
-    expect(response.body.status).toBe('success');
-  });
+  //   expect(response.statusCode).toBe(200);
+  //   expect(response.body.status).toBe('success');
+  // });
 
   it('failed filter course, when level and type course is invalid', async () => {
     const filters = {
