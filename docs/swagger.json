@@ -4383,7 +4383,7 @@
       }
     },
     "/chapter/update/{id}": {
-      "patch": {
+      "put": {
         "tags": ["Chapter"],
         "security": [
           {
