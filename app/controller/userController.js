@@ -144,7 +144,7 @@ const newPassword = async (req, res, next) => {
     }
     // Hash password baru
     const saltRounds = 10;
-    const hashedPassword = await bcrypt.hash(newPassword, saltRounds);
+    const hashedPassword = await bcrypt.hash(newUserPassword, saltRounds);
 
     // Update password di database Auth
     await Auth.update(
