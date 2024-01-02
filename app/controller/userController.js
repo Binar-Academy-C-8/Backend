@@ -101,7 +101,7 @@ const deleteUser = async (req, res, next) => {
     });
     await Auth.destroy({
       where: {
-        id: req.params.id,
+        userId: req.params.id,
       },
     });
 
